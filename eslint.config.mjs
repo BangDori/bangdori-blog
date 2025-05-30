@@ -2,8 +2,8 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
 import js from '@eslint/js';
-import globals from 'globals';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import globals from 'globals';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,7 +14,7 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   js.configs.recommended,
-  ...compat.extends('next/core-web-vitals', 'next/typescript'),
+  ...compat.extends('next/core-web-vitals', 'next/typescript', 'plugin:import/recommended'),
   {
     languageOptions: {
       globals: {
@@ -30,6 +30,49 @@ const eslintConfig = [
       '@typescript-eslint/no-explicit-any': 'off', // any 타입 허용(빠른 프로토타이핑)
       'react/react-in-jsx-scope': 'off', // Next.js에서는 React import 불필요
       'prettier/prettier': 'off', // 포맷팅은 Prettier에 맡김
+      'import/order': [
+        'error',
+        {
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            'sibling',
+            'index',
+            'object',
+            'type',
+          ],
+          pathGroups: [
+            {
+              pattern: 'next',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: 'next/**',
+              group: 'external',
+              position: 'before',
+            },
+            {
+              pattern: 'react',
+              group: 'external',
+              position: 'after',
+            },
+            {
+              pattern: 'react/**',
+              group: 'external',
+              position: 'after',
+            },
+          ],
+          pathGroupsExcludedImportTypes: ['builtin'],
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+          'newlines-between': 'never',
+        },
+      ],
     },
   },
   eslintConfigPrettier,

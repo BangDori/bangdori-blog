@@ -1,7 +1,7 @@
-import { Separator } from '@/components/ui/separator';
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 
 interface DocsPageProps {
   params: Promise<{ slug: string[] }>;
