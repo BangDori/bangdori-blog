@@ -6,10 +6,10 @@ import { ko } from 'date-fns/locale';
 import { Calendar, User } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import type { NotionPost } from '@/types/notion';
+import type { Post } from '@/types/blog';
 
 interface PostCardProps {
-  post: NotionPost;
+  post: Post;
 }
 
 export function PostCard({ post }: PostCardProps) {
@@ -32,11 +32,11 @@ export function PostCard({ post }: PostCardProps) {
         <div className="mb-4 flex flex-wrap gap-2">
           {post.tags?.map((tag) => (
             <Badge
-              key={tag.id}
+              key={tag}
               variant="secondary"
               className="bg-primary/10 text-primary hover:bg-primary/20 font-medium transition-colors"
             >
-              {tag.name}
+              {tag}
             </Badge>
           ))}
         </div>
