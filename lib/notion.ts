@@ -12,17 +12,30 @@ export const notion = new Client({
 
 const n2m = new NotionToMarkdown({ notionClient: notion });
 
+/**
+ * 포스트 메타데이터를 추출합니다.
+ *
+ * @param page 페이지 객체
+ * @returns 포스트 메타데이터
+ */
 function getPostMetadata(page: PageObjectResponse): Post {
   const { properties } = page;
 
-  const getCoverImage = (cover: PageObjectResponse['cover']) => {
-    if (!cover) return '';
+  /**
+   * 커버 이미지를 추출합니다.
+   *
+   * @param cover 커버 이미지
+   * @returns 커버 이미지 URL
+   * @reference https://developers.notion.com/reference/file-object
+   */
+  const getCoverImage = () => {
+    if (!page.cover) return '';
 
-    switch (cover.type) {
+    switch (page.cover.type) {
       case 'external':
-        return cover.external.url;
+        return page.cover.external.url;
       case 'file':
-        return cover.file.url;
+        return page.cover.file.url;
       default:
         return '';
     }
@@ -35,7 +48,7 @@ function getPostMetadata(page: PageObjectResponse): Post {
       properties.Description.type === 'rich_text'
         ? (properties.Description.rich_text[0]?.plain_text ?? '')
         : '',
-    coverImage: getCoverImage(page.cover),
+    coverImage: getCoverImage(),
     tags:
       properties.Tags.type === 'multi_select'
         ? properties.Tags.multi_select.map((tag) => tag.name)
@@ -88,7 +101,16 @@ export const getPostBySlug = async (
   };
 };
 
+/**
+ * 데이터베이스에서 게시된 포스트를 조회합니다.
+ *
+ * @param tag 태그 필터
+ * @returns 게시된 포스트 목록
+ * @reference https://developers.notion.com/reference/post-database-query
+ */
 export const getPublishedPosts = async (tag?: string): Promise<Post[]> => {
+  const tags = tag && tag !== '전체' ? [{ property: 'Tags', multi_select: { contains: tag } }] : [];
+
   const response = await notion.databases.query({
     database_id: process.env.NOTION_DATABASE_ID!,
     filter: {
@@ -99,16 +121,7 @@ export const getPublishedPosts = async (tag?: string): Promise<Post[]> => {
             equals: 'Published',
           },
         },
-        ...(tag && tag !== '전체'
-          ? [
-              {
-                property: 'Tags',
-                multi_select: {
-                  contains: tag,
-                },
-              },
-            ]
-          : []),
+        ...tags,
       ],
     },
     sorts: [
@@ -120,10 +133,19 @@ export const getPublishedPosts = async (tag?: string): Promise<Post[]> => {
   });
 
   return response.results
-    .filter((page): page is PageObjectResponse => 'properties' in page)
-    .map(getPostMetadata);
+    .filter((page): page is PageObjectResponse => 'properties' in page) // properties 타입이 존재하는 페이지만 필터링
+    .map(getPostMetadata); // 포스트 메타데이터 추출
 };
 
+/**
+ * 데이터베이스에서 태그를 조회합니다.
+ * 1. 모든 포스트를 조회합니다.
+ * 2. 모든 태그를 추출하고, 각 포스트의 태그를 추출합니다.
+ * 3. "전체" 태그를 추가합니다.
+ * 4. "전체" 태그를 0번 인덱스에 위치한 후, 태그 이름 기준으로 정렬합니다.
+ *
+ * @returns 태그 목록
+ */
 export const getTags = async (): Promise<TagFilterItem[]> => {
   const posts = await getPublishedPosts();
 
@@ -133,6 +155,7 @@ export const getTags = async (): Promise<TagFilterItem[]> => {
       post.tags?.forEach((tag) => {
         acc[tag] = (acc[tag] || 0) + 1;
       });
+
       return acc;
     },
     {} as Record<string, number>
