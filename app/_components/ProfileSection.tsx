@@ -1,24 +1,26 @@
+'use client';
+
 import Image from 'next/image';
-import { Youtube, Github, BookOpen, Instagram } from 'lucide-react';
+import { FileUser, Github, Instagram, Linkedin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
 const socialLinks = [
   {
-    icon: Youtube,
-    href: 'https://www.youtube.com/gymcoding',
-  },
-  {
     icon: Github,
-    href: 'https://github.com/gymcoding',
+    href: 'https://github.com/bangdori',
   },
   {
-    icon: BookOpen,
-    href: 'https://www.inflearn.com/users/432199/@gymcoding',
+    icon: Linkedin,
+    href: 'https://www.linkedin.com/in/bangdori/',
   },
   {
     icon: Instagram,
-    href: 'https://www.instagram.com/gymcoding',
+    href: 'https://www.instagram.com/joooon2_/',
+  },
+  {
+    icon: FileUser,
+    href: 'https://www.rallit.com/hub/resumes/1244032/%EA%B0%95%EB%B3%91%EC%A4%80',
   },
 ];
 
@@ -31,8 +33,8 @@ export default function ProfileSection() {
             <div className="bg-muted rounded-full p-2">
               <div className="h-36 w-36 overflow-hidden rounded-full">
                 <Image
-                  src="/images/profile-light.png"
-                  alt="짐코딩"
+                  src="/images/profile.jpeg"
+                  alt="강병준 프로필 이미지"
                   width={144}
                   height={144}
                   className="object-cover"
@@ -42,8 +44,8 @@ export default function ProfileSection() {
           </div>
 
           <div className="text-center">
-            <h3 className="text-lg font-bold">짐코딩</h3>
-            <p className="text-primary text-sm">Full Stack Developer</p>
+            <h3 className="text-lg font-bold">강병준</h3>
+            <p className="text-primary text-sm">Frontend Developer</p>
           </div>
 
           <div className="flex justify-center gap-2">
@@ -55,8 +57,6 @@ export default function ProfileSection() {
               </Button>
             ))}
           </div>
-
-          <p className="bg-primary/10 rounded p-2 text-center text-sm">코딩 교육 크리에이터 ✨</p>
         </div>
       </CardContent>
     </Card>
