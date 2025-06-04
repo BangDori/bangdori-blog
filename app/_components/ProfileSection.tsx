@@ -37,7 +37,7 @@ export default function ProfileSection() {
                   alt="강병준 프로필 이미지"
                   width={144}
                   height={144}
-                  className="object-cover"
+                  className="h-36 w-36 object-cover"
                 />
               </div>
             </div>
