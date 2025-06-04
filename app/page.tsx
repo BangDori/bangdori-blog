@@ -3,23 +3,21 @@ import ContactSection from '@/app/_components/ContactSection';
 import ProfileSection from '@/app/_components/ProfileSection';
 import TagSection from '@/app/_components/TagSection';
 import { PostCard } from '@/components/features/blog/PostCard';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { getPublishedPosts, getTags } from '@/lib/notion';
+import SortSelect from './_components/client/SortSelect';
 
 interface HomeProps {
-  searchParams: Promise<{ tag?: string }>;
+  searchParams: Promise<{ tag?: string; sort?: string }>;
 }
 
 export default async function Home({ searchParams }: HomeProps) {
-  const { tag } = await searchParams;
+  const { tag, sort } = await searchParams;
   const selectedTag = tag || '전체';
-  const [posts, tags] = await Promise.all([getPublishedPosts(selectedTag), getTags()]);
+  const selectedSort = sort || 'latest';
+  const [posts, tags] = await Promise.all([
+    getPublishedPosts(selectedTag, selectedSort),
+    getTags(),
+  ]);
 
   return (
     <div className="container py-8">
@@ -34,22 +32,14 @@ export default async function Home({ searchParams }: HomeProps) {
             <h2 className="text-3xl font-bold tracking-tight">
               {selectedTag === '전체' ? '블로그 목록' : `${selectedTag} 관련 글`}
             </h2>
-            <Select defaultValue="latest">
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="정렬 방식 선택" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="latest">최신순</SelectItem>
-                <SelectItem value="oldest">오래된순</SelectItem>
-              </SelectContent>
-            </Select>
+            <SortSelect />
           </div>
 
           {/* 블로그 카드 그리드 */}
           <div className="grid gap-4">
-            {posts.map((post) => (
+            {posts.map((post, index) => (
               <Link href={`/blog/${post.slug}`} key={post.id}>
-                <PostCard post={post} />
+                <PostCard post={post} isFirst={index === 0} />
               </Link>
             ))}
           </div>

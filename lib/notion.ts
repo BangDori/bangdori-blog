@@ -108,7 +108,7 @@ export const getPostBySlug = async (
  * @returns 게시된 포스트 목록
  * @reference https://developers.notion.com/reference/post-database-query
  */
-export const getPublishedPosts = async (tag?: string): Promise<Post[]> => {
+export const getPublishedPosts = async (tag?: string, sort?: string): Promise<Post[]> => {
   const tags = tag && tag !== '전체' ? [{ property: 'Tags', multi_select: { contains: tag } }] : [];
 
   const response = await notion.databases.query({
@@ -127,7 +127,7 @@ export const getPublishedPosts = async (tag?: string): Promise<Post[]> => {
     sorts: [
       {
         property: 'Date',
-        direction: 'descending',
+        direction: sort === 'latest' ? 'descending' : 'ascending',
       },
     ],
   });
