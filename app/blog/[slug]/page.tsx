@@ -1,114 +1,20 @@
 import Link from 'next/link';
+import { compile } from '@mdx-js/mdx';
+import withToc from '@stefanprobst/rehype-extract-toc';
+import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
 import { CalendarDays, User, ChevronLeft, ChevronRight } from 'lucide-react';
 import { MDXRemote } from 'next-mdx-remote/rsc';
+import { rehypePrettyCode } from 'rehype-pretty-code';
+import rehypeSanitize from 'rehype-sanitize';
+import rehypeSlug from 'rehype-slug';
+import remarkGfm from 'remark-gfm';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { formatDate } from '@/lib/date';
 import { getPostBySlug } from '@/lib/notion';
-
-interface TableOfContentsItem {
-  id: string;
-  title: string;
-  items?: TableOfContentsItem[];
-}
-
-const mockTableOfContents: TableOfContentsItem[] = [
-  {
-    id: 'intro',
-    title: '소개',
-    items: [],
-  },
-  {
-    id: 'getting-started',
-    title: '시작하기',
-    items: [
-      {
-        id: 'prerequisites',
-        title: '사전 준비사항',
-        items: [
-          {
-            id: 'node-installation',
-            title: 'Node.js 설치',
-          },
-          {
-            id: 'npm-setup',
-            title: 'NPM 설정',
-          },
-        ],
-      },
-      {
-        id: 'project-setup',
-        title: '프로젝트 설정',
-        items: [
-          {
-            id: 'create-project',
-            title: '프로젝트 생성',
-          },
-          {
-            id: 'folder-structure',
-            title: '폴더 구조',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 'shadcn-ui-setup',
-    title: 'Shadcn UI 설정하기',
-    items: [
-      {
-        id: 'installation',
-        title: '설치 방법',
-        items: [
-          {
-            id: 'cli-installation',
-            title: 'CLI 도구 설치',
-          },
-          {
-            id: 'component-setup',
-            title: '컴포넌트 설정',
-          },
-        ],
-      },
-      {
-        id: 'configuration',
-        title: '환경 설정',
-        items: [
-          {
-            id: 'theme-setup',
-            title: '테마 설정',
-          },
-          {
-            id: 'typography',
-            title: '타이포그래피',
-          },
-        ],
-      },
-    ],
-  },
-];
-
-function TableOfContentsLink({ item }: { item: TableOfContentsItem }) {
-  return (
-    <div className="space-y-2">
-      <Link
-        key={item.id}
-        href={`#${item.id}`}
-        className={`hover:text-foreground text-muted-foreground block font-medium transition-colors`}
-      >
-        {item.title}
-      </Link>
-      {item.items && item.items.length > 0 && (
-        <div className="space-y-2 pl-4">
-          {item.items.map((subItem) => (
-            <TableOfContentsLink key={subItem.id} item={subItem} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
+import { CodeBlock } from './_components/CodeBlock';
+import { TableOfContentsLink } from './_components/TableOfContentsLink';
 
 interface BlogPostProps {
   params: Promise<{ slug: string }>;
@@ -117,6 +23,10 @@ interface BlogPostProps {
 export default async function BlogPost({ params }: BlogPostProps) {
   const { slug } = await params;
   const { markdown, post } = await getPostBySlug(slug);
+
+  const { data } = await compile(markdown, {
+    rehypePlugins: [rehypeSlug, withToc, withTocExport],
+  });
 
   return (
     <div className="container py-12">
@@ -152,8 +62,17 @@ export default async function BlogPost({ params }: BlogPostProps) {
           <Separator className="my-8" />
 
           {/* 블로그 본문 */}
-          <div className="prose prose-neutral prose-sm dark:prose-invert max-w-none">
-            <MDXRemote source={markdown} />
+          <div className="prose prose-neutral prose-sm dark:prose-invert prose-headings:scroll-mt-[var(--header-height)]">
+            <MDXRemote
+              source={markdown}
+              components={{ pre: CodeBlock }}
+              options={{
+                mdxOptions: {
+                  remarkPlugins: [remarkGfm],
+                  rehypePlugins: [rehypeSanitize, rehypePrettyCode, rehypeSlug],
+                },
+              }}
+            />
           </div>
 
           <Separator className="my-16" />
@@ -195,9 +114,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
             <div className="bg-muted/60 space-y-4 rounded-lg p-6 backdrop-blur-sm">
               <h3 className="text-lg font-semibold">목차</h3>
               <nav className="space-y-3 text-sm">
-                {mockTableOfContents.map((item) => (
-                  <TableOfContentsLink key={item.id} item={item} />
-                ))}
+                {data?.toc?.map((item) => <TableOfContentsLink key={item.id} item={item} />)}
               </nav>
             </div>
           </div>

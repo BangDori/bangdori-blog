@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import MainDocsPage from './_components/MainDocsPage';
 
 interface DocsPageProps {
   params: Promise<{ slug: string[] }>;
@@ -11,32 +11,7 @@ export default async function DocsPage({ params }: DocsPageProps) {
   const { slug } = await params;
 
   if (!slug) {
-    return (
-      <>
-        <h1 className="text-4xl font-bold">문서 메인 페이지</h1>
-        <Separator />
-        <div className="grid gap-4">
-          <Link href="/docs/intro">
-            <Card>
-              <CardHeader>
-                <CardTitle>시작하기</CardTitle>
-                <CardDescription>
-                  Next.js의 기본 개념과 프로젝트 설정 방법을 알아봅니다.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
-          <Link href="/docs/guide/basic">
-            <Card>
-              <CardHeader>
-                <CardTitle>고급 가이드</CardTitle>
-                <CardDescription>심화 개념과 실전 활용 방법을 다룹니다.</CardDescription>
-              </CardHeader>
-            </Card>
-          </Link>
-        </div>
-      </>
-    );
+    return <MainDocsPage />;
   }
 
   return (

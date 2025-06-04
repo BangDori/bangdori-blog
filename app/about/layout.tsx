@@ -12,7 +12,7 @@ const menuItems = [
   { icon: Briefcase, label: '프로젝트', href: '/about/projects' },
   { icon: Newspaper, label: '블로그', href: '/about/blog' },
   { icon: Coffee, label: '컨택', href: '/about/contact' },
-  { icon: Github, label: 'Github', href: 'https://github.com', external: true },
+  { icon: Github, label: 'Github', href: 'https://github.com/bangdori', external: true },
 ];
 
 export default function AboutLayout({ children }: AboutLayoutProps) {
