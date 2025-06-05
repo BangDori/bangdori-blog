@@ -4,7 +4,7 @@ import withToc from '@stefanprobst/rehype-extract-toc';
 import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
 import { CalendarDays, User, ChevronLeft, ChevronRight } from 'lucide-react';
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import { rehypePrettyCode } from 'rehype-pretty-code';
+import rehypePrettyCode from 'rehype-pretty-code';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
@@ -15,6 +15,7 @@ import { formatDate } from '@/lib/date';
 import { getPostBySlug } from '@/lib/notion';
 import { CodeBlock } from './_components/CodeBlock';
 import { TableOfContentsLink } from './_components/TableOfContentsLink';
+import { VideoOrLink } from './_components/VideoOrLink';
 
 interface BlogPostProps {
   params: Promise<{ slug: string }>;
@@ -65,7 +66,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
           <div className="prose prose-neutral prose-sm dark:prose-invert prose-headings:scroll-mt-[var(--header-height)]">
             <MDXRemote
               source={markdown}
-              components={{ pre: CodeBlock }}
+              components={{ pre: CodeBlock, a: VideoOrLink }}
               options={{
                 mdxOptions: {
                   remarkPlugins: [remarkGfm],
