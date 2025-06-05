@@ -133,3 +133,22 @@
   @apply mx-auto max-w-6xl px-4;
   width: 100%;
 }
+
+.prose code:not(pre code) {
+  background-color: #22272e;
+  color: #6cb6ff;
+  border-radius: 0.3em;
+  padding: 0.15em 0.4em;
+  font-size: 0.95em;
+  font-weight: 500;
+}
+
+.prose code::before,
+.prose code::after {
+  content: none !important;
+}
+
+.dark .prose code:not(pre code) {
+  background-color: #22272e;
+  color: #6cb6ff;
+}
