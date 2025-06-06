@@ -101,14 +101,25 @@ export const getPostBySlug = async (
   };
 };
 
-/**
- * 데이터베이스에서 게시된 포스트를 조회합니다.
- *
- * @param tag 태그 필터
- * @returns 게시된 포스트 목록
- * @reference https://developers.notion.com/reference/post-database-query
- */
-export const getPublishedPosts = async (tag?: string, sort?: string): Promise<Post[]> => {
+interface GetPublishedPostsParams {
+  tag?: string;
+  sort?: string;
+  pageSize?: number;
+  startCursor?: string;
+}
+
+export interface GetPublishedPostsResponse {
+  posts: Post[];
+  hasMore: boolean;
+  nextCursor: string | null;
+}
+
+export const getPublishedPosts = async ({
+  tag = '전체',
+  sort = 'latest',
+  pageSize = 2,
+  startCursor,
+}: GetPublishedPostsParams): Promise<GetPublishedPostsResponse> => {
   const tags = tag && tag !== '전체' ? [{ property: 'Tags', multi_select: { contains: tag } }] : [];
 
   const response = await notion.databases.query({
@@ -130,11 +141,21 @@ export const getPublishedPosts = async (tag?: string, sort?: string): Promise<Po
         direction: sort === 'latest' ? 'descending' : 'ascending',
       },
     ],
+    page_size: pageSize,
+    start_cursor: startCursor,
   });
 
-  return response.results
+  console.log(response);
+
+  const posts = response.results
     .filter((page): page is PageObjectResponse => 'properties' in page) // properties 타입이 존재하는 페이지만 필터링
     .map(getPostMetadata); // 포스트 메타데이터 추출
+
+  return {
+    posts,
+    hasMore: response.has_more,
+    nextCursor: response.next_cursor,
+  };
 };
 
 /**
@@ -147,7 +168,7 @@ export const getPublishedPosts = async (tag?: string, sort?: string): Promise<Po
  * @returns 태그 목록
  */
 export const getTags = async (): Promise<TagFilterItem[]> => {
-  const posts = await getPublishedPosts();
+  const { posts } = await getPublishedPosts({ pageSize: 100 });
 
   // 모든 태그를 추출하고 각 태그의 출현 횟수를 계산
   const tagCount = posts.reduce(

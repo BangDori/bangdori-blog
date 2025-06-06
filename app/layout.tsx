@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
+import Providers from './providers';
 
 const pretendard = localFont({
   src: './fonts/PretendardVariable.woff2',
@@ -22,15 +23,17 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${pretendard.variable} scroll-smooth`}>
       <body className="font-pretendard antialiased">
-        <div className="flex min-h-screen flex-col">
-          {/* Header 영역 */}
-          <Header />
-          {/* Main 영역 */}
-          <main className="flex-1">{children}</main>
+        <Providers>
+          <div className="flex min-h-screen flex-col">
+            {/* Header 영역 */}
+            <Header />
+            {/* Main 영역 */}
+            <main className="flex-1">{children}</main>
 
-          {/* Footer 영역 */}
-          <Footer />
-        </div>
+            {/* Footer 영역 */}
+            <Footer />
+          </div>
+        </Providers>
       </body>
     </html>
   );
