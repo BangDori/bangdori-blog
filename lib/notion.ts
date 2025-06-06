@@ -145,8 +145,6 @@ export const getPublishedPosts = async ({
     start_cursor: startCursor,
   });
 
-  console.log(response);
-
   const posts = response.results
     .filter((page): page is PageObjectResponse => 'properties' in page) // properties 타입이 존재하는 페이지만 필터링
     .map(getPostMetadata); // 포스트 메타데이터 추출

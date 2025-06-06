@@ -74,14 +74,14 @@ const eslintConfig = [
         },
       ],
     },
-    overrides: [
-      {
-        files: ['components/ui/**/*.ts', 'components/ui/**/*.tsx'],
-        rules: {
-          'import/order': 'off',
-        },
-      },
-    ],
+    // overrides: [
+    //   {
+    //     files: ['components/ui/**/*.ts', 'components/ui/**/*.tsx'],
+    //     rules: {
+    //       'import/order': 'off',
+    //     },
+    //   },
+    // ],
   },
   eslintConfigPrettier,
 ];

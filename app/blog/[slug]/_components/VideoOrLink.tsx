@@ -4,7 +4,7 @@ export function VideoOrLink(props: React.AnchorHTMLAttributes<HTMLAnchorElement>
   if (isVideo) {
     return (
       <video className="w-full max-w-[600px]" src={props.href} autoPlay muted controls>
-        Sorry, your browser doesn't support embedded videos.
+        {`Sorry, your browser doesn${"'"}t support embedded videos.`}
       </video>
     );
   }

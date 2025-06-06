@@ -1,14 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { PostCard } from '@/components/features/blog/PostCard';
-import { Button } from '@/components/ui/button';
-import { GetPublishedPostsResponse } from '@/lib/notion';
-import { useInfiniteQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
-import { use, useEffect } from 'react';
-import { useInView } from 'react-intersection-observer';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
+import { useInView } from 'react-intersection-observer';
+import { use, useEffect } from 'react';
+import { PostCard } from '@/components/features/blog/PostCard';
+import { GetPublishedPostsResponse } from '@/lib/notion';
 
 interface PostListProps {
   postsPromise: Promise<GetPublishedPostsResponse>;

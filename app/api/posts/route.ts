@@ -1,5 +1,5 @@
-import { getPublishedPosts } from '@/lib/notion';
 import { NextRequest, NextResponse } from 'next/server';
+import { getPublishedPosts } from '@/lib/notion';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
