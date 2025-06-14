@@ -35,7 +35,7 @@ export default function About() {
           height={160}
           className={cn(
             'h-40 w-40 rounded-full object-cover',
-            'shadow-[8px_8px_24px_0_rgba(0,180,216,0.18),_-8px_-8px_24px_0_rgba(200,240,255,0.7)]'
+            'shadow-2xl dark:shadow-[8px_8px_24px_0_rgba(0,180,216,0.18),_-8px_-8px_24px_0_rgba(200,240,255,0.7)]'
           )}
           priority
         />
