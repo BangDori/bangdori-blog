@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { Analytics } from '@vercel/analytics/next';
 import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
@@ -13,6 +14,20 @@ const pretendard = localFont({
 export const metadata: Metadata = {
   title: '강병준 블로그',
   description: '프론트엔드 개발자 강병준의 개발 블로그입니다.',
+  alternates: {
+    canonical: 'https://bangdori.com',
+  },
+  keywords: [
+    '강병준',
+    '프론트엔드',
+    '개발',
+    '블로그',
+    'React',
+    'Next.js',
+    'Tailwind CSS',
+    'TypeScript',
+    'JavaScript',
+  ],
 };
 
 export default function RootLayout({
@@ -35,6 +50,7 @@ export default function RootLayout({
             <Footer />
           </ThemeProvider>
         </div>
+        <Analytics />
       </body>
     </html>
   );
