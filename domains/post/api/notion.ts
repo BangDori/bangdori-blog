@@ -18,6 +18,19 @@ const n2m = new NotionToMarkdown({ notionClient: notion });
 function getPostMetadata(page: PageObjectResponse): Post {
   const { properties } = page;
 
+  const getCoverImage = (cover: PageObjectResponse['cover']) => {
+    if (!cover) return '';
+
+    switch (cover.type) {
+      case 'external':
+        return cover.external.url;
+      case 'file':
+        return cover.file.url;
+      default:
+        return '';
+    }
+  };
+
   return {
     id: page.id,
     title: properties.Title.type === 'title' ? (properties.Title.title[0]?.plain_text ?? '') : '',
@@ -25,8 +38,10 @@ function getPostMetadata(page: PageObjectResponse): Post {
       properties.Description.type === 'rich_text'
         ? (properties.Description.rich_text[0]?.plain_text ?? '')
         : '',
+    coverImage: getCoverImage(page.cover),
     tag: properties.Tag.type === 'select' ? (properties.Tag.select?.name ?? '') : '',
     date: properties.Date.type === 'date' ? (properties.Date.date?.start ?? '') : '',
+    modifiedDate: page.last_edited_time,
     slug:
       properties.Slug.type === 'rich_text'
         ? (properties.Slug.rich_text[0]?.plain_text ?? page.id)
