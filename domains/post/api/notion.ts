@@ -21,6 +21,10 @@ function getPostMetadata(page: PageObjectResponse): Post {
   return {
     id: page.id,
     title: properties.Title.type === 'title' ? (properties.Title.title[0]?.plain_text ?? '') : '',
+    description:
+      properties.Description.type === 'rich_text'
+        ? (properties.Description.rich_text[0]?.plain_text ?? '')
+        : '',
     tag: properties.Tag.type === 'select' ? (properties.Tag.select?.name ?? '') : '',
     date: properties.Date.type === 'date' ? (properties.Date.date?.start ?? '') : '',
     slug:

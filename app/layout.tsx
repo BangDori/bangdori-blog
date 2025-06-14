@@ -28,6 +28,13 @@ export const metadata: Metadata = {
     'TypeScript',
     'JavaScript',
   ],
+  openGraph: {
+    title: '강병준 블로그',
+    description: '프론트엔드 개발자 강병준의 개발 블로그입니다.',
+    url: 'https://bangdori-blog.vercel.app/',
+    siteName: '강병준 블로그',
+    images: '/profile.jpg',
+  },
 };
 
 export default function RootLayout({
