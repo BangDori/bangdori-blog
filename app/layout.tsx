@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${pretendard.variable} scroll-smooth`} suppressHydrationWarning>
       <body className="font-pretendard antialiased">
-        <div className="mx-auto flex min-h-screen max-w-2xl flex-col">
+        <div className="flex min-h-screen flex-col">
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

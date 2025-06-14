@@ -14,7 +14,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-background top-0 z-50 mb-4">
+    <header className="bg-background top-0 z-50 border-b">
       <div className="container flex h-[var(--header-height)] items-center px-4">
         <div className="flex w-full items-center justify-between">
           <nav className="flex items-center justify-center gap-4">
@@ -22,9 +22,7 @@ export default function Header() {
               <Link
                 key={label}
                 href={href}
-                className={clsx(
-                  pathname === href ? 'text-primary' : 'hover:text-primary font-medium'
-                )}
+                className={clsx(pathname === href ? 'text-primary' : 'hover:text-primary')}
               >
                 {label}
               </Link>

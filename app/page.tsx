@@ -5,7 +5,7 @@ export default async function Home() {
   const posts = await getPublishedPosts();
 
   return (
-    <div className="w-full px-4">
+    <div className="container">
       <PostList posts={posts} />
     </div>
   );

@@ -129,6 +129,11 @@
   }
 }
 
+.container {
+  @apply mx-auto max-w-2xl px-4 py-8;
+  width: 100%;
+}
+
 .prose code:not(pre code) {
   background-color: #22272e;
   color: #6cb6ff;
@@ -143,7 +148,14 @@
   content: none !important;
 }
 
-.dark .prose code:not(pre code) {
+.prose code:not(pre code) {
+  padding: 0.15rem 0.3rem;
   background-color: #22272e;
-  color: #6cb6ff;
+  color: #f47067;
+  border-radius: 0.3rem;
+}
+
+.prose strong,
+.prose b {
+  font-weight: 600;
 }
