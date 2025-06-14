@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { ImageResponse } from 'next/og';
 
 export const size = { width: 1200, height: 630 };
@@ -20,25 +21,7 @@ export default function OgImage() {
           padding: '40px',
         }}
       >
-        <div
-          style={{
-            fontSize: 64,
-            marginBottom: 40,
-            fontWeight: 'bold',
-          }}
-        >
-          강병준 블로그
-        </div>
-        <div
-          style={{
-            fontSize: 32,
-            maxWidth: '70%',
-            textAlign: 'center',
-            color: '#cccccc',
-          }}
-        >
-          프론트엔드 개발자 강병준의 개발 블로그입니다.
-        </div>
+        <Image src="/profile.jpg" alt="강병준 블로그 이미지" fill style={{ objectFit: 'cover' }} />
       </div>
     ),
     {

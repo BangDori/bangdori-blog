@@ -15,9 +15,9 @@ export default function Error() {
   };
 
   return (
-    <section className="flex min-h-[calc(100vh-var(--header-height)*3)] w-full flex-1 flex-col items-center justify-center bg-white px-4">
+    <section className="flex min-h-[calc(100vh-var(--header-height)*3)] w-full flex-1 flex-col items-center justify-center px-4">
       <h1 className="mb-4 text-3xl font-bold">404 Error</h1>
-      <p className="text-center text-sm text-gray-700">
+      <p className="text-center text-sm text-gray-700 dark:text-white">
         요청하신 페이지를 찾을 수 없습니다.
         <br />
         입력하신 주소가 정확한지 다시 한번 확인해주세요.

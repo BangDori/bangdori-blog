@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { getPublishedPosts } from '@/domains/post/api/notion';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://bangdori-blog.vercel.app';
+  const baseUrl = `${process.env.NEXT_PUBLIC_SITE_URL}`;
 
   const staticPages = [
     {
