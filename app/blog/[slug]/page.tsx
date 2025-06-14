@@ -10,6 +10,7 @@ import remarkGfm from 'remark-gfm';
 import { getPostBySlug, getPublishedPosts } from '@/domains/post/api/notion';
 import { formatDate } from '@/lib/date';
 import { CodeBlock } from './_components/CodeBlock';
+import GiscusComments from './_components/GiscusComments';
 import { TableOfContentsLink } from './_components/TableOfContentsLink';
 import { VideoOrLink } from './_components/VideoOrLink';
 
@@ -120,6 +121,9 @@ export default async function BlogPost({ params }: BlogPostProps) {
             }}
           />
         </div>
+      </section>
+      <section className="mt-12">
+        <GiscusComments />
       </section>
     </div>
   );
