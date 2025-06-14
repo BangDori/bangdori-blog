@@ -3,5 +3,6 @@ import { ko } from 'date-fns/locale';
 
 export function formatDate(date: string | Date | undefined) {
   if (!date) return '';
-  return format(new Date(date), 'PPP', { locale: ko });
+
+  return format(new Date(date), 'yyyy. MM. dd.', { locale: ko });
 }

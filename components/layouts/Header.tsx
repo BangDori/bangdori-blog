@@ -1,23 +1,35 @@
+'use client';
+
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import clsx from 'clsx';
 
 export default function Header() {
+  const pathname = usePathname();
+
+  const navLinks = [
+    { href: '/', label: 'blog' },
+    { href: '/about', label: 'about' },
+  ];
+
   return (
-    <header className="bg-background sticky top-0 z-50 border-b">
+    <header className="bg-background top-0 z-50 mb-4">
       <div className="container flex h-[var(--header-height)] items-center px-4">
-        <Link href="/" className="text-xl font-semibold">
-          <span className="font-bold">뱅도리 블로그</span>
-        </Link>
-        <nav className="ml-auto flex items-center gap-4">
-          <Link href="/" className="hover:text-primary font-medium">
-            홈
-          </Link>
-          <Link href="/blog" className="hover:text-primary font-medium">
-            블로그
-          </Link>
-          <Link href="/about" className="hover:text-primary font-medium">
-            소개
-          </Link>
-        </nav>
+        <div className="flex w-full items-center">
+          <nav className="flex items-center justify-center gap-4">
+            {navLinks.map(({ href, label }) => (
+              <Link
+                key={label}
+                href={href}
+                className={clsx(
+                  pathname === href ? 'text-primary' : 'hover:text-primary font-medium'
+                )}
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+        </div>
       </div>
     </header>
   );
