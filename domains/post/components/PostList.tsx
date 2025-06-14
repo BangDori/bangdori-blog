@@ -13,7 +13,7 @@ export function PostList({ posts }: PostListProps) {
         <Link
           href={`/blog/${post.slug}`}
           key={post.id}
-          className="rounded-sm px-0.5 py-1 transition-colors duration-200 ease-in-out hover:bg-gray-100"
+          className="rounded-sm px-0.5 py-1 transition-colors duration-200 ease-in-out hover:bg-gray-100 dark:hover:bg-gray-800"
         >
           <PostCard post={post} />
         </Link>
