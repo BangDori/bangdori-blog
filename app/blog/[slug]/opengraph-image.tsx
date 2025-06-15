@@ -97,7 +97,7 @@ export default async function OgImage({ params }: { params: { slug: string } }) 
             color: '#aaaaaa',
           }}
         >
-          <div>{post.date}</div>
+          <div>{post.createdAt}</div>
           <div>{post.tag}</div>
         </div>
       </div>
