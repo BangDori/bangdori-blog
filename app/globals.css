@@ -182,3 +182,8 @@
 .prose blockquote *::after {
   content: none !important;
 }
+
+.prose img {
+  @apply mx-auto max-h-[480px] rounded-lg;
+  display: block;
+}
