@@ -135,6 +135,7 @@
 }
 
 .prose code:not(pre code) {
+  @apply rounded-sm;
   background-color: #22272e;
   color: #6cb6ff;
   border-radius: 0.3em;
@@ -158,4 +159,26 @@
 .prose strong,
 .prose b {
   font-weight: 600;
+}
+
+.prose blockquote {
+  @apply border-muted bg-muted-foreground/15 rounded-sm border-none py-1;
+}
+
+.prose blockquote > p:first-child {
+  @apply text-base font-bold;
+}
+
+.prose blockquote ol > li > p,
+.prose blockquote ul > li > p {
+  @apply my-2;
+}
+
+.prose blockquote p {
+  font-style: normal !important;
+}
+
+.prose blockquote *::before,
+.prose blockquote *::after {
+  content: none !important;
 }

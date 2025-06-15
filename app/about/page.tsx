@@ -27,7 +27,7 @@ const socialLinks = [
 export default function About() {
   return (
     <section className="container">
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-8">
         <Image
           src="/profile.jpg"
           alt="프로필 사진"
@@ -39,7 +39,6 @@ export default function About() {
           )}
           priority
         />
-        <p className="text-md font-bold">안녕하세요, 강병준입니다</p>
         <p className="text-muted-foreground text-center text-base font-medium">
           혼자보단 함께하는 게 더 즐거워요.
           <br />
