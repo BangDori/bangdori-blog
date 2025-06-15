@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { compile } from '@mdx-js/mdx';
 import withToc from '@stefanprobst/rehype-extract-toc';
 import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
@@ -7,9 +8,11 @@ import { rehypePrettyCode } from 'rehype-pretty-code';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
+import { Button } from '@/components/ui/button';
 import { getPostBySlug, getPublishedPosts } from '@/domains/post/api/notion';
 import { formatDate } from '@/lib/date';
 import { CodeBlock } from './_components/CodeBlock';
+import CopyLinkButton from './_components/CopyLinkButton';
 import GiscusComments from './_components/GiscusComments';
 import { TableOfContentsLink } from './_components/TableOfContentsLink';
 import { VideoOrLink } from './_components/VideoOrLink';
@@ -72,7 +75,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
   });
 
   return (
-    <div className="container">
+    <article className="container flex flex-col gap-8">
       <section className="flex flex-col gap-8">
         {/* 블로그 헤더 */}
         <div className="space-y-2 sm:space-y-4 md:space-y-6">
@@ -128,9 +131,17 @@ export default async function BlogPost({ params }: BlogPostProps) {
           />
         </div>
       </section>
-      <section className="mt-12">
+      <div className="flex items-center justify-between border-t pt-4">
+        <Button variant="ghost" asChild>
+          <Link href="/" className="text-muted-foreground text-sm">
+            글 목록으로 돌아가기
+          </Link>
+        </Button>
+        <CopyLinkButton />
+      </div>
+      <section>
         <GiscusComments />
       </section>
-    </div>
+    </article>
   );
 }
