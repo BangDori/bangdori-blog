@@ -4,7 +4,7 @@ export interface Post {
   description: string;
   coverImage?: string;
   tag: string;
-  date?: string;
-  modifiedDate?: string;
+  createdAt: string;
+  updatedAt?: string;
   slug: string;
 }

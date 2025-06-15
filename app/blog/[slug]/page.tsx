@@ -44,8 +44,8 @@ export async function generateMetadata({
       description: post.description,
       url: `/blog/${post.slug}`,
       type: 'article',
-      publishedTime: post.date,
-      modifiedTime: post.modifiedDate,
+      publishedTime: post.createdAt,
+      modifiedTime: post.updatedAt,
       authors: '강병준',
       tags: post.tag,
       images: [{ url: post.coverImage || '', width: 1200, height: 630 }],
@@ -75,24 +75,30 @@ export default async function BlogPost({ params }: BlogPostProps) {
     <div className="container">
       <section className="flex flex-col gap-8">
         {/* 블로그 헤더 */}
-        <div className="space-y-6">
-          <h1 className="text-4xl font-bold">{post.title}</h1>
+        <div className="space-y-2 sm:space-y-4 md:space-y-6">
+          <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">{post.title}</h1>
           <div className="space-y-1.5">
-            <div className="flex items-center gap-2">
-              <p className="text-muted-foreground text-sm">
-                Posted{' '}
-                <b className="font-normal text-black dark:text-white">{formatDate(post.date)}</b>
-              </p>
-              <span className="text-muted-foreground text-sm">•</span>
-              <p className="text-muted-foreground text-sm">
-                Updated{' '}
+            <div className="flex items-center gap-1">
+              <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
+                Created at{' '}
                 <b className="font-normal text-black dark:text-white">
-                  {formatDate(post.modifiedDate)}
+                  {formatDate(post.createdAt)}
                 </b>
               </p>
+              {post.updatedAt && (
+                <>
+                  <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
+                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
+                    Updated at{' '}
+                    <b className="font-normal text-black dark:text-white">
+                      {formatDate(post.updatedAt)}
+                    </b>
+                  </p>
+                </>
+              )}
             </div>
             <div>
-              <p className="text-muted-foreground text-sm">
+              <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
                 By <b className="font-normal text-black dark:text-white">강병준</b>
               </p>
             </div>

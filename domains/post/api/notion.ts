@@ -39,9 +39,9 @@ function getPostMetadata(page: PageObjectResponse): Post {
         ? (properties.Description.rich_text[0]?.plain_text ?? '')
         : '',
     coverImage: getCoverImage(page.cover),
+    createdAt: properties.CreatedAt.type === 'date' ? (properties.CreatedAt.date?.start ?? '') : '',
+    updatedAt: properties.UpdatedAt.type === 'date' ? (properties.UpdatedAt.date?.start ?? '') : '',
     tag: properties.Tag.type === 'select' ? (properties.Tag.select?.name ?? '') : '',
-    date: properties.Date.type === 'date' ? (properties.Date.date?.start ?? '') : '',
-    modifiedDate: page.last_edited_time,
     slug:
       properties.Slug.type === 'rich_text'
         ? (properties.Slug.rich_text[0]?.plain_text ?? page.id)
@@ -97,7 +97,7 @@ export async function getPublishedPosts(): Promise<Post[]> {
     },
     sorts: [
       {
-        property: 'Date',
+        property: 'CreatedAt',
         direction: 'descending',
       },
     ],
