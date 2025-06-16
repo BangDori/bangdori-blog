@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
@@ -52,6 +53,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${pretendard.variable} scroll-smooth`} suppressHydrationWarning>
+      <head>
+        <meta name="naver-site-verification" content="0e5d02ef9840430d455d81b33e561586d724c09f" />
+      </head>
       <body className="font-pretendard antialiased">
         <div className="flex min-h-screen flex-col">
           <ThemeProvider
@@ -66,6 +70,7 @@ export default function RootLayout({
           </ThemeProvider>
         </div>
         <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
