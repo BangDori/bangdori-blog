@@ -43,6 +43,9 @@ export const metadata: Metadata = {
       },
     ],
   },
+  verification: {
+    google: '1MOKYvT_GGBdafHzhizlVbSkJm2MCMq3ochRPEByTmQ',
+  },
   metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
 };
 
