@@ -7,7 +7,7 @@ export function MarkdownImage(props: ImgHTMLAttributes<HTMLImageElement>) {
   if (alt) {
     return (
       <>
-        <img {...rest} alt={alt} />
+        <img {...rest} alt={alt} className="mb-2" />
         <span className="text-muted-foreground block text-center text-sm">{alt}</span>
       </>
     );
