@@ -14,7 +14,6 @@ import { formatDate } from '@/lib/date';
 import { CodeBlock } from './_components/CodeBlock';
 import CopyLinkButton from './_components/CopyLinkButton';
 import GiscusComments from './_components/GiscusComments';
-import { MarkdownImage } from './_components/MarkdownImage';
 import { TableOfContentsLink } from './_components/TableOfContentsLink';
 import { VideoOrLink } from './_components/VideoOrLink';
 
@@ -71,6 +70,8 @@ export default async function BlogPost({ params }: BlogPostProps) {
   const { slug } = await params;
   const { markdown, post } = await getPostBySlug(slug);
 
+  console.log(markdown);
+
   const { data } = await compile(markdown, {
     rehypePlugins: [rehypeSlug, withToc, withTocExport],
   });
@@ -122,7 +123,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
         <div className="prose prose-neutral prose-sm dark:prose-invert prose-headings:scroll-mt-[var(--header-height)] xl:prose-base w-full max-w-full flex-1">
           <MDXRemote
             source={markdown}
-            components={{ pre: CodeBlock, a: VideoOrLink, img: MarkdownImage }}
+            components={{ pre: CodeBlock, a: VideoOrLink }}
             options={{
               mdxOptions: {
                 remarkPlugins: [remarkGfm],

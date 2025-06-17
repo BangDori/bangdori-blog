@@ -165,10 +165,6 @@
   @apply border-muted bg-muted-foreground/15 rounded-sm border-none py-1;
 }
 
-.prose blockquote > p:first-child {
-  @apply text-base font-bold;
-}
-
 .prose blockquote ol > li > p,
 .prose blockquote ul > li > p {
   @apply my-2;
@@ -184,6 +180,10 @@
 }
 
 .prose img {
-  @apply mx-auto max-h-[480px] rounded-lg;
+  @apply mx-auto max-h-[320px] rounded-lg md:max-h-[360px] lg:max-h-[400px];
   display: block;
+}
+
+.prose video {
+  @apply mx-auto max-h-[320px] rounded-lg md:max-h-[360px] lg:max-h-[400px];
 }
