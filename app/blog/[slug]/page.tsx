@@ -70,8 +70,6 @@ export default async function BlogPost({ params }: BlogPostProps) {
   const { slug } = await params;
   const { markdown, post } = await getPostBySlug(slug);
 
-  console.log(markdown);
-
   const { data } = await compile(markdown, {
     rehypePlugins: [rehypeSlug, withToc, withTocExport],
   });
