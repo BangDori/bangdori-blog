@@ -17,6 +17,9 @@ import GiscusComments from './_components/GiscusComments';
 import { TableOfContentsLink } from './_components/TableOfContentsLink';
 import { VideoOrLink } from './_components/VideoOrLink';
 
+// 50분마다 갱신
+export const revalidate = 3000;
+
 // 동적 메타데이터 생성
 export async function generateMetadata({
   params,
