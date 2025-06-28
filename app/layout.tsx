@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Footer from '@/components/layouts/Footer';
@@ -74,6 +75,9 @@ export default function RootLayout({
         </div>
         <Analytics />
         <SpeedInsights />
+
+        {/* https://apps.getaimonitor.com/ */}
+        <Script defer src="https://apps.getaimonitor.com/pixel/ut3tgAH64JvFzyRo"></Script>
       </body>
     </html>
   );
