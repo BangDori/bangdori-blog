@@ -46,6 +46,19 @@ export default function About() {
           <br />
           서로를 이해하며 조화롭게 빛나는 서비스를 만들고 싶어요.
         </p>
+
+        <p className="text-muted-foreground text-base font-medium">
+          저는 현재{' '}
+          <a
+            href="https://creatrip.com/en"
+            className="font-semibold underline"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Creatrip
+          </a>
+          에서 일하고 있어요.
+        </p>
       </div>
 
       <div className="mt-12">
