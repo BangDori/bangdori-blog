@@ -8,6 +8,21 @@ export const notion = new Client({
 });
 
 const n2m = new NotionToMarkdown({ notionClient: notion });
+const NOTION_S3_IMAGE_URL_PATTERN =
+  /https:\/\/prod-files-secure\.s3\.us-west-2\.amazonaws\.com\/[^)]+/g;
+
+/**
+ * Notion S3 이미지 URL을 공개 접근 가능한 URL로 변환합니다.
+ *
+ * @param notionImageUrl Notion S3 이미지 URL
+ * @param id pageId | blockId
+ * @returns 공개 접근 가능한 이미지 URL
+ */
+function convertToPublicImageUrl(notionImageUrl: string, id: string) {
+  const encodedUrl = encodeURIComponent(notionImageUrl.split('?')[0]);
+
+  return `${process.env.NEXT_PUBLIC_NOTION_SITE_URL}/image/${encodedUrl}?table=block&id=${id}&cache=v2`;
+}
 
 /**
  * 포스트 메타데이터를 추출합니다.
@@ -38,7 +53,7 @@ function getPostMetadata(page: PageObjectResponse): Post {
       properties.Description.type === 'rich_text'
         ? (properties.Description.rich_text[0]?.plain_text ?? '')
         : '',
-    coverImage: getCoverImage(page.cover),
+    coverImage: convertToPublicImageUrl(getCoverImage(page.cover), page.id),
     createdAt: properties.CreatedAt.type === 'date' ? (properties.CreatedAt.date?.start ?? '') : '',
     updatedAt: properties.UpdatedAt.type === 'date' ? (properties.UpdatedAt.date?.start ?? '') : '',
     tag: properties.Tag.type === 'select' ? (properties.Tag.select?.name ?? '') : '',
@@ -74,7 +89,18 @@ export async function getPostBySlug(slug: string): Promise<{
   });
 
   const mdBlocks = await n2m.pageToMarkdown(response.results[0].id);
-  const { parent } = n2m.toMarkdownString(mdBlocks);
+  const transformedBlocks = mdBlocks.map((mdBlock) => {
+    return mdBlock.type !== 'image'
+      ? mdBlock
+      : {
+          ...mdBlock,
+          parent: mdBlock.parent.replace(
+            NOTION_S3_IMAGE_URL_PATTERN,
+            (url) => `${convertToPublicImageUrl(url, mdBlock.blockId)}`
+          ),
+        };
+  });
+  const { parent } = n2m.toMarkdownString(transformedBlocks);
 
   return {
     markdown: parent,
