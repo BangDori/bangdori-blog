@@ -79,10 +79,20 @@ export async function getPostBySlug(slug: string): Promise<{
           },
         },
         {
-          property: 'Status',
-          select: {
-            equals: 'Published',
-          },
+          or: [
+            {
+              property: 'Status',
+              select: {
+                equals: 'Published',
+              },
+            },
+            {
+              property: 'Status',
+              select: {
+                equals: 'Protected',
+              },
+            },
+          ],
         },
       ],
     },
