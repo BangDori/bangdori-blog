@@ -162,7 +162,7 @@
 }
 
 .prose blockquote {
-  @apply border-muted bg-muted-foreground/15 rounded-sm border-none py-1;
+  @apply border-muted bg-muted-foreground/15 rounded-sm border-none px-4 py-1;
 }
 
 .prose blockquote ol > li > p,
