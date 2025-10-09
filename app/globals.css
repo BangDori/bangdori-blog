@@ -184,10 +184,6 @@
   display: block;
 }
 
-.prose img.image-expanded {
-  @apply mx-auto max-h-[80vh] rounded-lg md:max-h-[85vh] lg:max-h-[90vh];
-}
-
 .prose video {
   @apply mx-auto max-h-[320px] rounded-lg md:max-h-[360px] lg:max-h-[400px];
 }
