@@ -27,19 +27,21 @@ const socialLinks = [
 export default function About() {
   return (
     <section className="container">
-      <div className="flex flex-col items-center gap-8">
-        <Image
-          src="/profile.jpg"
-          alt="프로필 사진"
-          width={160}
-          height={160}
-          className={cn(
-            'h-40 w-40 rounded-full object-cover',
-            'shadow-2xl dark:shadow-[8px_8px_24px_0_rgba(0,180,216,0.18),_-8px_-8px_24px_0_rgba(200,240,255,0.7)]'
-          )}
-          priority
-        />
-        <p className="text-muted-foreground text-center text-base font-medium">
+      <div className="flex flex-col items-center">
+        <div className="mb-8">
+          <Image
+            src="/profile.jpg"
+            alt="프로필 사진"
+            width={160}
+            height={160}
+            className={cn(
+              'h-40 w-40 rounded-full object-cover',
+              'shadow-2xl dark:shadow-[8px_8px_24px_0_rgba(0,180,216,0.18),_-8px_-8px_24px_0_rgba(200,240,255,0.7)]'
+            )}
+            priority
+          />
+        </div>
+        <p className="text-muted-foreground mb-8 text-center text-base font-medium">
           혼자보단 함께하는 게 더 즐거워요.
           <br />
           복잡한 문제도 함께라면 해결할 수 있기에,
@@ -59,10 +61,7 @@ export default function About() {
           </a>
           에서 일하고 있어요.
         </p>
-      </div>
-
-      <div className="mt-12">
-        <div className="flex justify-center gap-2">
+        <div className="mt-4 flex gap-2">
           {socialLinks.map((item, index) => (
             <Button key={index} variant="ghost" className="bg-primary/10" size="icon" asChild>
               <a href={item.href} target="_blank" rel="noopener noreferrer">
