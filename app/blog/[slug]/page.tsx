@@ -59,8 +59,9 @@ export async function generateMetadata({
 
 // 모든 포스트를 미리 생성하여 정적 렌더링 처리
 export async function generateStaticParams() {
-  const slugs = await getPublishedPosts();
-  return slugs.map((post) => ({ slug: post.slug }));
+  const posts = await getPublishedPosts();
+  // External 링크는 정적 생성에서 제외 (외부 URL이므로)
+  return posts.filter((post) => post.status !== 'External').map((post) => ({ slug: post.slug }));
 }
 
 interface BlogPostProps {

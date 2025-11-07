@@ -16,11 +16,14 @@ export async function GET() {
   const posts: Post[] = await getPublishedPosts();
 
   posts.forEach((post) => {
+    // External 포스트는 slug가 외부 URL이므로 그대로 사용
+    const postUrl = post.status === 'External' ? post.slug : `${SITE_URL}/blog/${post.slug}`;
+
     feed.item({
       title: post.title,
       description: post.description || '',
-      url: `${SITE_URL}/blog/${post.slug}`,
-      guid: `${SITE_URL}/blog/${post.slug}`,
+      url: postUrl,
+      guid: postUrl,
       date: post.createdAt,
       author: '강병준',
     });
