@@ -7,4 +7,5 @@ export interface Post {
   createdAt: string;
   updatedAt?: string;
   slug: string;
+  status?: string;
 }

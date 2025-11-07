@@ -61,6 +61,7 @@ function getPostMetadata(page: PageObjectResponse): Post {
       properties.Slug.type === 'rich_text'
         ? (properties.Slug.rich_text[0]?.plain_text ?? page.id)
         : page.id,
+    status: properties.Status.type === 'select' ? (properties.Status.select?.name ?? '') : '',
   };
 }
 
@@ -122,11 +123,17 @@ export async function getPublishedPosts(): Promise<Post[]> {
   const response = await notion.databases.query({
     database_id: process.env.NOTION_DATABASE_ID!,
     filter: {
-      and: [
+      or: [
         {
           property: 'Status',
           select: {
             equals: 'Published',
+          },
+        },
+        {
+          property: 'Status',
+          select: {
+            equals: 'External',
           },
         },
       ],
