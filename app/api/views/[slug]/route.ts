@@ -16,17 +16,8 @@ export async function POST(
 
     const redis = await getRedisClient();
 
-    // 게시물 조회수 증가
+    // 게시물 조회수만 증가
     const views = await redis.incr(`post:${slug}:views`);
-
-    // 오늘 날짜 (YYYY-MM-DD)
-    const today = new Date().toISOString().split('T')[0];
-
-    // 전체 방문자 수 증가
-    await redis.incr('site:total_visits');
-
-    // 오늘 방문자 수 증가
-    await redis.incr(`site:visits:${today}`);
 
     return NextResponse.json({ views });
   } catch (error) {

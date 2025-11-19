@@ -10,7 +10,7 @@ export function ViewCounter({ slug }: ViewCounterProps) {
   const [views, setViews] = useState<number | null>(null);
 
   useEffect(() => {
-    // 조회수 증가
+    // 게시물 조회수 증가
     const incrementView = async () => {
       try {
         const response = await fetch(`/api/views/${slug}`, {

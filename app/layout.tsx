@@ -5,6 +5,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
+import { VisitorTracker } from '@/components/VisitorTracker';
 import './globals.css';
 
 const pretendard = localFont({
@@ -67,6 +68,7 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
+            <VisitorTracker />
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
