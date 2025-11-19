@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+import { SiteStats } from '../SiteStats';
 import { ModeToggle } from '../theme/ThemeToggle';
 
 export default function Header() {
@@ -28,7 +29,10 @@ export default function Header() {
               </Link>
             ))}
           </nav>
-          <ModeToggle />
+          <div className="flex items-center gap-4">
+            <SiteStats />
+            <ModeToggle />
+          </div>
         </div>
       </div>
     </header>
