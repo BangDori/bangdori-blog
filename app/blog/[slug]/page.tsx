@@ -17,6 +17,7 @@ import GiscusComments from './_components/GiscusComments';
 import { MarkdownImage } from './_components/MarkdownImage';
 import { TableOfContentsLink } from './_components/TableOfContentsLink';
 import { VideoOrLink } from './_components/VideoOrLink';
+import { ViewCounter } from './_components/ViewCounter';
 
 // 동적 메타데이터 생성
 export async function generateMetadata({
@@ -83,7 +84,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
         <div className="space-y-2 sm:space-y-4 md:space-y-6">
           <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">{post.title}</h1>
           <div className="space-y-1.5">
-            <div className="flex items-center gap-1">
+            <div className="flex flex-wrap items-center gap-1">
               <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
                 Created at{' '}
                 <b className="font-normal text-black dark:text-white">
@@ -101,6 +102,8 @@ export default async function BlogPost({ params }: BlogPostProps) {
                   </p>
                 </>
               )}
+              <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
+              <ViewCounter slug={slug} />
             </div>
             <div>
               <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
