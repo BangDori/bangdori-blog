@@ -136,24 +136,22 @@
 
 .prose code:not(pre code) {
   @apply rounded-sm;
-  background-color: #22272e;
-  color: #6cb6ff;
-  border-radius: 0.3em;
-  padding: 0.15em 0.4em;
+  padding: 0.15rem 0.3rem;
+  border-radius: 0.3rem;
   font-size: 0.95em;
   font-weight: 500;
+  background-color: #ededeb;
+  color: #f47067;
+}
+
+.dark .prose code:not(pre code) {
+  background-color: #22272e;
+  color: #f47067;
 }
 
 .prose code::before,
 .prose code::after {
   content: none !important;
-}
-
-.prose code:not(pre code) {
-  padding: 0.15rem 0.3rem;
-  background-color: #22272e;
-  color: #f47067;
-  border-radius: 0.3rem;
 }
 
 .prose strong,
