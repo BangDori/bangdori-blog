@@ -5,12 +5,12 @@ import withToc from '@stefanprobst/rehype-extract-toc';
 import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { rehypePrettyCode } from 'rehype-pretty-code';
-import rehypeSanitize from 'rehype-sanitize';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import { Button } from '@/components/ui/button';
 import { getPostBySlug, getPublishedPosts } from '@/domains/post/api/notion';
 import { formatDate } from '@/lib/date';
+import { Bookmark } from './_components/Bookmark';
 import { CodeBlock } from './_components/CodeBlock';
 import CopyLinkButton from './_components/CopyLinkButton';
 import GiscusComments from './_components/GiscusComments';
@@ -117,7 +117,9 @@ export default async function BlogPost({ params }: BlogPostProps) {
           <div className="bg-muted/60 space-y-4 rounded-lg p-6 backdrop-blur-sm">
             <h3 className="text-lg font-semibold">📚 목차</h3>
             <nav className="space-y-3 text-sm">
-              {data?.toc?.map((item) => <TableOfContentsLink key={item.id} item={item} />)}
+              {data?.toc?.map((item) => (
+                <TableOfContentsLink key={item.id} item={item} />
+              ))}
             </nav>
           </div>
         </aside>
@@ -126,11 +128,11 @@ export default async function BlogPost({ params }: BlogPostProps) {
         <div className="prose prose-neutral prose-sm dark:prose-invert prose-headings:scroll-mt-[var(--header-height)] xl:prose-base w-full max-w-full flex-1">
           <MDXRemote
             source={markdown}
-            components={{ pre: CodeBlock, a: VideoOrLink, img: MarkdownImage }}
+            components={{ pre: CodeBlock, a: VideoOrLink, img: MarkdownImage, Bookmark }}
             options={{
               mdxOptions: {
                 remarkPlugins: [remarkGfm],
-                rehypePlugins: [rehypeSanitize, rehypePrettyCode, rehypeSlug],
+                rehypePlugins: [rehypePrettyCode, rehypeSlug],
               },
             }}
           />

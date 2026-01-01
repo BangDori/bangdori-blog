@@ -8,6 +8,13 @@ export const notion = new Client({
 });
 
 const n2m = new NotionToMarkdown({ notionClient: notion });
+
+// Bookmark 블록을 커스텀 컴포넌트로 변환
+n2m.setCustomTransformer('bookmark', async (block) => {
+  const { bookmark } = block as { bookmark: { url: string; caption?: { plain_text: string }[] } };
+  const url = bookmark.url;
+  return `<Bookmark url="${url}" />`;
+});
 const NOTION_S3_IMAGE_URL_PATTERN =
   /https:\/\/prod-files-secure\.s3\.us-west-2\.amazonaws\.com\/[^)]+/g;
 
