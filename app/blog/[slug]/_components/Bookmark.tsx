@@ -98,7 +98,7 @@ export function Bookmark({ url }: BookmarkProps) {
         {ogData.image && (
           <div className="relative hidden h-[120px] w-[200px] shrink-0 sm:block">
             <Image
-              src={ogData.image}
+              src={replaceNotionImageId(ogData.image)}
               alt={ogData.title || ''}
               fill
               className="object-cover"
@@ -109,4 +109,8 @@ export function Bookmark({ url }: BookmarkProps) {
       </a>
     </div>
   );
+}
+
+function replaceNotionImageId(imageUrl: string) {
+  return imageUrl.replace(/&amp;/g, '&');
 }
