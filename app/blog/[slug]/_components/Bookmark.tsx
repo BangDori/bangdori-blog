@@ -58,8 +58,36 @@ export function Bookmark({ url }: BookmarkProps) {
     );
   }
 
-  if (error || !ogData) {
-    return null;
+  const isBlocked =
+    ogData?.title?.includes('Cloudflare') || ogData?.title?.includes('Attention Required');
+
+  if (error || !ogData || isBlocked) {
+    const favicon = getFavicon(hostname, ogData?.favicon);
+
+    return (
+      <div className="not-prose my-4">
+        <a
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-3 overflow-hidden rounded-lg border border-neutral-200 p-4 no-underline transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-800"
+        >
+          {favicon && (
+            <Image
+              src={favicon}
+              alt=""
+              width={20}
+              height={20}
+              className="mx-0! size-5 shrink-0 rounded-sm"
+              unoptimized
+            />
+          )}
+          <span className="truncate text-sm text-neutral-600 dark:text-neutral-300">
+            {decodeURIComponent(url)}
+          </span>
+        </a>
+      </div>
+    );
   }
 
   return (
@@ -113,4 +141,12 @@ export function Bookmark({ url }: BookmarkProps) {
 
 function replaceNotionImageId(imageUrl: string) {
   return imageUrl.replace(/&amp;/g, '&');
+}
+
+function getFavicon(hostname: string, favicon?: string) {
+  if (hostname.includes('medium.com')) {
+    return 'https://miro.medium.com/v2/5d8de952517e8160e40ef9841c781cdc14a5db313057fa3c3de41c6f5b494b19';
+  }
+
+  return favicon;
 }
