@@ -6,7 +6,9 @@ settings:
 
 importers:
 
-  .:
+  .: {}
+
+  apps/user-web:
     dependencies:
       '@giscus/react':
         specifier: ^3.1.0
