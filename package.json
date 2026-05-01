@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter user-web dev",
-    "build": "pnpm --filter user-web build",
-    "start": "pnpm --filter user-web start",
-    "lint": "pnpm --filter user-web lint",
-    "format": "pnpm --filter user-web format"
+    "dev:user-web": "pnpm --filter user-web dev",
+    "build:user-web": "pnpm --filter user-web build",
+    "start:user-web": "pnpm --filter user-web start",
+    "lint:user-web": "pnpm --filter user-web lint",
+    "format:user-web": "pnpm --filter user-web format"
   }
 }
