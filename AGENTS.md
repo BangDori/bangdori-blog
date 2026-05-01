@@ -9,7 +9,6 @@ apps/
   user-web/      # Next.js 블로그 (현재 유일한 실제 앱)
   admin/         # CMS 관리 페이지 (미구현)
   server/        # NestJS API 서버 (미구현)
-  user/          # Public-facing 블로그 차기 버전 (미구현)
 packages/
   ui/            # 공유 UI 컴포넌트 (미구현)
   contracts/     # 공유 타입·DTO·상수 (미구현)
