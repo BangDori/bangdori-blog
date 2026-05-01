@@ -9,7 +9,7 @@ description: 변경 사항을 커밋한다. "/commit", "커밋해줘", "커밋" 
 2. staged 파일이 없으면 `git add -A`
 3. diff를 보고 Conventional Commits 형식 커밋 메시지 작성
    - prefix: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `style:`, `test:`
-   - 한국어/영어는 변경 내용에 맞게 자연스러운 쪽 선택
+   - 메시지는 한국어로 작성
    - scope는 선택: `feat(user-web):` 등
 4. `git commit -m "메시지"`
 

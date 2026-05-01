@@ -8,7 +8,7 @@ description: GitHub PR을 생성한다. "/create-pr", "PR 만들어줘", "PR 올
 1. 커밋되지 않은 변경이 있으면 먼저 `/skill:commit`을 안내
 2. `git log develop..HEAD --oneline`으로 이 브랜치의 커밋 목록 확인
 3. PR 제목과 본문 작성:
-   - **제목**: Conventional Commits prefix + 핵심 변경 요약
+   - **제목**: Conventional Commits prefix + 한국어로 핵심 변경 요약
    - **본문**: `.github/PULL_REQUEST_TEMPLATE.md` 템플릿에 맞춰 작성 (요약 → 변경 내용 → 검증 → 참고)
 4. push + PR 생성:
 
