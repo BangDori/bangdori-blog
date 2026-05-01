@@ -15,12 +15,7 @@ export async function POST() {
     await redis.incr(`site:visits:${today}`);
 
     return NextResponse.json({ success: true });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Failed to increment stats:', error);
-    return NextResponse.json(
-      { error: 'Failed to increment stats' },
-      { status: 500 },
-    );
+  } catch (_error) {
+    return NextResponse.json({ error: 'Failed to increment stats' }, { status: 500 });
   }
 }
