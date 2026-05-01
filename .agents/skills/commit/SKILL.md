@@ -11,8 +11,7 @@ description: 변경 사항을 커밋한다. "/commit", "커밋해줘", "커밋" 
    - prefix: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `style:`, `test:`
    - 한국어/영어는 변경 내용에 맞게 자연스러운 쪽 선택
    - scope는 선택: `feat(user-web):` 등
-4. 메시지를 사용자에게 보여주고 확인 받기
-5. 확인 받으면 `git commit -m "메시지"`
+4. `git commit -m "메시지"`
 
 ## 변경 사항이 많을 때
 
@@ -28,4 +27,3 @@ description: 변경 사항을 커밋한다. "/commit", "커밋해줘", "커밋" 
 ## 주의
 
 - `--no-verify` 사용하지 않음
-- 커밋 전에 반드시 사용자 확인
