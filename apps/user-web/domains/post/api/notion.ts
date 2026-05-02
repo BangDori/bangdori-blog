@@ -1,7 +1,7 @@
 import { Client } from '@notionhq/client';
+import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 import { NotionToMarkdown } from 'notion-to-md';
 import type { Post } from '../types';
-import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
 export const notion = new Client({
   auth: process.env.NOTION_TOKEN,
@@ -114,7 +114,7 @@ export async function getPostBySlug(slug: string): Promise<{
           ...mdBlock,
           parent: mdBlock.parent.replace(
             NOTION_S3_IMAGE_URL_PATTERN,
-            (url) => `${convertToPublicImageUrl(url, mdBlock.blockId)}`
+            (url) => `${convertToPublicImageUrl(url, mdBlock.blockId)}`,
           ),
         };
   });

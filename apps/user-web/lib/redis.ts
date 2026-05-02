@@ -9,10 +9,7 @@ export async function getRedisClient() {
       url: process.env.REDIS_URL,
     });
 
-    client.on('error', (err) => {
-      // eslint-disable-next-line no-console
-      console.error('Redis Client Error', err);
-    });
+    client.on('error', (_err) => {});
 
     await client.connect();
   }

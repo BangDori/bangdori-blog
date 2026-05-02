@@ -1,6 +1,6 @@
 import RSS from 'rss';
 import { getPublishedPosts } from '@/domains/post/api/notion';
-import { Post } from '@/domains/post/types';
+import type { Post } from '@/domains/post/types';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 

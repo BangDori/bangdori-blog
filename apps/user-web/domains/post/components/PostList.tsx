@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { PostCard } from './PostCard';
 import type { Post } from '../types';
+import { PostCard } from './PostCard';
 
 interface PostListProps {
   posts: Post[];

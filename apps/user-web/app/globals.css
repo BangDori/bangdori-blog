@@ -1,5 +1,5 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @plugin "@tailwindcss/typography";
 
@@ -151,7 +151,7 @@
 
 .prose code::before,
 .prose code::after {
-  content: none !important;
+  content: none;
 }
 
 .prose strong,
@@ -169,12 +169,12 @@
 }
 
 .prose blockquote p {
-  font-style: normal !important;
+  font-style: normal;
 }
 
 .prose blockquote *::before,
 .prose blockquote *::after {
-  content: none !important;
+  content: none;
 }
 
 .prose img {

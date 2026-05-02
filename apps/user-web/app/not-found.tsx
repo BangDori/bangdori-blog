@@ -4,7 +4,7 @@ export default function Error() {
   const handleBack = () => {
     if (typeof window !== 'undefined') {
       const prev = document.referrer;
-      const isInternal = prev && prev.startsWith(window.location.origin);
+      const isInternal = prev?.startsWith(window.location.origin);
 
       if (isInternal) {
         window.history.back();

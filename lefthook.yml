@@ -1,0 +1,4 @@
+pre-push:
+  commands:
+    biome-check:
+      run: pnpm biome check apps/user-web/

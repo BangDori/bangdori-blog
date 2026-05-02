@@ -1,6 +1,6 @@
 'use client';
 
-import { Clipboard, Check } from 'lucide-react';
+import { Check, Clipboard } from 'lucide-react';
 import { useRef, useState } from 'react';
 
 export function CodeBlock({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) {

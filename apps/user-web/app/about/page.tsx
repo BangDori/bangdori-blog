@@ -1,5 +1,5 @@
-import Image from 'next/image';
 import { Github, Instagram, Linkedin, Mail } from 'lucide-react';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -19,7 +19,7 @@ const socialLinks = [
   {
     icon: Mail,
     href: `mailto:bangdori@gmail.com?subject=제목을 입력해주세요&body=${encodeURIComponent(
-      '안녕하세요, 블로그를 보고 연락드립니다.\n\n문의 내용:\n'
+      '안녕하세요, 블로그를 보고 연락드립니다.\n\n문의 내용:\n',
     )}`,
   },
 ];
@@ -36,7 +36,7 @@ export default function About() {
             height={160}
             className={cn(
               'h-40 w-40 rounded-full object-cover',
-              'shadow-2xl dark:shadow-[8px_8px_24px_0_rgba(0,180,216,0.18),_-8px_-8px_24px_0_rgba(200,240,255,0.7)]'
+              'shadow-2xl dark:shadow-[8px_8px_24px_0_rgba(0,180,216,0.18),_-8px_-8px_24px_0_rgba(200,240,255,0.7)]',
             )}
             priority
           />

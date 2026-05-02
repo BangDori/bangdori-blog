@@ -1,8 +1,8 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
 import { compile } from '@mdx-js/mdx';
 import withToc from '@stefanprobst/rehype-extract-toc';
 import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
+import type { Metadata } from 'next';
+import Link from 'next/link';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { rehypePrettyCode } from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';

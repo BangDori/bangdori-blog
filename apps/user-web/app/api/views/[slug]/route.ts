@@ -1,12 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { getRedisClient } from '@/lib/redis';
 
 type Params = Promise<{ slug: string }>;
 
-export async function POST(
-  request: NextRequest,
-  segmentData: { params: Params },
-) {
+export async function POST(_request: NextRequest, segmentData: { params: Params }) {
   try {
     const { slug } = await segmentData.params;
 
@@ -20,20 +17,12 @@ export async function POST(
     const views = await redis.incr(`post:${slug}:views`);
 
     return NextResponse.json({ views });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Failed to increment views:', error);
-    return NextResponse.json(
-      { error: 'Failed to increment views' },
-      { status: 500 },
-    );
+  } catch (_error) {
+    return NextResponse.json({ error: 'Failed to increment views' }, { status: 500 });
   }
 }
 
-export async function GET(
-  _request: NextRequest,
-  segmentData: { params: Params },
-) {
+export async function GET(_request: NextRequest, segmentData: { params: Params }) {
   try {
     const { slug } = await segmentData.params;
 
@@ -46,13 +35,8 @@ export async function GET(
     // 게시물 조회수 조회
     const views = (await redis.get(`post:${slug}:views`)) || '0';
 
-    return NextResponse.json({ views: parseInt(views) });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Failed to get views:', error);
-    return NextResponse.json(
-      { error: 'Failed to get views' },
-      { status: 500 },
-    );
+    return NextResponse.json({ views: parseInt(views, 10) });
+  } catch (_error) {
+    return NextResponse.json({ error: 'Failed to get views' }, { status: 500 });
   }
 }

@@ -15,15 +15,10 @@ export async function GET() {
     const todayVisits = (await redis.get(`site:visits:${today}`)) || '0';
 
     return NextResponse.json({
-      totalVisits: parseInt(totalVisits),
-      todayVisits: parseInt(todayVisits),
+      totalVisits: parseInt(totalVisits, 10),
+      todayVisits: parseInt(todayVisits, 10),
     });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Failed to get stats:', error);
-    return NextResponse.json(
-      { error: 'Failed to get stats' },
-      { status: 500 },
-    );
+  } catch (_error) {
+    return NextResponse.json({ error: 'Failed to get stats' }, { status: 500 });
   }
 }

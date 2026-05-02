@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
 interface OgData {
   title: string;
@@ -38,7 +38,7 @@ function parseOgTags(html: string, url: string): OgData {
   const getMetaContent = (property: string): string => {
     const regex = new RegExp(
       `<meta[^>]*(?:property|name)=["']${property}["'][^>]*content=["']([^"']*)["']|<meta[^>]*content=["']([^"']*)["'][^>]*(?:property|name)=["']${property}["']`,
-      'i'
+      'i',
     );
     const match = html.match(regex);
     return match?.[1] || match?.[2] || '';
@@ -63,7 +63,7 @@ function parseOgTags(html: string, url: string): OgData {
   }
 
   const faviconMatch = html.match(
-    /<link[^>]*rel=["'](?:shortcut )?icon["'][^>]*href=["']([^"']*)["']/i
+    /<link[^>]*rel=["'](?:shortcut )?icon["'][^>]*href=["']([^"']*)["']/i,
   );
   let favicon = faviconMatch?.[1] || `${origin}/favicon.ico`;
 

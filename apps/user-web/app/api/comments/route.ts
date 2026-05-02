@@ -70,14 +70,12 @@ export async function GET() {
       // 최상위 댓글 수 + 대댓글 수
       commentCounts[path] = discussion.comments.nodes.reduce(
         (sum, comment) => sum + comment.replies.totalCount,
-        discussion.comments.totalCount
+        discussion.comments.totalCount,
       );
     });
 
     return NextResponse.json(commentCounts);
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error('Failed to fetch comment counts:', error);
+  } catch (_error) {
     return NextResponse.json({ error: 'Failed to fetch comment counts' }, { status: 500 });
   }
 }
