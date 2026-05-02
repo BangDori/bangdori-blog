@@ -6,9 +6,8 @@
     "dev:user-web": "pnpm --filter user-web dev",
     "build:user-web": "pnpm --filter user-web build",
     "start:user-web": "pnpm --filter user-web start",
-    "lint:user-web": "pnpm --filter user-web lint",
-    "format:user-web": "pnpm --filter user-web format",
     "check:user-web": "pnpm --filter user-web check",
+    "check:user-web:ci": "pnpm --filter user-web check:ci",
     "postinstall": "lefthook install"
   },
   "devDependencies": {

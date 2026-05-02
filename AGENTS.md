@@ -25,8 +25,7 @@ infra/
 - Node 24, pnpm 10
 - `pnpm dev:user-web` — 개발 서버 (Turbopack)
 - `pnpm build:user-web` — 프로덕션 빌드
-- `pnpm lint:user-web` — ESLint
-- `pnpm format:user-web` — Prettier
+- `pnpm check:user-web` — Biome lint + format (자동 수정)
 
 ## 브랜치 전략
 
