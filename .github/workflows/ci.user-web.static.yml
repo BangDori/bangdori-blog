@@ -1,4 +1,4 @@
-name: CI
+name: "[User - Web] Static"
 
 on:
   pull_request:
@@ -30,4 +30,7 @@ jobs:
 
       - name: Type Check
         run: pnpm --filter user-web exec tsc --noEmit
+
+      - name: Build
+        run: pnpm build:user-web
 
