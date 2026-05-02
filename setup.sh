@@ -41,7 +41,10 @@ generate_env_files "apps/user-web" || exit 1
 
 # 3) 의존성 설치
 echo "📦 의존성 설치 시작"
-pnpm install --frozen-lockfile
+if ! pnpm install --frozen-lockfile; then
+  echo "❌ 의존성 설치 실패"
+  exit 1
+fi
 echo "✅ 의존성 설치 완료"
 
 echo "🎉 setup 완료"
