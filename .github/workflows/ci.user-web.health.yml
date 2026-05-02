@@ -5,6 +5,8 @@ on:
     branches: [main, develop]
     paths:
       - 'apps/user-web/**'
+      - 'pnpm-lock.yaml'
+      - '.github/workflows/ci.user-web.health.yml'
 
 jobs:
   health:
@@ -37,18 +39,18 @@ jobs:
           cd apps/user-web
           pnpm start &
           SERVER_PID=$!
+          trap 'kill $SERVER_PID 2>/dev/null || true' EXIT
 
           for i in $(seq 1 30); do
-            if curl -s http://localhost:3000/api/health > /dev/null 2>&1; then
+            if curl -s --max-time 3 http://localhost:3000/api/health > /dev/null 2>&1; then
               break
             fi
             sleep 1
           done
 
           FAILED=0
-          RESULT=""
           for path in /api/health /robots.txt /sitemap.xml /rss.xml; do
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000$path)
+            STATUS=$(curl -s --max-time 10 -o /dev/null -w "%{http_code}" http://localhost:3000$path)
             if [ "$STATUS" != "200" ]; then
               echo "FAIL: $path returned $STATUS"
               FAILED=1
@@ -57,7 +59,6 @@ jobs:
             fi
           done
 
-          kill $SERVER_PID
           exit $FAILED
         env:
           NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
@@ -79,7 +80,9 @@ jobs:
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           script: |
+            const marker = '<!-- health-check-comment -->';
             const body = [
+              marker,
               '## 🩺 Health Check',
               '',
               '| Route | Status |',
@@ -90,9 +93,26 @@ jobs:
               '| /rss.xml | ✅ |',
             ].join('\n');
 
-            await github.rest.issues.createComment({
+            const { data: comments } = await github.rest.issues.listComments({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body,
             });
+
+            const existing = comments.find(c => c.body.includes(marker));
+
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body,
+              });
+            }
