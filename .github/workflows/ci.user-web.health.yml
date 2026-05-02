@@ -65,23 +65,34 @@ jobs:
           NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
           NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
 
+      - name: Generate App Token
+        if: success()
+        id: app-token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.PROWL_APP_ID }}
+          private-key: ${{ secrets.PROWL_APP_PRIVATE_KEY }}
+
       - name: Comment on PR
         if: success()
         uses: actions/github-script@v7
         with:
+          github-token: ${{ steps.app-token.outputs.token }}
           script: |
-            const body = `## 🩺 Health Check
-
-            | Route | Status |
-            |---|---|
-            | /api/health | ✅ |
-            | /robots.txt | ✅ |
-            | /sitemap.xml | ✅ |
-            | /rss.xml | ✅ |`;
+            const body = [
+              '## 🩺 Health Check',
+              '',
+              '| Route | Status |',
+              '|---|---|',
+              '| /api/health | ✅ |',
+              '| /robots.txt | ✅ |',
+              '| /sitemap.xml | ✅ |',
+              '| /rss.xml | ✅ |',
+            ].join('\n');
 
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: context.issue.number,
-              body: body.replace(/            /g, ''),
+              body,
             });
