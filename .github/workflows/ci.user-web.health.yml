@@ -1,0 +1,87 @@
+name: "[User - Web] Health"
+
+on:
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'apps/user-web/**'
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm build:user-web
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_NOTION_SITE_URL: ${{ secrets.NEXT_PUBLIC_NOTION_SITE_URL }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+
+      - name: Smoke Test
+        id: smoke
+        run: |
+          cd apps/user-web
+          pnpm start &
+          SERVER_PID=$!
+
+          for i in $(seq 1 30); do
+            if curl -s http://localhost:3000/api/health > /dev/null 2>&1; then
+              break
+            fi
+            sleep 1
+          done
+
+          FAILED=0
+          RESULT=""
+          for path in /api/health /robots.txt /sitemap.xml /rss.xml; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:3000$path)
+            if [ "$STATUS" != "200" ]; then
+              echo "FAIL: $path returned $STATUS"
+              FAILED=1
+            else
+              echo "OK: $path returned 200"
+            fi
+          done
+
+          kill $SERVER_PID
+          exit $FAILED
+        env:
+          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+          NEXT_PUBLIC_NOTION_SITE_URL: ${{ secrets.NEXT_PUBLIC_NOTION_SITE_URL }}
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+
+      - name: Comment on PR
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const body = `## 🩺 Health Check
+
+            | Route | Status |
+            |---|---|
+            | /api/health | ✅ |
+            | /robots.txt | ✅ |
+            | /sitemap.xml | ✅ |
+            | /rss.xml | ✅ |`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: body.replace(/            /g, ''),
+            });
