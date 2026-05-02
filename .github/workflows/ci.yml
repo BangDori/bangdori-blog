@@ -31,11 +31,3 @@ jobs:
       - name: Type Check
         run: pnpm --filter user-web exec tsc --noEmit
 
-      - name: Build
-        run: pnpm build:user-web
-        env:
-          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
-          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
-          REDIS_URL: ${{ secrets.REDIS_URL }}
-          NEXT_PUBLIC_SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
-          NEXT_PUBLIC_NOTION_SITE_URL: ${{ secrets.NEXT_PUBLIC_NOTION_SITE_URL }}
