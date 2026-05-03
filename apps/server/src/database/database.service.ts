@@ -9,6 +9,8 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
   constructor(private config: ConfigService) {
     this.pool = new Pool({
       connectionString: this.config.getOrThrow<string>('DATABASE_URL'),
+      connectionTimeoutMillis: 3000,
+      query_timeout: 2000,
     });
   }
 
