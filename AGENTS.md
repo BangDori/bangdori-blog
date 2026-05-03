@@ -29,6 +29,7 @@ infra/
 - `pnpm dev:server` — NestJS 개발 서버 (포트 4000, watch mode)
 - `pnpm build:server` — NestJS 프로덕션 빌드
 - `pnpm start:server` — NestJS 프로덕션 실행
+- `pnpm check:server` — Biome lint + format (자동 수정)
 
 ## 브랜치 전략
 

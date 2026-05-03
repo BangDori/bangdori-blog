@@ -6,7 +6,9 @@
     "dev": "nest start --watch",
     "build": "nest build",
     "start": "node dist/main.js",
-    "start:prod": "node dist/main.js"
+    "start:prod": "node dist/main.js",
+    "check": "biome check --write .",
+    "check:ci": "biome check ."
   },
   "dependencies": {
     "@nestjs/common": "^11.1.3",
