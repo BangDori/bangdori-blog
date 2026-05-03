@@ -2,7 +2,9 @@ node_modules
 .next
 .git
 .gitignore
-*.md
+README.md
+AGENTS.md
+CLAUDE.md
 .env*
 .vscode
 .idea
