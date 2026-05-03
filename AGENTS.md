@@ -8,7 +8,7 @@
 apps/
   user-web/      # Next.js 블로그 (현재 유일한 실제 앱)
   admin/         # CMS 관리 페이지 (미구현)
-  server/        # NestJS API 서버 (미구현)
+  server/        # NestJS API 서버 (포트 4000, health check only)
 packages/
   ui/            # 공유 UI 컴포넌트 (미구현)
   contracts/     # 공유 타입·DTO·상수 (미구현)
@@ -26,6 +26,9 @@ infra/
 - `pnpm dev:user-web` — 개발 서버 (Turbopack)
 - `pnpm build:user-web` — 프로덕션 빌드
 - `pnpm check:user-web` — Biome lint + format (자동 수정)
+- `pnpm dev:server` — NestJS 개발 서버 (포트 4000, watch mode)
+- `pnpm build:server` — NestJS 프로덕션 빌드
+- `pnpm start:server` — NestJS 프로덕션 실행
 
 ## 브랜치 전략
 
