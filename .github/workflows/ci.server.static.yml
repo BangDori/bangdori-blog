@@ -1,4 +1,4 @@
-name: "[User - Web] Static"
+name: "[Server] Static"
 
 permissions:
   contents: read
@@ -7,9 +7,9 @@ on:
   pull_request:
     branches: [main, develop]
     paths:
-      - 'apps/user-web/**'
+      - 'apps/server/**'
       - 'package.json'
-      - '.github/workflows/ci.user-web.static.yml'
+      - '.github/workflows/ci.server.static.yml'
       - 'biome.json'
       - 'pnpm-lock.yaml'
 
@@ -31,8 +31,7 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: pnpm check:user-web:ci
+        run: pnpm check:server:ci
 
       - name: Type Check
-        run: pnpm --filter user-web exec tsc --noEmit
-
+        run: pnpm --filter server exec tsc --noEmit
