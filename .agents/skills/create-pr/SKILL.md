@@ -20,5 +20,5 @@ gh-auto pr create --base develop --title "제목" --body "본문"
 ## 주의
 
 - base branch는 `develop` (다른 base가 필요하면 사용자에게 확인)
-- push 전에 반드시 사용자 확인
+- push 전에 반드시 AskUserQuestion 툴로 확인 (제목·본문 미리보기를 옵션 description에 포함)
 - `gh-auto`를 사용 (계정 자동 전환)
