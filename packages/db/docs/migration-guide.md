@@ -78,6 +78,24 @@ pnpm db:migration:revert
 
 가장 마지막 migration의 `down()`을 실행한다. 여러 개를 되돌리려면 여러 번 실행한다.
 
+## migration 실행 확인
+
+migration이 제대로 적용되었는지 DB에서 직접 확인할 수 있다:
+
+```bash
+docker exec -it <postgres-container> psql -U <user> -d <database> -c "SELECT * FROM migrations;"
+```
+
+실행하면 이런 결과가 나온다:
+
+```
+ id |   timestamp   |       name
+----+---------------+-------------------
+  1 | 1777971403663 | Init1777971403663
+```
+
+행이 있으면 해당 migration이 적용된 것이고, 없으면 아직 실행되지 않은 것이다.
+
 ## 요약
 
 | 단계 | 명령 | 결과 |
