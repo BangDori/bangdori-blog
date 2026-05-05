@@ -17,8 +17,8 @@ services:
     ports:
       - "5433:5432"
     environment:
-      POSTGRES_DB: bangdori_blog
-      POSTGRES_USER: bangdori
+      POSTGRES_DB: ${POSTGRES_DB:?POSTGRES_DB is required}
+      POSTGRES_USER: ${POSTGRES_USER:?POSTGRES_USER is required}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
     volumes:
       - postgres_data:/var/lib/postgresql/data

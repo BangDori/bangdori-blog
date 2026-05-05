@@ -12,7 +12,6 @@ apps/
 packages/
   ui/            # 공유 UI 컴포넌트 (미구현)
   contracts/     # 공유 타입·DTO·상수 (미구현)
-  db/            # DB schema·migrations (미구현)
   analytics/     # 자체 analytics SDK (미구현)
 infra/
   docker/        # Dockerfile, docker-compose (미구현)
