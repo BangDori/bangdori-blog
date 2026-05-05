@@ -47,8 +47,10 @@ generate_env() {
     sed -i '' 's/^GH_TOKEN=/GITHUB_TOKEN=/' "$out_file"
   fi
 
+  cp "$out_file" .env
+
   cd - > /dev/null
-  echo "✅ ${app_dir} ${out_file} 생성 완료"
+  echo "✅ ${app_dir} ${out_file} + .env 생성 완료"
 }
 
 generate_env "apps/user-web"  || exit 1
