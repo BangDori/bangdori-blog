@@ -8,6 +8,7 @@ on:
     branches: [main, develop]
     paths:
       - 'apps/server/**'
+      - 'packages/db/**'
       - 'package.json'
       - '.github/workflows/ci.server.static.yml'
       - 'biome.json'
@@ -29,6 +30,9 @@ jobs:
           cache: pnpm
 
       - run: pnpm install --frozen-lockfile
+
+      - name: Build packages/db
+        run: pnpm db:build
 
       - name: Lint
         run: pnpm check:server:ci

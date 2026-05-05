@@ -1,7 +1,7 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.4.14/schema.json",
   "files": {
-    "includes": ["apps/user-web/**", "apps/server/**", "!apps/user-web/.next", "!apps/user-web/public", "!apps/server/dist", "!**/.infisical.json"]
+    "includes": ["apps/user-web/**", "apps/server/**", "packages/db/**", "!apps/user-web/.next", "!apps/user-web/public", "!apps/server/dist", "!packages/db/dist", "!**/.infisical.json"]
   },
   "formatter": {
     "enabled": true,
@@ -50,6 +50,26 @@
         "rules": {
           "style": {
             "useImportType": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["packages/db/**"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noConsole": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["packages/db/src/migration/**"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedFunctionParameters": "off"
           }
         }
       }
