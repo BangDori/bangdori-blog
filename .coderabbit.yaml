@@ -1,5 +1,9 @@
 reviews:
+  profile: chill
   auto_review:
     base_branches:
       - main
       - develop
+
+tone_instructions: >
+  한국어로 리뷰. 명확한 버그·보안 이슈만 지적, 스타일·컨벤션 취향은 무시. 프로덕션 장애·데이터 유실 가능 문제 우선. 친절하지만 꼼꼼한 선생님처럼 이유와 대안 제시. 엣지 케이스 체크. 단, 우회 코드는 엄격히 지적하고 본질적 해결 방법 제시.
