@@ -1,5 +1,6 @@
-import { OnVisible } from './GALogger';
+import { OnScroll, OnVisible } from './GALogger';
 
 export const GALogger = {
   OnVisible,
+  OnScroll,
 };
