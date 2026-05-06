@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { trackClick } from '@/lib/gtag';
 
 interface OgData {
   title: string;
@@ -46,6 +47,7 @@ export function Bookmark({ url }: BookmarkProps) {
           target="_blank"
           rel="noopener noreferrer"
           className="flex overflow-hidden rounded-lg border border-neutral-200 no-underline dark:border-neutral-700"
+          onClick={() => trackClick('outbound_link', { url })}
         >
           <div className="flex flex-1 flex-col justify-center gap-2 p-4">
             <div className="h-5 w-3/4 animate-pulse rounded bg-neutral-200 dark:bg-neutral-700" />
@@ -71,6 +73,7 @@ export function Bookmark({ url }: BookmarkProps) {
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-3 overflow-hidden rounded-lg border border-neutral-200 p-4 no-underline transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-800"
+          onClick={() => trackClick('outbound_link', { url })}
         >
           {favicon && (
             <Image
@@ -97,6 +100,7 @@ export function Bookmark({ url }: BookmarkProps) {
         target="_blank"
         rel="noopener noreferrer"
         className="flex overflow-hidden rounded-lg border border-neutral-200 no-underline transition-colors hover:bg-neutral-50 dark:border-neutral-700 dark:hover:bg-neutral-800"
+        onClick={() => trackClick('outbound_link', { url })}
       >
         <div className="flex min-w-0 flex-1 flex-col justify-center gap-1.5 p-4">
           <span className="line-clamp-1 text-sm font-medium text-neutral-900 dark:text-neutral-100">
