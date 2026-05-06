@@ -1,4 +1,4 @@
-import type { ImpressionOptions, ScrollOptions } from './ga-events.type';
+import type { ClickOptions, ImpressionOptions, ScrollOptions } from './ga-events.type';
 
 declare global {
   interface Window {
@@ -10,6 +10,10 @@ export function trackEvent(action: string, params?: Record<string, unknown>) {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', action, params);
   }
+}
+
+export function trackClick(target: ClickOptions['target'], options?: Omit<ClickOptions, 'target'>) {
+  trackEvent('click', { target, ...options });
 }
 
 export function trackImpression(
