@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { trackClick } from '@/lib/gtag';
 import type { Post } from '../types';
 import { PostCard } from './PostCard';
 
@@ -20,6 +23,7 @@ export function PostList({ posts }: PostListProps) {
             className="rounded-sm px-0.5 py-1 transition-colors duration-200 ease-in-out hover:bg-gray-100 dark:hover:bg-gray-800"
             target={isExternal ? '_blank' : undefined}
             rel={isExternal ? 'noopener noreferrer' : undefined}
+            onClick={() => trackClick('post_card', { slug: post.slug, text: post.title })}
           >
             <PostCard post={post} />
           </Link>

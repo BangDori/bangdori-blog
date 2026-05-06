@@ -1,6 +1,9 @@
+'use client';
+
 import { Github, Instagram, Linkedin, Mail } from 'lucide-react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { trackClick } from '@/lib/gtag';
 import { cn } from '@/lib/utils';
 
 const socialLinks = [
@@ -64,7 +67,12 @@ export default function About() {
         <div className="mt-4 flex gap-2">
           {socialLinks.map((item, index) => (
             <Button key={index} variant="ghost" className="bg-primary/10" size="icon" asChild>
-              <a href={item.href} target="_blank" rel="noopener noreferrer">
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackClick('social', { url: item.href })}
+              >
                 <item.icon className="h-4 w-4" />
               </a>
             </Button>
