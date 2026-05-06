@@ -19,7 +19,6 @@ export type ClickTarget =
   | 'outbound_link' // 외부 링크 클릭
   | 'code_copy' // 코드 블록 복사
   | 'toc' // 목차 항목 클릭
-  | 'bookmark' // 북마크 카드 클릭
   | 'copy_link' // 글 링크 복사
   | 'social' // 소셜 링크 클릭
   | 'nav' // 네비게이션 클릭
