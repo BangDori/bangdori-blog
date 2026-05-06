@@ -80,80 +80,82 @@ export default async function BlogPost({ params }: BlogPostProps) {
 
   return (
     <GALogger.OnVisible event={['post', { slug }]}>
-      <article className="container flex flex-col gap-8">
-        <section className="flex flex-col gap-8">
-          {/* 블로그 헤더 */}
-          <div className="space-y-2 sm:space-y-4 md:space-y-6">
-            <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">{post.title}</h1>
-            <div className="space-y-1.5">
-              <div className="flex flex-wrap items-center gap-1">
-                <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-                  Created at{' '}
-                  <b className="font-normal text-black dark:text-white">
-                    {formatDate(post.createdAt)}
-                  </b>
-                </p>
-                {post.updatedAt && (
-                  <>
-                    <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-                      •
-                    </span>
-                    <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-                      Updated at{' '}
-                      <b className="font-normal text-black dark:text-white">
-                        {formatDate(post.updatedAt)}
-                      </b>
-                    </p>
-                  </>
-                )}
-                <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
-                <ViewCounter slug={slug} />
-              </div>
-              <div>
-                <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-                  By <b className="font-normal text-black dark:text-white">강병준</b>
-                </p>
+      <GALogger.OnScroll event={['post_content', { thresholds: [25, 50, 75, 90], slug }]}>
+        <article className="container flex flex-col gap-8">
+          <section className="flex flex-col gap-8">
+            {/* 블로그 헤더 */}
+            <div className="space-y-2 sm:space-y-4 md:space-y-6">
+              <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">{post.title}</h1>
+              <div className="space-y-1.5">
+                <div className="flex flex-wrap items-center gap-1">
+                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
+                    Created at{' '}
+                    <b className="font-normal text-black dark:text-white">
+                      {formatDate(post.createdAt)}
+                    </b>
+                  </p>
+                  {post.updatedAt && (
+                    <>
+                      <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
+                        •
+                      </span>
+                      <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
+                        Updated at{' '}
+                        <b className="font-normal text-black dark:text-white">
+                          {formatDate(post.updatedAt)}
+                        </b>
+                      </p>
+                    </>
+                  )}
+                  <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
+                  <ViewCounter slug={slug} />
+                </div>
+                <div>
+                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
+                    By <b className="font-normal text-black dark:text-white">강병준</b>
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
 
-          <aside className="w-full">
-            <div className="bg-muted/60 space-y-4 rounded-lg p-6 backdrop-blur-sm">
-              <h3 className="text-lg font-semibold">📚 목차</h3>
-              <nav className="space-y-3 text-sm">
-                {data?.toc?.map((item) => (
-                  <TableOfContentsLink key={item.id} item={item} />
-                ))}
-              </nav>
+            <aside className="w-full">
+              <div className="bg-muted/60 space-y-4 rounded-lg p-6 backdrop-blur-sm">
+                <h3 className="text-lg font-semibold">📚 목차</h3>
+                <nav className="space-y-3 text-sm">
+                  {data?.toc?.map((item) => (
+                    <TableOfContentsLink key={item.id} item={item} />
+                  ))}
+                </nav>
+              </div>
+            </aside>
+
+            {/* 블로그 본문 */}
+            <div className="prose prose-neutral prose-sm dark:prose-invert prose-headings:scroll-mt-[var(--header-height)] xl:prose-base w-full max-w-full flex-1">
+              <MDXRemote
+                source={markdown}
+                components={{ pre: CodeBlock, a: VideoOrLink, img: MarkdownImage, Bookmark }}
+                options={{
+                  mdxOptions: {
+                    remarkPlugins: [remarkGfm],
+                    rehypePlugins: [rehypePrettyCode, rehypeSlug],
+                  },
+                }}
+              />
             </div>
-          </aside>
-
-          {/* 블로그 본문 */}
-          <div className="prose prose-neutral prose-sm dark:prose-invert prose-headings:scroll-mt-[var(--header-height)] xl:prose-base w-full max-w-full flex-1">
-            <MDXRemote
-              source={markdown}
-              components={{ pre: CodeBlock, a: VideoOrLink, img: MarkdownImage, Bookmark }}
-              options={{
-                mdxOptions: {
-                  remarkPlugins: [remarkGfm],
-                  rehypePlugins: [rehypePrettyCode, rehypeSlug],
-                },
-              }}
-            />
+          </section>
+          <div className="flex items-center justify-between border-t pt-4">
+            <Button variant="ghost" asChild>
+              <Link href="/" className="text-muted-foreground text-sm">
+                글 목록으로 돌아가기
+              </Link>
+            </Button>
+            <CopyLinkButton />
           </div>
-        </section>
-        <div className="flex items-center justify-between border-t pt-4">
-          <Button variant="ghost" asChild>
-            <Link href="/" className="text-muted-foreground text-sm">
-              글 목록으로 돌아가기
-            </Link>
-          </Button>
-          <CopyLinkButton />
-        </div>
-        <GALogger.OnVisible event={['comment_area', { slug }]}>
-          <GiscusComments />
-        </GALogger.OnVisible>
-      </article>
+          <GALogger.OnVisible event={['comment_area', { slug }]}>
+            <GiscusComments />
+          </GALogger.OnVisible>
+        </article>
+      </GALogger.OnScroll>
     </GALogger.OnVisible>
   );
 }
