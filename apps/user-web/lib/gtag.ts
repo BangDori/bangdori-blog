@@ -12,8 +12,18 @@ export function trackEvent(action: string, params?: Record<string, unknown>) {
   }
 }
 
+function sanitizeUrl(raw?: string) {
+  if (!raw) return undefined;
+  try {
+    const u = new URL(raw);
+    return `${u.origin}${u.pathname}`;
+  } catch {
+    return raw;
+  }
+}
+
 export function trackClick(target: ClickOptions['target'], options?: Omit<ClickOptions, 'target'>) {
-  trackEvent('click', { target, ...options });
+  trackEvent('click', { target, ...options, url: sanitizeUrl(options?.url) });
 }
 
 export function trackImpression(
