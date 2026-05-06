@@ -18,7 +18,7 @@ function sanitizeUrl(raw?: string) {
     const u = new URL(raw);
     return `${u.origin}${u.pathname}`;
   } catch {
-    return raw;
+    return undefined;
   }
 }
 
