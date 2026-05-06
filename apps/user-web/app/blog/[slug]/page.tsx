@@ -7,7 +7,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import { rehypePrettyCode } from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
-import { GAOnVisible } from '@/components/GALogger';
+import { GALogger } from '@/components/ga-logger';
 import { Button } from '@/components/ui/button';
 import { getPostBySlug, getPublishedPosts } from '@/domains/post/api/notion';
 import { formatDate } from '@/lib/date';
@@ -79,7 +79,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
   });
 
   return (
-    <GAOnVisible event={['post', { slug }]}>
+    <GALogger.OnVisible event={['post', { slug }]}>
       <article className="container flex flex-col gap-8">
         <section className="flex flex-col gap-8">
           {/* 블로그 헤더 */}
@@ -150,10 +150,10 @@ export default async function BlogPost({ params }: BlogPostProps) {
           </Button>
           <CopyLinkButton />
         </div>
-        <GAOnVisible event={['comment_area', { slug }]}>
+        <GALogger.OnVisible event={['comment_area', { slug }]}>
           <GiscusComments />
-        </GAOnVisible>
+        </GALogger.OnVisible>
       </article>
-    </GAOnVisible>
+    </GALogger.OnVisible>
   );
 }

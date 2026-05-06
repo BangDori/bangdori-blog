@@ -15,7 +15,7 @@ interface OnVisibleProps {
   className?: string;
 }
 
-function OnVisible({ children, event, threshold = 0.3, className }: OnVisibleProps) {
+export function OnVisible({ children, event, threshold = 0.3, className }: OnVisibleProps) {
   const ref = useRef<HTMLDivElement>(null);
   const hasFired = useRef(false);
 
@@ -45,9 +45,3 @@ function OnVisible({ children, event, threshold = 0.3, className }: OnVisiblePro
     </div>
   );
 }
-
-export const GALogger = {
-  OnVisible,
-};
-
-export { OnVisible as GAOnVisible };
