@@ -1,4 +1,4 @@
-import type { ImpressionOptions } from './ga-events.type';
+import type { ImpressionOptions, ScrollOptions } from './ga-events.type';
 
 declare global {
   interface Window {
@@ -17,4 +17,12 @@ export function trackImpression(
   options?: Omit<ImpressionOptions, 'target'>,
 ) {
   trackEvent('impression', { target, ...options });
+}
+
+export function trackScroll(
+  target: ScrollOptions['target'],
+  percent: number,
+  options?: { slug?: string },
+) {
+  trackEvent('scroll', { target, percent, ...options });
 }

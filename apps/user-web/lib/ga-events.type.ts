@@ -13,3 +13,13 @@ export interface ImpressionOptions {
   target: ImpressionTarget;
   slug?: string; // 글 식별자
 }
+
+export type ScrollTarget =
+  | 'post_content' // 글 본문 스크롤
+  | 'post_list'; // 글 목록 스크롤
+
+export interface ScrollOptions {
+  target: ScrollTarget;
+  percent: number; // 도달한 스크롤 깊이 (%)
+  slug?: string; // 글 식별자
+}
