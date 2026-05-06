@@ -1,5 +1,3 @@
-import { Analytics } from '@vercel/analytics/next';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
@@ -76,8 +74,6 @@ export default function RootLayout({
           </ThemeProvider>
         </div>
         <GoogleAnalytics />
-        <Analytics />
-        <SpeedInsights />
       </body>
     </html>
   );
