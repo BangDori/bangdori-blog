@@ -12,6 +12,7 @@ on:
       - '.github/workflows/ci.user-web.static.yml'
       - 'biome.json'
       - 'pnpm-lock.yaml'
+      - 'DESIGN.md'
 
 jobs:
   ci:
@@ -35,4 +36,7 @@ jobs:
 
       - name: Type Check
         run: pnpm --filter user-web exec tsc --noEmit
+
+      - name: Lint DESIGN.md
+        run: npx -y @google/design.md lint DESIGN.md
 
