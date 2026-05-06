@@ -1,4 +1,7 @@
+'use client';
+
 import Link from 'next/link';
+import { trackClick } from '@/lib/gtag';
 
 interface TocEntry {
   value: string;
@@ -14,6 +17,7 @@ export function TableOfContentsLink({ item }: { item: TocEntry }) {
         key={item.id}
         href={`#${item.id}`}
         className={`hover:text-foreground text-muted-foreground block font-medium transition-colors`}
+        onClick={() => trackClick('toc', { text: item.value })}
       >
         {item.value}
       </Link>
