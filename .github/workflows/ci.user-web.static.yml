@@ -38,5 +38,5 @@ jobs:
         run: pnpm --filter user-web exec tsc --noEmit
 
       - name: Lint DESIGN.md
-        run: npx -y @google/design.md lint DESIGN.md
+        run: pnpm dlx @google/design.md@0.1.1 lint DESIGN.md
 
