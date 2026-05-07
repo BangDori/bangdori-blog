@@ -24,6 +24,6 @@
     "postinstall": "lefthook install"
   },
   "devDependencies": {
-    "@evilmartians/lefthook": "^2.1.6"
+    "@evilmartians/lefthook": "2.1.6"
   }
 }
