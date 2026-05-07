@@ -6,7 +6,7 @@
 
 ```
 apps/
-  user-web/      # Next.js 블로그 (현재 유일한 실제 앱)
+  user-web/      # Next.js 블로그 (public)
   admin/         # Vite + React CMS 관리 페이지
   server/        # NestJS API 서버 (포트 4000, health check only)
 packages/
