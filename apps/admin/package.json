@@ -1,0 +1,29 @@
+{
+  "name": "admin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 3001",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --port 3001",
+    "check": "biome check --write .",
+    "check:ci": "biome check ."
+  },
+  "dependencies": {
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-router-dom": "^7.6.1"
+  },
+  "devDependencies": {
+    "@bangdori/ui": "workspace:*",
+    "@biomejs/biome": "2.4.14",
+    "@tailwindcss/vite": "^4",
+    "@types/react": "19.2.14",
+    "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "^4.5.2",
+    "tailwindcss": "^4",
+    "typescript": "^5",
+    "vite": "^6.3.5"
+  }
+}
