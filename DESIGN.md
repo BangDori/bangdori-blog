@@ -7,17 +7,17 @@ colors:
   secondary: "#f5f7fa"
   on-secondary: "#222b38"
   accent: "#e8f3ff"
-  on-accent: "#0064ff"
+  on-accent: "#005edc"
   background: "#ffffff"
   foreground: "#222b38"
   muted: "#f5f7fa"
-  muted-foreground: "#7b8a99"
+  muted-foreground: "#64707d"
   card: "#ffffff"
   on-card: "#222b38"
   border: "#e5e8eb"
-  destructive: "#ff3b30"
+  destructive: "#cc2222"
   code-bg: "#ededeb"
-  code-text: "#f47067"
+  code-text: "#bf3f29"
 typography:
   h1:
     fontFamily: Pretendard Variable
@@ -174,11 +174,11 @@ The palette follows a strict two-tone + accent strategy. White/dark backgrounds 
 - **Primary (#0064ff):** The sole accent color. Used for the active nav link, focus rings, chart-1, and brand identity. In dark mode, shifts to a brighter sky blue (#339dff) for contrast.
 - **Foreground (#222b38):** Deep navy-ink for all body text. Not pure black — intentionally warm.
 - **Secondary (#f5f7fa):** Subtle tinted background for tags, muted panels, and hover states.
-- **Muted-foreground (#7b8a99):** Used for dates, metadata, captions, and secondary text. Provides comfortable reading hierarchy without competing with body text.
+- **Muted-foreground (#64707d):** Used for dates, metadata, captions, and secondary text. Provides comfortable reading hierarchy without competing with body text.
 - **Border (#e5e8eb):** Thin, low-contrast borders on the header and inputs.
 - **Accent (#e8f3ff):** Light-blue tint for hover states and social icon backgrounds. Paired with primary text color.
-- **Destructive (#ff3b30):** Error states and destructive actions.
-- **Code (#ededeb bg + #f47067 text):** Inline code uses a warm gray background with a coral-red text color.
+- **Destructive (#cc2222):** Error states and destructive actions.
+- **Code (#ededeb bg + #bf3f29 text):** Inline code uses a warm gray background with a deep coral-red text color.
 
 ## Typography
 
