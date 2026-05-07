@@ -46,3 +46,8 @@ Conventional Commits: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `style:`,
 - 제목: 커밋 컨벤션과 동일한 prefix
 - 본문: 변경 사항 요약 + 검증 방법
 - base branch: `develop`
+
+## 디자인 시스템
+
+- UI 작업 시 프로젝트 루트의 `DESIGN.md`를 반드시 참고한다.
+- 새로운 색상이나 컴포넌트를 추가할 때는 `DESIGN.md` 토큰을 먼저 업데이트하고, `globals.css`의 CSS 변수와 일치시킨다.

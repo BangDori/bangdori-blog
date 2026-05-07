@@ -8,10 +8,12 @@ on:
     branches: [main, develop]
     paths:
       - 'apps/user-web/**'
+      - 'packages/ui/**'
       - 'package.json'
       - '.github/workflows/ci.user-web.static.yml'
       - 'biome.json'
       - 'pnpm-lock.yaml'
+      - 'DESIGN.md'
 
 jobs:
   ci:
@@ -35,4 +37,7 @@ jobs:
 
       - name: Type Check
         run: pnpm --filter user-web exec tsc --noEmit
+
+      - name: Lint DESIGN.md
+        run: pnpm dlx @google/design.md lint DESIGN.md
 
