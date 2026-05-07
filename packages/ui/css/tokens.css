@@ -2,7 +2,7 @@
  * 공유 디자인 토큰
  *
  * 사용법 (Tailwind v4 앱):
- *   @import "@bangdori/ui/tokens.css";
+ *   @import "@bangdori/ui/css/tokens.css";
  *
  * 토큰을 수정할 때는 DESIGN.md를 먼저 업데이트하고
  * 이 파일과 apps/user-web/app/globals.css를 동기화한다.
