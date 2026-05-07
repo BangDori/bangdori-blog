@@ -60,30 +60,7 @@ gh-auto api repos/{owner}/{repo}/pulls/{PR_NUMBER}/comments/{COMMENT_ID}/replies
 - `COMMENT_ID`: 스레드 첫 번째 코멘트의 `databaseId`
 - body에 short SHA를 **반드시** 포함
 
-## 4. 리뷰 스레드 Resolve (GraphQL)
-
-```bash
-gh-auto api graphql -f query='
-mutation($threadId: ID!) {
-  resolveReviewThread(input: { threadId: $threadId }) {
-    thread { isResolved }
-  }
-}' -f threadId='PRT_XXXXXXXXX'
-```
-
-- `threadId`: 스레드의 GraphQL node `id` (PRT_ 접두사)
-
-## 5. 리뷰어 확인 및 Re-request Review
-
-```bash
-# 리뷰어 확인
-gh-auto pr view NUMBER --json latestReviews --jq '.latestReviews[].author.login'
-
-# re-request review
-gh-auto pr edit NUMBER --add-reviewer REVIEWER_LOGIN
-```
-
-## 6. 커밋 SHA 조회
+## 4. 커밋 SHA 조회
 
 ```bash
 # 마지막 커밋의 short SHA
@@ -93,12 +70,12 @@ git log -1 --format='%h'
 git log -N --format='%h %s'
 ```
 
-## 7. 리뷰 뱃지 파싱
+## 5. 리뷰 뱃지 파싱
 
-AI 리뷰 코멘트에는 Severity 뱃지가 포함���:
+AI 리뷰 코멘트에는 Severity 뱃지가 포함됨:
 ```
 _⚠️ Potential issue_ | _🟠 Major_
 _🧹 Nitpick_ | _🟡 Minor_
 ```
 
-CodeRabbit은 이모지 + 텍스트 형식을 사용. 본문 첫 줄에서 severity 파싱.
+CodeRabbit은 이모지 + 텍스트 형식을 사용. 본문 첫 줄에서 severity 파싱

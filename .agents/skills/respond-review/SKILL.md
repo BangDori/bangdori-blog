@@ -84,12 +84,7 @@ PR에 달린 리뷰 코멘트를 분석하여 코드를 수정하고, 커밋 SHA
 
 ### Phase 6: 스레드 Resolve
 
-대응 완료된 스레드는 resolve 처리 → API는 [cheatsheet §4](references/api-cheatsheet.md) 참조
-
-- **코드 수정**으로 해결된 경우: resolve
-- **질문/설명** 답변만 한 경우: resolve (답변했으므로)
-- **현행 유지** 사유를 설명한 경우: resolve (대응 완료)
-- **논의 중**인 경우: resolve 하지 않음
+**스레드 resolve는 하지 않는다.** 리뷰어가 직접 확인 후 resolve하는 것이 원칙이므로, 에이전트는 답글만 남기고 resolve API를 호출하지 않는다.
 
 ## 에이전트 규칙
 
