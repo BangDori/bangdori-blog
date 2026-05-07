@@ -169,7 +169,7 @@ Font: **Pretendard Variable** (Korean-optimized sans-serif) as the sole display/
 
 ## Colors
 
-The palette follows a strict two-tone + accent strategy. White/dark backgrounds are paired with a single **vivid blue** (#0064ff / #339dff) accent. The tokens below represent the light theme; dark-mode counterparts are defined in `globals.css` under `.dark`.
+The palette follows a strict two-tone + accent strategy. White/dark backgrounds are paired with a single **vivid blue** (#0064ff / #339dff) accent. The tokens below represent the light theme; dark-mode counterparts are defined in `packages/ui/css/tokens.css` and consumed via app `globals.css`.
 
 - **Primary (#0064ff):** The sole accent color. Used for the active nav link, focus rings, chart-1, and brand identity. In dark mode, shifts to a brighter sky blue (#339dff) for contrast.
 - **Foreground (#222b38):** Deep navy-ink for all body text. Not pure black — intentionally warm.
