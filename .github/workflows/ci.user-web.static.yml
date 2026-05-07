@@ -8,6 +8,7 @@ on:
     branches: [main, develop]
     paths:
       - 'apps/user-web/**'
+      - 'packages/ui/**'
       - 'package.json'
       - '.github/workflows/ci.user-web.static.yml'
       - 'biome.json'
