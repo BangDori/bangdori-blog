@@ -19,6 +19,7 @@ export class CreatePosts1778509265000 implements MigrationInterface {
         "author" varchar NOT NULL,
         "category" varchar NOT NULL,
         "thumbnail_url" text,
+        "view_count" bigint NOT NULL DEFAULT 0,
         "published_at" timestamptz,
         "created_at" timestamptz NOT NULL DEFAULT now(),
         "updated_at" timestamptz NOT NULL DEFAULT now(),

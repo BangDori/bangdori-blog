@@ -55,6 +55,9 @@ export class Post {
   @Column({ name: 'thumbnail_url', type: 'text', nullable: true })
   thumbnailUrl!: string | null;
 
+  @Column({ name: 'view_count', type: 'bigint', default: 0 })
+  viewCount!: string;
+
   @Column({ name: 'published_at', type: 'timestamptz', nullable: true })
   publishedAt!: Date | null;
 
