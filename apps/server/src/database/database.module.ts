@@ -16,6 +16,7 @@ import { entities } from './entities';
         url: config.getOrThrow<string>('DATABASE_URL'),
         entities,
         synchronize: false,
+        installExtensions: false,
       }),
     }),
   ],

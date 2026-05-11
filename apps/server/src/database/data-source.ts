@@ -8,4 +8,5 @@ export const AppDataSource = new DataSource({
   entities,
   migrations: ['src/database/migration/*.ts'],
   synchronize: false,
+  installExtensions: false,
 });

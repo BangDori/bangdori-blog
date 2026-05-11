@@ -4,14 +4,13 @@ export class CreatePosts1778509265000 implements MigrationInterface {
   name = 'CreatePosts1778509265000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
     await queryRunner.query(
       "CREATE TYPE \"posts_status_enum\" AS ENUM ('draft', 'published', 'archived')",
     );
 
     await queryRunner.query(`
       CREATE TABLE "posts" (
-        "id" uuid NOT NULL DEFAULT uuid_generate_v4(),
+        "id" uuid NOT NULL DEFAULT gen_random_uuid(),
         "slug" varchar NOT NULL,
         "title" varchar NOT NULL,
         "description" text,
