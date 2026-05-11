@@ -35,20 +35,20 @@ export class PostsService {
   }
 
   async update(id: string, dto: UpdatePostDto): Promise<Post> {
-    if (Object.keys(dto).length === 0) {
+    const entries = Object.entries(dto).filter(([, value]) => value !== undefined);
+
+    if (entries.length === 0) {
       throw new BadRequestException(PostsError.updateFieldRequired);
     }
 
     const post = await this.findEntityById(id);
-    const hasChanges = Object.entries(dto).some(
-      ([key, value]) => post[key as keyof UpdatePostDto] !== value,
-    );
+    const hasChanges = entries.some(([key, value]) => post[key as keyof UpdatePostDto] !== value);
 
     if (!hasChanges) {
       return post;
     }
 
-    Object.assign(post, dto);
+    Object.assign(post, Object.fromEntries(entries));
 
     return this.postsRepository.save(post);
   }

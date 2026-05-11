@@ -34,12 +34,13 @@ export class PostsRepository {
   }
 
   async softDeleteById(id: string): Promise<boolean> {
-    const result: Array<{ id: string }> = await this.repository.query(
+    const result: unknown = await this.repository.query(
       'UPDATE "posts" SET "deleted_at" = now() WHERE "id" = $1 AND "deleted_at" IS NULL RETURNING "id"',
       [id],
     );
+    const rows = Array.isArray(result) && Array.isArray(result[0]) ? result[0] : result;
 
-    return result.length > 0;
+    return Array.isArray(rows) && rows.length > 0;
   }
 
   async save(post: Post): Promise<Post> {
