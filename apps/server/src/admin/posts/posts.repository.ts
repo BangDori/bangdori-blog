@@ -4,7 +4,7 @@ import { DeepPartial, IsNull, Repository } from 'typeorm';
 import { Post, PostStatus } from '../../database/entities/post.entity';
 
 @Injectable()
-export class AdminPostsRepository {
+export class PostsRepository {
   constructor(
     @InjectRepository(Post)
     private readonly repository: Repository<Post>,

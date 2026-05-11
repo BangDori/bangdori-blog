@@ -1,6 +1,6 @@
 import { IsISO8601, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class CreateAdminPostDto {
+export class CreatePostDto {
   @IsString()
   @IsNotEmpty()
   slug!: string;

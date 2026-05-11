@@ -1,25 +1,25 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Post, PostStatus } from '../../database/entities/post.entity';
-import { AdminPostsError } from './admin-posts.error';
-import { AdminPostsRepository } from './admin-posts.repository';
-import { CreateAdminPostDto } from './dto/create-admin-post.dto';
-import { ListAdminPostsQueryDto } from './dto/list-admin-posts-query.dto';
-import { UpdateAdminPostDto } from './dto/update-admin-post.dto';
+import { CreatePostDto } from './dto/create-post.dto';
+import { ListPostsQueryDto } from './dto/list-posts-query.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
+import { PostsError } from './posts.error';
+import { PostsRepository } from './posts.repository';
 
 @Injectable()
-export class AdminPostsService {
-  constructor(private readonly adminPostsRepository: AdminPostsRepository) {}
+export class PostsService {
+  constructor(private readonly postsRepository: PostsRepository) {}
 
-  async findAll(query: ListAdminPostsQueryDto): Promise<Post[]> {
-    return this.adminPostsRepository.findAll(query.status);
+  async findAll(query: ListPostsQueryDto): Promise<Post[]> {
+    return this.postsRepository.findAll(query.status);
   }
 
   async findOne(id: string): Promise<Post> {
     return this.findEntityById(id);
   }
 
-  async create(dto: CreateAdminPostDto): Promise<Post> {
-    const post = this.adminPostsRepository.create({
+  async create(dto: CreatePostDto): Promise<Post> {
+    const post = this.postsRepository.create({
       slug: dto.slug,
       title: dto.title,
       description: dto.description ?? null,
@@ -31,17 +31,17 @@ export class AdminPostsService {
       publishedAt: dto.publishedAt ? new Date(dto.publishedAt) : null,
     });
 
-    return this.adminPostsRepository.save(post);
+    return this.postsRepository.save(post);
   }
 
-  async update(id: string, dto: UpdateAdminPostDto): Promise<Post> {
+  async update(id: string, dto: UpdatePostDto): Promise<Post> {
     if (Object.keys(dto).length === 0) {
-      throw new BadRequestException(AdminPostsError.updateFieldRequired);
+      throw new BadRequestException(PostsError.updateFieldRequired);
     }
 
     const post = await this.findEntityById(id);
     const hasChanges = Object.entries(dto).some(
-      ([key, value]) => post[key as keyof UpdateAdminPostDto] !== value,
+      ([key, value]) => post[key as keyof UpdatePostDto] !== value,
     );
 
     if (!hasChanges) {
@@ -50,7 +50,7 @@ export class AdminPostsService {
 
     Object.assign(post, dto);
 
-    return this.adminPostsRepository.save(post);
+    return this.postsRepository.save(post);
   }
 
   async publish(id: string): Promise<Post> {
@@ -63,7 +63,7 @@ export class AdminPostsService {
     post.status = PostStatus.PUBLISHED;
     post.publishedAt ??= new Date();
 
-    return this.adminPostsRepository.save(post);
+    return this.postsRepository.save(post);
   }
 
   async archive(id: string): Promise<Post> {
@@ -75,22 +75,22 @@ export class AdminPostsService {
 
     post.status = PostStatus.ARCHIVED;
 
-    return this.adminPostsRepository.save(post);
+    return this.postsRepository.save(post);
   }
 
   async delete(id: string): Promise<void> {
-    const deleted = await this.adminPostsRepository.softDeleteById(id);
+    const deleted = await this.postsRepository.softDeleteById(id);
 
     if (!deleted) {
-      throw new NotFoundException(AdminPostsError.postDeleteTargetNotFound(id));
+      throw new NotFoundException(PostsError.postDeleteTargetNotFound(id));
     }
   }
 
   private async findEntityById(id: string): Promise<Post> {
-    const post = await this.adminPostsRepository.findById(id);
+    const post = await this.postsRepository.findById(id);
 
     if (!post) {
-      throw new NotFoundException(AdminPostsError.postNotFound(id));
+      throw new NotFoundException(PostsError.postNotFound(id));
     }
 
     return post;

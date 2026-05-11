@@ -67,11 +67,11 @@ DTO        → Repository 의존
 
 ```text
 apps/server/src/{surface}/{domain}/
-├── {surface}-{domain}.module.ts
-├── {surface}-{domain}.controller.ts
-├── {surface}-{domain}.service.ts
-├── {surface}-{domain}.repository.ts
-├── {surface}-{domain}.mapper.ts          # 선택: entity → response 변환이 필요할 때
+├── {domain}.module.ts
+├── {domain}.controller.ts
+├── {domain}.service.ts
+├── {domain}.repository.ts
+├── {domain}.mapper.ts                    # 선택: entity → response 변환이 필요할 때
 └── dto/
     ├── create-{resource}.dto.ts
     ├── update-{resource}.dto.ts
