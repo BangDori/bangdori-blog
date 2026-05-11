@@ -11,43 +11,43 @@ import {
   Query,
 } from '@nestjs/common';
 import { AdminPostsService } from './admin-posts.service';
-import { CreatePostDto } from './dto/create-post.dto';
-import { ListPostsQueryDto } from './dto/list-posts-query.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
+import { CreateAdminPostDto } from './dto/create-admin-post.dto';
+import { ListAdminPostsQueryDto } from './dto/list-admin-posts-query.dto';
+import { UpdateAdminPostDto } from './dto/update-admin-post.dto';
 
 @Controller('admin/posts')
 export class AdminPostsController {
-  constructor(private readonly postsService: AdminPostsService) {}
+  constructor(private readonly adminPostsService: AdminPostsService) {}
 
   @Get()
-  findAll(@Query() query: ListPostsQueryDto) {
-    return this.postsService.findAll(query);
+  findAll(@Query() query: ListAdminPostsQueryDto) {
+    return this.adminPostsService.findAll(query);
   }
 
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.postsService.findOne(id);
+    return this.adminPostsService.findOne(id);
   }
 
   @Post()
-  create(@Body() dto: CreatePostDto) {
-    return this.postsService.create(dto);
+  create(@Body() dto: CreateAdminPostDto) {
+    return this.adminPostsService.create(dto);
   }
 
   @Patch(':id')
-  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdatePostDto) {
-    return this.postsService.update(id, dto);
+  update(@Param('id', ParseUUIDPipe) id: string, @Body() dto: UpdateAdminPostDto) {
+    return this.adminPostsService.update(id, dto);
   }
 
   @Post(':id/publish')
   @HttpCode(HttpStatus.OK)
   publish(@Param('id', ParseUUIDPipe) id: string) {
-    return this.postsService.publish(id);
+    return this.adminPostsService.publish(id);
   }
 
   @Post(':id/archive')
   @HttpCode(HttpStatus.OK)
   archive(@Param('id', ParseUUIDPipe) id: string) {
-    return this.postsService.archive(id);
+    return this.adminPostsService.archive(id);
   }
 }

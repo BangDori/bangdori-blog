@@ -1,36 +1,35 @@
-import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsISO8601, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-export class UpdatePostDto {
-  @IsOptional()
+export class CreateAdminPostDto {
   @IsString()
   @IsNotEmpty()
-  slug?: string;
+  slug!: string;
 
-  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  title?: string;
+  title!: string;
 
   @IsOptional()
   @IsString()
   description?: string | null;
 
-  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  content_mdx?: string;
+  content_mdx!: string;
 
-  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  author?: string;
+  author!: string;
 
-  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  category?: string;
+  category!: string;
 
   @IsOptional()
   @IsString()
   thumbnail_url?: string | null;
+
+  @IsOptional()
+  @IsISO8601()
+  published_at?: string | null;
 }
