@@ -26,7 +26,7 @@ entity, migration, seed 등 DB 관련 코드는 `src/database/` 에 위치한다
 
 ```
 src/database/
-├── entity/             # TypeORM 엔티티
+├── entities/           # TypeORM 엔티티
 │   └── index.ts        # entities 배열 export
 ├── migration/          # TypeORM 마이그레이션
 ├── data-source.ts      # TypeORM CLI용 DataSource (dotenv 로드)

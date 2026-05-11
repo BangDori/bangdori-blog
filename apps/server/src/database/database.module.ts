@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DatabaseService } from './database.service';
-import { entities } from './entity';
+import { entities } from './entities';
 
 @Global()
 @Module({
@@ -16,6 +16,7 @@ import { entities } from './entity';
         url: config.getOrThrow<string>('DATABASE_URL'),
         entities,
         synchronize: false,
+        installExtensions: false,
       }),
     }),
   ],
