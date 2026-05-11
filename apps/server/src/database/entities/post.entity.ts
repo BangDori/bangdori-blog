@@ -1,4 +1,5 @@
 import {
+  Check,
   Column,
   CreateDateColumn,
   Entity,
@@ -17,6 +18,10 @@ export enum PostStatus {
 @Entity({ name: 'posts' })
 @Unique('UQ_posts_slug', ['slug'])
 @Index('IDX_posts_status_published_at', ['status', 'publishedAt'])
+@Check(
+  'CHK_posts_published_requires_published_at',
+  `"status" <> 'published' OR "published_at" IS NOT NULL`,
+)
 export class Post {
   @PrimaryGeneratedColumn('uuid')
   id!: string;

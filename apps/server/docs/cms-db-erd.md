@@ -81,3 +81,4 @@ draft -> published -> archived
 | `PK_posts_id` | `id` | Primary Key |
 | `UQ_posts_slug` | `slug` | URL 식별자 중복 방지 |
 | `IDX_posts_status_published_at` | `status`, `published_at` | 공개 글 목록 조회 |
+| `CHK_posts_published_requires_published_at` | `status`, `published_at` | `published` 상태 글의 발행 시각 필수 보장 |

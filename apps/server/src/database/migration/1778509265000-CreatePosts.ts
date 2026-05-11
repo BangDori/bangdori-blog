@@ -24,7 +24,8 @@ export class CreatePosts1778509265000 implements MigrationInterface {
         "created_at" timestamptz NOT NULL DEFAULT now(),
         "updated_at" timestamptz NOT NULL DEFAULT now(),
         CONSTRAINT "PK_posts_id" PRIMARY KEY ("id"),
-        CONSTRAINT "UQ_posts_slug" UNIQUE ("slug")
+        CONSTRAINT "UQ_posts_slug" UNIQUE ("slug"),
+        CONSTRAINT "CHK_posts_published_requires_published_at" CHECK ("status" <> 'published' OR "published_at" IS NOT NULL)
       )
     `);
     await queryRunner.query(
