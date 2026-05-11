@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Post, PostStatus } from '../../database/entities/post.entity';
+import { AdminPostsError } from './admin-posts.error';
 import { AdminPostsRepository } from './admin-posts.repository';
 import { CreateAdminPostDto } from './dto/create-admin-post.dto';
 import { ListAdminPostsQueryDto } from './dto/list-admin-posts-query.dto';
@@ -35,7 +36,7 @@ export class AdminPostsService {
 
   async update(id: string, dto: UpdateAdminPostDto): Promise<Post> {
     if (Object.keys(dto).length === 0) {
-      throw new BadRequestException('At least one field is required to update a post.');
+      throw new BadRequestException(AdminPostsError.updateFieldRequired);
     }
 
     const post = await this.findEntityById(id);
@@ -81,7 +82,7 @@ export class AdminPostsService {
     const deleted = await this.adminPostsRepository.softDeleteById(id);
 
     if (!deleted) {
-      throw new NotFoundException(`Post not found: ${id}`);
+      throw new NotFoundException(AdminPostsError.postDeleteTargetNotFound(id));
     }
   }
 
@@ -89,7 +90,7 @@ export class AdminPostsService {
     const post = await this.adminPostsRepository.findById(id);
 
     if (!post) {
-      throw new NotFoundException(`Post not found: ${id}`);
+      throw new NotFoundException(AdminPostsError.postNotFound(id));
     }
 
     return post;
