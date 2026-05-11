@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -49,5 +50,11 @@ export class AdminPostsController {
   @HttpCode(HttpStatus.OK)
   archive(@Param('id', ParseUUIDPipe) id: string) {
     return this.adminPostsService.archive(id);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  delete(@Param('id', ParseUUIDPipe) id: string) {
+    return this.adminPostsService.delete(id);
   }
 }
