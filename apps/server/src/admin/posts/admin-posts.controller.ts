@@ -10,14 +10,14 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { AdminPostsService } from './admin-posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { ListPostsQueryDto } from './dto/list-posts-query.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-import { PostsService } from './posts.service';
 
-@Controller('posts')
-export class PostsController {
-  constructor(private readonly postsService: PostsService) {}
+@Controller('admin/posts')
+export class AdminPostsController {
+  constructor(private readonly postsService: AdminPostsService) {}
 
   @Get()
   findAll(@Query() query: ListPostsQueryDto) {

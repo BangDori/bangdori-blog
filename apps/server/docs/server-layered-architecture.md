@@ -63,21 +63,23 @@ DTO        → Repository 의존
 
 ## 기능 모듈 폴더 규칙
 
-기능 모듈은 도메인 이름을 기준으로 폴더를 나눈다. 여기서 `{domain}`은 `posts`, `users`, `analytics` 같은 기능 이름이다.
+기능 모듈은 기본적으로 권한/노출면과 도메인을 함께 드러내는 `{surface}/{domain}` 구조로 나눈다. 여기서 `{surface}`는 `admin`, `public` 같은 API 노출면이고, `{domain}`은 `posts`, `analytics` 같은 기능 이름이다.
 
 ```text
-apps/server/src/{domain}/
-├── {domain}.module.ts
-├── {domain}.controller.ts
-├── {domain}.service.ts
-├── {domain}.repository.ts
-├── {domain}.mapper.ts          # 선택: entity → response 변환이 필요할 때
+apps/server/src/{surface}/{domain}/
+├── {surface}-{domain}.module.ts
+├── {surface}-{domain}.controller.ts
+├── {surface}-{domain}.service.ts
+├── {surface}-{domain}.repository.ts
+├── {surface}-{domain}.mapper.ts          # 선택: entity → response 변환이 필요할 때
 └── dto/
     ├── create-{resource}.dto.ts
     ├── update-{resource}.dto.ts
     ├── list-{resource}-query.dto.ts
-    └── {resource}-response.dto.ts  # 선택
+    └── {resource}-response.dto.ts        # 선택
 ```
+
+예를 들어 admin posts API는 `apps/server/src/admin/posts/` 아래에 둔다. 나중에 public posts API가 필요하면 `apps/server/src/public/posts/` 아래에 별도 controller/service를 둔다.
 
 작은 기능이라도 DB 접근이 있으면 `Repository` 파일을 둔다. 처음에는 얇은 래퍼여도 괜찮다. 나중에 query 조건, pagination, transaction, lock, bulk update가 들어와도 Service가 비대해지지 않게 하기 위함이다.
 
