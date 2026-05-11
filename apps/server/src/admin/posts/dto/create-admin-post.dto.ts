@@ -15,7 +15,7 @@ export class CreateAdminPostDto {
 
   @IsString()
   @IsNotEmpty()
-  content_mdx!: string;
+  contentMdx!: string;
 
   @IsString()
   @IsNotEmpty()
@@ -27,9 +27,9 @@ export class CreateAdminPostDto {
 
   @IsOptional()
   @IsString()
-  thumbnail_url?: string | null;
+  thumbnailUrl?: string | null;
 
   @IsOptional()
   @IsISO8601()
-  published_at?: string | null;
+  publishedAt?: string | null;
 }

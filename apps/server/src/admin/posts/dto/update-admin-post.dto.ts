@@ -18,7 +18,7 @@ export class UpdateAdminPostDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  content_mdx?: string;
+  contentMdx?: string;
 
   @IsOptional()
   @IsString()
@@ -32,5 +32,5 @@ export class UpdateAdminPostDto {
 
   @IsOptional()
   @IsString()
-  thumbnail_url?: string | null;
+  thumbnailUrl?: string | null;
 }
