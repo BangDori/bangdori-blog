@@ -9,7 +9,8 @@
 - 비즈니스 규칙은 `Service`가 담당한다.
 - DB 접근과 TypeORM query builder는 `Repository`가 담당한다.
 - TypeORM `Entity`는 DB 스키마 매핑만 담당한다.
-- 요청/응답 모양은 `DTO` 또는 mapper에서 관리한다.
+- 요청 모양은 `DTO`에서 관리한다.
+- 응답은 기본적으로 Entity의 camelCase 필드를 그대로 반환하고, Entity와 API 응답 모양이 달라질 때만 mapper를 둔다.
 - Controller와 Repository가 서로 직접 의존하지 않는다.
 
 ## 요청 처리 흐름
@@ -71,6 +72,7 @@ apps/server/src/{surface}/{domain}/
 ├── {domain}.controller.ts
 ├── {domain}.service.ts
 ├── {domain}.repository.ts
+├── {domain}.error.ts                     # 선택: 도메인 에러 메시지를 모을 때
 ├── {domain}.mapper.ts                    # 선택: entity → response 변환이 필요할 때
 └── dto/
     ├── create-{resource}.dto.ts
@@ -80,6 +82,8 @@ apps/server/src/{surface}/{domain}/
 ```
 
 예를 들어 admin posts API는 `apps/server/src/admin/posts/` 아래에 둔다. 나중에 public posts API가 필요하면 `apps/server/src/public/posts/` 아래에 별도 controller/service를 둔다.
+
+파일명은 이미 `{surface}/{domain}` 경로로 구분되므로 `posts.controller.ts`, `posts.service.ts`처럼 도메인 이름만 쓴다. 단, 외부 module에서 import되는 class 이름은 충돌을 피하기 위해 `AdminPostsModule`, `PublicPostsModule`처럼 surface를 포함할 수 있다.
 
 작은 기능이라도 DB 접근이 있으면 `Repository` 파일을 둔다. 처음에는 얇은 래퍼여도 괜찮다. 나중에 query 조건, pagination, transaction, lock, bulk update가 들어와도 Service가 비대해지지 않게 하기 위함이다.
 
@@ -91,6 +95,7 @@ apps/server/src/{surface}/{domain}/
 | `*.controller.ts` | HTTP endpoint가 있을 때 | route 선언과 request 수신 |
 | `*.service.ts` | 비즈니스 규칙이 있을 때 | 정책, 상태 전이, 에러 의미화 |
 | `*.repository.ts` | DB 접근이 있을 때 | TypeORM repository/query builder 래핑 |
+| `*.error.ts` | 도메인 에러 메시지가 2개 이상 생길 때 | 에러 문구 중앙 관리 |
 | `*.mapper.ts` | entity와 response 모양이 다를 때 | API 응답 포맷 변환 |
 | `dto/*.dto.ts` | body/query/response 타입이 필요할 때 | validation과 API shape 문서화 |
 
@@ -143,11 +148,11 @@ update 요청에서 실제로 바뀐 필드가 없으면 save를 호출하지 �
 |---|---:|---|
 | DTO validation 실패 | 400 | Global ValidationPipe |
 | 리소스를 찾을 수 없음 | 404 | Service |
-| unique constraint 위반 | 409 | Service |
+| unique constraint 위반 | 409 | Service 또는 공통 DB exception filter |
 | 허용되지 않는 상태 전이 | 400 또는 409 | Service |
 | 그 외 내부 에러 | 500 계열 | NestJS 기본 처리 |
 
-Repository는 DB 에러를 숨기거나 HTTP exception으로 바꾸지 않는다. Service가 도메인 의미로 변환한다.
+Repository는 DB 에러를 숨기거나 HTTP exception으로 바꾸지 않는다. 도메인 의미로 변환해야 하는 에러는 Service 또는 공통 DB exception filter에서 처리한다.
 
 ## TypeORM Repository 래핑 기준
 
@@ -182,27 +187,29 @@ async transitionState(id: string) {
   const resource = await this.findResourceOrThrow(id);
 
   if (resource.isAlreadyTargetState()) {
-    return this.mapper.toResponse(resource);
+    return resource;
   }
 
   resource.transitionState();
 
-  return this.saveAndReturn(resource);
+  return this.resourcesRepository.save(resource);
 }
 ```
 
 ## Mapper 기준
 
-Entity 필드명과 API 응답 필드명이 다르거나, 내부 필드를 숨겨야 하면 mapper를 둔다.
+기본 응답은 Entity의 camelCase 필드를 그대로 사용한다. 같은 admin/internal API에서 DTO 필드명과 Entity 필드명이 같다면 별도 mapper를 만들지 않는다.
+
+Mapper는 아래처럼 Entity와 API 응답 모양이 실제로 달라질 때만 둔다.
 
 ```text
-Entity camelCase       → API snake_case
-internal-only columns  → response에서 제외
-Date                   → ISO string
-bigint                 → string 또는 number 정책 고정
+일부 내부 컬럼을 response에서 숨겨야 할 때
+public API에서 admin Entity보다 좁은 응답을 내려야 할 때
+Entity field name과 API field name을 다르게 가져가야 할 때
+Date/bigint 같은 타입을 별도 정책으로 변환해야 할 때
 ```
 
-이 변환을 Controller에 두지 않는다. Controller는 route와 service 호출만 담당한다.
+이 변환이 필요해지더라도 Controller에 두지 않는다. Controller는 route와 service 호출만 담당한다.
 
 ## timestamp / counter 처리 원칙
 
@@ -215,3 +222,5 @@ incrementCounterWithoutTouchingUpdatedAt(id: string)
 ```
 
 이 메서드는 ORM helper 또는 raw query를 사용하되, `updated_at`을 건드리지 않는지 반드시 확인한다.
+
+soft delete도 같은 원칙을 따른다. 삭제 시에는 `deleted_at`만 갱신하고, 글 내용 수정 시각인 `updated_at`은 변경하지 않는다.
