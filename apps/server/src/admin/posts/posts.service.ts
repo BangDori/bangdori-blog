@@ -79,11 +79,13 @@ export class PostsService {
   }
 
   async delete(id: string): Promise<void> {
-    const deleted = await this.postsRepository.softDeleteById(id);
+    const post = await this.postsRepository.findById(id);
 
-    if (!deleted) {
+    if (!post) {
       throw new NotFoundException(PostsError.postDeleteTargetNotFound(id));
     }
+
+    await this.postsRepository.softDeleteById(id);
   }
 
   private async findEntityById(id: string): Promise<Post> {

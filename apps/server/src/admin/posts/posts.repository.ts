@@ -33,14 +33,11 @@ export class PostsRepository {
     return this.repository.findOne({ where: { id, deletedAt: IsNull() } });
   }
 
-  async softDeleteById(id: string): Promise<boolean> {
-    const result: unknown = await this.repository.query(
-      'UPDATE "posts" SET "deleted_at" = now() WHERE "id" = $1 AND "deleted_at" IS NULL RETURNING "id"',
+  async softDeleteById(id: string): Promise<void> {
+    await this.repository.query(
+      'UPDATE "posts" SET "deleted_at" = now() WHERE "id" = $1 AND "deleted_at" IS NULL',
       [id],
     );
-    const rows = Array.isArray(result) && Array.isArray(result[0]) ? result[0] : result;
-
-    return Array.isArray(rows) && rows.length > 0;
   }
 
   async save(post: Post): Promise<Post> {
