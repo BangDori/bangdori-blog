@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DatabaseModule } from './database/database.module';
 import { HealthController } from './health.controller';
 import { LoggerModule } from './logger/logger.module';
+import { PostsModule } from './posts/posts.module';
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -13,6 +14,7 @@ const env = process.env.NODE_ENV || 'development';
     }),
     DatabaseModule,
     LoggerModule,
+    PostsModule,
   ],
   controllers: [HealthController],
 })
