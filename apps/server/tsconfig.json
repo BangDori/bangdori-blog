@@ -10,7 +10,12 @@
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "baseUrl": "./",
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"],
+      "@database/*": ["database/*"],
+      "@admin/*": ["admin/*"]
+    },
     "incremental": true,
     "skipLibCheck": true,
     "strict": true,
