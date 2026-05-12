@@ -1,7 +1,16 @@
 {
   "$schema": "https://biomejs.dev/schemas/2.4.14/schema.json",
   "files": {
-    "includes": ["apps/user-web/**", "apps/server/**", "apps/admin/**", "!apps/user-web/.next", "!apps/user-web/public", "!apps/server/dist", "!apps/admin/dist", "!**/.infisical.json"]
+    "includes": [
+      "apps/user-web/**",
+      "apps/server/**",
+      "apps/admin/**",
+      "!apps/user-web/.next",
+      "!apps/user-web/public",
+      "!apps/server/dist",
+      "!apps/admin/dist",
+      "!**/.infisical.json"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -10,6 +19,9 @@
     "lineWidth": 100
   },
   "javascript": {
+    "parser": {
+      "unsafeParameterDecoratorsEnabled": true
+    },
     "formatter": {
       "quoteStyle": "single",
       "trailingCommas": "all",
