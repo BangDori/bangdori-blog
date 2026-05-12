@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { Post, PostStatus } from '../../database/entities/post.entity';
-import { CreatePostDto } from './dto/create-post.dto';
-import { ListPostsQueryDto } from './dto/list-posts-query.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
-import { PostsError } from './posts.error';
-import { PostsRepository } from './posts.repository';
+import { CreatePostDto } from '@admin/posts/dto/create-post.dto';
+import { ListPostsQueryDto } from '@admin/posts/dto/list-posts-query.dto';
+import { UpdatePostDto } from '@admin/posts/dto/update-post.dto';
+import { PostsError } from '@admin/posts/posts.error';
+import { PostsRepository } from '@admin/posts/posts.repository';
+import { Post, PostStatus } from '@database/entities/post.entity';
 
 @Injectable()
 export class PostsService {
