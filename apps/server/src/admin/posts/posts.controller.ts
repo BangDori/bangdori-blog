@@ -1,7 +1,3 @@
-import { CreatePostDto } from '@admin/posts/dto/create-post.dto';
-import { ListPostsQueryDto } from '@admin/posts/dto/list-posts-query.dto';
-import { UpdatePostDto } from '@admin/posts/dto/update-post.dto';
-import { PostsService } from '@admin/posts/posts.service';
 import {
   Body,
   Controller,
@@ -15,6 +11,10 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
+import { CreatePostDto } from '@admin/posts/dto/create-post.dto';
+import { ListPostsQueryDto } from '@admin/posts/dto/list-posts-query.dto';
+import { UpdatePostDto } from '@admin/posts/dto/update-post.dto';
+import { PostsService } from '@admin/posts/posts.service';
 
 @Controller('admin/posts')
 export class PostsController {

@@ -1,7 +1,7 @@
-import { AdminPostsModule } from '@admin/posts/posts.module';
-import { DatabaseModule } from '@database/database.module';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { AdminPostsModule } from '@admin/posts/posts.module';
+import { DatabaseModule } from '@database/database.module';
 import { HealthController } from '@/health.controller';
 import { LoggerModule } from '@/logger/logger.module';
 
