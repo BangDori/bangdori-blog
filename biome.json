@@ -61,7 +61,18 @@
       "linter": {
         "rules": {
           "style": {
-            "useImportType": "off"
+            "useImportType": "off",
+            "noRestrictedImports": {
+              "level": "error",
+              "options": {
+                "patterns": [
+                  {
+                    "group": ["./**", "../**"],
+                    "message": "apps/server에서는 src 기준 절대경로 alias(@/, @database/, @admin/)를 사용합니다."
+                  }
+                ]
+              }
+            }
           }
         }
       }

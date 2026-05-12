@@ -1,4 +1,4 @@
-import { AppDataSource } from './data-source';
+import { AppDataSource } from '@database/data-source';
 
 async function seed() {
   await AppDataSource.initialize();
