@@ -15,7 +15,10 @@
     "migration:revert": "pnpm typeorm:ds migration:revert",
     "seed": "tsx src/database/seed.ts",
     "check": "biome check --write .",
-    "check:ci": "biome check ."
+    "check:ci": "biome check .",
+    "test": "pnpm test:unit && pnpm test:integration",
+    "test:unit": "jest --config jest.unit.config.js",
+    "test:integration": "jest --config jest.integration.config.js --runInBand"
   },
   "dependencies": {
     "@nestjs/common": "11.1.19",
@@ -36,10 +39,15 @@
   "devDependencies": {
     "@biomejs/biome": "2.4.14",
     "@nestjs/cli": "11.0.21",
+    "@nestjs/testing": "11.1.19",
+    "@types/jest": "30.0.0",
     "@types/node": "24.12.2",
     "@types/pg": "8.20.0",
     "dotenv": "17.4.2",
+    "jest": "30.2.0",
+    "ts-jest": "29.4.4",
     "tsc-alias": "1.8.17",
+    "tsconfig-paths": "4.2.0",
     "tsx": "4.21.0",
     "typescript": "5.9.3"
   }
