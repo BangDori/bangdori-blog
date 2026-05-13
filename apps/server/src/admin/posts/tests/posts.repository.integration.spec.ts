@@ -143,21 +143,32 @@ describe('PostsRepository (integration)', () => {
     });
 
     it('발행 시각 내림차순으로 정렬되며 미발행 글은 가장 뒤에서 작성 시각 내림차순으로 정렬된다', async () => {
-      // given: 의도적으로 createdAt을 다르게 만들고 publishedAt도 섞는다
+      // given: 동률 제거를 위해 모든 시드에 명시적 createdAt 지정 (drafts는 서로 다른 값)
       const p1 = await seedPost({
         slug: 's1',
         publishedAt: new Date('2026-01-01T00:00:00Z'),
+        createdAt: new Date('2026-01-01T00:00:00Z'),
       });
       const p2 = await seedPost({
         slug: 's2',
         publishedAt: new Date('2026-03-01T00:00:00Z'),
+        createdAt: new Date('2026-03-01T00:00:00Z'),
       });
-      const p3 = await seedPost({ slug: 's3', publishedAt: null });
+      const p3 = await seedPost({
+        slug: 's3',
+        publishedAt: null,
+        createdAt: new Date('2026-04-01T00:00:00Z'),
+      });
       const p4 = await seedPost({
         slug: 's4',
         publishedAt: new Date('2026-02-01T00:00:00Z'),
+        createdAt: new Date('2026-02-01T00:00:00Z'),
       });
-      const p5 = await seedPost({ slug: 's5', publishedAt: null });
+      const p5 = await seedPost({
+        slug: 's5',
+        publishedAt: null,
+        createdAt: new Date('2026-04-02T00:00:00Z'),
+      });
 
       // when
       const all = await repository.findAll();
