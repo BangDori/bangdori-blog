@@ -95,7 +95,7 @@ describe('PostsRepository (integration)', () => {
   });
 
   describe('findAll', () => {
-    it('삭제되지 않은 행만 반환한다', async () => {
+    it('삭제 여부와 관계없이 모든 행을 반환하며 삭제 여부는 deletedAt으로 구분된다', async () => {
       // given: 살아있는 글 1개 + soft delete된 글 1개
       const alive = await seedPost({ slug: 'alive' });
       const deleted = await seedPost({ slug: 'deleted' });
@@ -104,8 +104,10 @@ describe('PostsRepository (integration)', () => {
       // when: 조건 없이 전체 조회
       const all = await repository.findAll();
 
-      // then: deleted_at IS NULL 인 행만 반환되어야 함
-      expect(all.map((p) => p.id)).toEqual([alive.id]);
+      // then: 둘 다 반환, 살아있는 글은 deletedAt null / 삭제된 글은 deletedAt Date
+      expect(all).toHaveLength(2);
+      expect(all.find((p) => p.id === alive.id)?.deletedAt).toBeNull();
+      expect(all.find((p) => p.id === deleted.id)?.deletedAt).toBeInstanceOf(Date);
     });
 
     it('status가 draft인 행만 반환한다', async () => {
@@ -188,16 +190,18 @@ describe('PostsRepository (integration)', () => {
       expect(raw?.deletedAt).toBeInstanceOf(Date);
     });
 
-    it('삭제된 행은 findById로 조회되지 않는다', async () => {
+    it('삭제된 행도 findById로 조회된다', async () => {
       // given: 살아있는 글 1개
       const post = await seedPost({ slug: 'gone' });
 
       // when: soft delete 수행
       await repository.softDeleteById(post.id);
 
-      // then: findById는 deleted_at IS NULL 조건이 걸려 null 반환
+      // then: findById는 deleted_at 여부와 관계없이 해당 id를 반환하며 deletedAt은 Date
       const found = await repository.findById(post.id);
-      expect(found).toBeNull();
+      expect(found).not.toBeNull();
+      expect(found?.id).toBe(post.id);
+      expect(found?.deletedAt).toBeInstanceOf(Date);
     });
   });
 
