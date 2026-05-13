@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import { DeepPartial, IsNull, Repository } from 'typeorm';
 import { Post, PostStatus } from '@database/entities/post.entity';
 
 @Injectable()
@@ -17,8 +17,10 @@ export class PostsRepository {
   async findAll(status?: PostStatus): Promise<Post[]> {
     const queryBuilder = this.repository.createQueryBuilder('post');
 
+    queryBuilder.where('post.deletedAt IS NULL');
+
     if (status) {
-      queryBuilder.where('post.status = :status', { status });
+      queryBuilder.andWhere('post.status = :status', { status });
     }
 
     return queryBuilder
@@ -28,7 +30,7 @@ export class PostsRepository {
   }
 
   async findById(id: string): Promise<Post | null> {
-    return this.repository.findOne({ where: { id } });
+    return this.repository.findOne({ where: { id, deletedAt: IsNull() } });
   }
 
   async softDeleteById(id: string): Promise<void> {
