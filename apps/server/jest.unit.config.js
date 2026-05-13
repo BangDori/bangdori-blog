@@ -6,4 +6,5 @@ module.exports = {
   ...base,
   displayName: 'unit',
   testMatch: ['<rootDir>/src/**/*.spec.ts'],
+  testPathIgnorePatterns: ['/node_modules/', '\\.integration\\.spec\\.ts$'],
 };

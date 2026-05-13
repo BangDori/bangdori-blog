@@ -5,7 +5,7 @@ const base = require('./jest.base.config');
 module.exports = {
   ...base,
   displayName: 'integration',
-  testMatch: ['<rootDir>/src/**/*.int-spec.ts'],
+  testMatch: ['<rootDir>/src/**/*.integration.spec.ts'],
   globalSetup: '<rootDir>/test/integration/global-setup.ts',
   globalTeardown: '<rootDir>/test/integration/global-teardown.ts',
   testTimeout: 30000,
