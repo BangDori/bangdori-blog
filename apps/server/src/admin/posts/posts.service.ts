@@ -61,7 +61,7 @@ export class PostsService {
     }
 
     post.status = PostStatus.PUBLISHED;
-    post.publishedAt ??= new Date();
+    post.publishedAt = new Date();
 
     return this.postsRepository.save(post);
   }
