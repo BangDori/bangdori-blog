@@ -13,8 +13,14 @@ export default async function globalSetup(): Promise<void> {
   process.env.TEST_DATABASE_URL = url;
   globalThis.__PG_CONTAINER__ = container;
 
-  execSync('pnpm typeorm:ds migration:run', {
-    stdio: 'inherit',
-    env: { ...process.env, DATABASE_URL: url },
-  });
+  try {
+    execSync('pnpm typeorm:ds migration:run', {
+      stdio: 'inherit',
+      env: { ...process.env, DATABASE_URL: url },
+    });
+  } catch (err) {
+    await container.stop();
+    globalThis.__PG_CONTAINER__ = undefined;
+    throw err;
+  }
 }
