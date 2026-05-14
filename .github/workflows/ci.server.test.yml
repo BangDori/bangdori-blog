@@ -37,22 +37,6 @@ jobs:
 
   integration:
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_USER: bangdori
-          POSTGRES_PASSWORD: 1234
-          POSTGRES_DB: bangdori_blog_test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U bangdori -d bangdori_blog_test"
-          --health-interval 5s
-          --health-timeout 5s
-          --health-retries 10
-    env:
-      TEST_DATABASE_URL: postgres://bangdori:1234@localhost:5432/bangdori_blog_test
     steps:
       - uses: actions/checkout@v4
 
