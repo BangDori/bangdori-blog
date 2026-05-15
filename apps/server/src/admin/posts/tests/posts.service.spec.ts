@@ -1,4 +1,4 @@
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { BadRequestException, ConflictException, NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { PostsError } from '@admin/posts/posts.error';
 import { PostsRepository } from '@admin/posts/posts.repository';
@@ -17,6 +17,14 @@ function createPostsRepositoryMock(): PostsRepositoryMock {
     softDeleteById: jest.fn(),
     save: jest.fn(),
   };
+}
+
+function makePgUniqueError(): Error & { code: string } {
+  const err = new Error('duplicate key value violates unique constraint') as Error & {
+    code: string;
+  };
+  err.code = '23505';
+  return err;
 }
 
 function makePost(overrides: Partial<Post> = {}): Post {
@@ -62,6 +70,43 @@ describe('PostsService', () => {
     service = moduleRef.get(PostsService);
   });
 
+  describe('create', () => {
+    it('slug 중복(PG 23505)이면 ConflictException 으로 변환된다', async () => {
+      // given: repository.save 가 PG unique violation 을 던진다
+      repository.create.mockImplementation((input) => input as Post);
+      repository.save.mockRejectedValue(makePgUniqueError());
+
+      // when & then: 23505 는 ConflictException 으로 변환되고 메시지에 slug 가 포함된다
+      await expect(
+        service.create({
+          slug: 'dup-slug',
+          title: 't',
+          contentMdx: 'c',
+          author: 'a',
+          category: 'cat',
+        }),
+      ).rejects.toThrow(new ConflictException(PostsError.postSlugConflict('dup-slug')));
+    });
+
+    it('23505 가 아닌 다른 에러는 그대로 위로 던진다', async () => {
+      // given: repository.save 가 일반 Error 를 던진다
+      const other = new Error('boom');
+      repository.create.mockImplementation((input) => input as Post);
+      repository.save.mockRejectedValue(other);
+
+      // when & then: 변환되지 않고 원본 그대로 전파
+      await expect(
+        service.create({
+          slug: 's',
+          title: 't',
+          contentMdx: 'c',
+          author: 'a',
+          category: 'cat',
+        }),
+      ).rejects.toBe(other);
+    });
+  });
+
   describe('update', () => {
     it('빈 payload면 BadRequestException', async () => {
       // given: 별도 셋업 없음 — 빈 payload는 findById 도달 전에 막혀야 함
@@ -83,6 +128,41 @@ describe('PostsService', () => {
       // then: 변경 사항이 없으므로 save 호출 없이 기존 인스턴스를 그대로 반환
       expect(result).toBe(existing);
       expect(repository.save).not.toHaveBeenCalled();
+    });
+
+    it('slug 중복(PG 23505)이면 ConflictException 으로 변환된다', async () => {
+      // given: 기존 글 + repository.save 가 PG unique violation 을 던진다
+      const existing = makePost({ slug: 'old' });
+      repository.findById.mockResolvedValue(existing);
+      repository.save.mockRejectedValue(makePgUniqueError());
+
+      // when & then: 23505 는 ConflictException 으로 변환되고 메시지에 새 slug 가 포함된다
+      await expect(service.update(existing.id, { slug: 'taken' })).rejects.toThrow(
+        new ConflictException(PostsError.postSlugConflict('taken')),
+      );
+    });
+
+    it('slug 없이 다른 필드 수정 중 충돌이 나면 기존 slug 로 메시지 구성', async () => {
+      // given: 기존 글의 slug=old 이고 dto 에는 slug 가 없으니 기존 값을 그대로 쓰게 된다
+      const existing = makePost({ slug: 'old' });
+      repository.findById.mockResolvedValue(existing);
+      repository.save.mockRejectedValue(makePgUniqueError());
+
+      // when & then: title 만 바꿈 시도이지만 23505 나면 ConflictException 으로 변환, 메시지는 existing.slug
+      await expect(service.update(existing.id, { title: 'new' })).rejects.toThrow(
+        new ConflictException(PostsError.postSlugConflict('old')),
+      );
+    });
+
+    it('23505 가 아닌 다른 에러는 그대로 위로 던진다', async () => {
+      // given: 기존 글 + repository.save 가 일반 Error 를 던진다
+      const existing = makePost({ slug: 'old' });
+      const other = new Error('boom');
+      repository.findById.mockResolvedValue(existing);
+      repository.save.mockRejectedValue(other);
+
+      // when & then: 변환되지 않고 원본 그대로 전파
+      await expect(service.update(existing.id, { title: 'new' })).rejects.toBe(other);
     });
 
     it('변경 필드만 반영하고 나머지는 유지', async () => {
@@ -211,7 +291,7 @@ describe('PostsService', () => {
 
       // when & then: delete 호출 시 NotFound + 정해진 메시지, softDeleteById 는 호출되지 않음
       await expect(service.delete('missing')).rejects.toThrow(
-        new NotFoundException(PostsError.postDeleteTargetNotFound('missing')),
+        new NotFoundException(PostsError.postNotFound('missing')),
       );
       expect(repository.softDeleteById).not.toHaveBeenCalled();
     });
