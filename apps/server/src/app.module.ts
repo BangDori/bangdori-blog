@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { ExternalPostsModule } from '@admin/external-posts/external-posts.module';
 import { AdminPostsModule } from '@admin/posts/posts.module';
 import { DatabaseModule } from '@database/database.module';
 import { HealthController } from '@/health.controller';
@@ -15,6 +16,7 @@ const env = process.env.NODE_ENV || 'development';
     DatabaseModule,
     LoggerModule,
     AdminPostsModule,
+    ExternalPostsModule,
   ],
   controllers: [HealthController],
 })
