@@ -57,20 +57,19 @@ export class PostsService {
   }
 
   async update(id: string, dto: UpdatePostDto): Promise<Post> {
-    const entries = Object.entries(dto).filter(([, value]) => value !== undefined);
-
-    if (entries.length === 0) {
+    if (!Object.values(dto).some((value) => value !== undefined)) {
       throw new BadRequestException(PostsError.updateFieldRequired);
     }
 
     const post = await this.findEntityById(id);
-    const hasChanges = entries.some(([key, value]) => post[key as keyof UpdatePostDto] !== value);
 
-    if (!hasChanges) {
-      return post;
-    }
-
-    Object.assign(post, Object.fromEntries(entries));
+    if (dto.slug !== undefined) post.slug = dto.slug;
+    if (dto.title !== undefined) post.title = dto.title;
+    if (dto.description !== undefined) post.description = dto.description;
+    if (dto.contentMdx !== undefined) post.contentMdx = dto.contentMdx;
+    if (dto.author !== undefined) post.author = dto.author;
+    if (dto.category !== undefined) post.category = dto.category;
+    if (dto.thumbnailUrl !== undefined) post.thumbnailUrl = dto.thumbnailUrl;
 
     try {
       return await this.postsRepository.save(post);

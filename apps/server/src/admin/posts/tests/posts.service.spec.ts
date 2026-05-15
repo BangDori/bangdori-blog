@@ -117,19 +117,6 @@ describe('PostsService', () => {
       );
     });
 
-    it('실제 변경이 없는 값이면 save 호출 없이 기존 entity 반환 (idempotent)', async () => {
-      // given: 기존 글의 title === 'same'
-      const existing = makePost({ title: 'same' });
-      repository.findById.mockResolvedValue(existing);
-
-      // when: 동일한 값으로 update 호출
-      const result = await service.update(existing.id, { title: 'same' });
-
-      // then: 변경 사항이 없으므로 save 호출 없이 기존 인스턴스를 그대로 반환
-      expect(result).toBe(existing);
-      expect(repository.save).not.toHaveBeenCalled();
-    });
-
     it('slug 중복(PG 23505)이면 ConflictException 으로 변환된다', async () => {
       // given: 기존 글 + repository.save 가 PG unique violation 을 던진다
       const existing = makePost({ slug: 'old' });
