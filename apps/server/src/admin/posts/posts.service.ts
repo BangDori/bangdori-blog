@@ -1,10 +1,25 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreatePostDto } from '@admin/posts/dto/create-post.dto';
 import { ListPostsQueryDto } from '@admin/posts/dto/list-posts-query.dto';
 import { UpdatePostDto } from '@admin/posts/dto/update-post.dto';
 import { PostsError } from '@admin/posts/posts.error';
 import { PostsRepository } from '@admin/posts/posts.repository';
 import { Post, PostStatus } from '@database/entities/post.entity';
+
+const PG_UNIQUE_VIOLATION = '23505';
+
+function isPgUniqueViolation(err: unknown): boolean {
+  return (
+    typeof err === 'object' &&
+    err !== null &&
+    (err as { code?: string }).code === PG_UNIQUE_VIOLATION
+  );
+}
 
 @Injectable()
 export class PostsService {
@@ -31,26 +46,39 @@ export class PostsService {
       publishedAt: dto.publishedAt ? new Date(dto.publishedAt) : null,
     });
 
-    return this.postsRepository.save(post);
+    try {
+      return await this.postsRepository.save(post);
+    } catch (err) {
+      if (isPgUniqueViolation(err)) {
+        throw new ConflictException(PostsError.postSlugConflict(dto.slug));
+      }
+      throw err;
+    }
   }
 
   async update(id: string, dto: UpdatePostDto): Promise<Post> {
-    const entries = Object.entries(dto).filter(([, value]) => value !== undefined);
-
-    if (entries.length === 0) {
+    if (!Object.values(dto).some((value) => value !== undefined)) {
       throw new BadRequestException(PostsError.updateFieldRequired);
     }
 
     const post = await this.findEntityById(id);
-    const hasChanges = entries.some(([key, value]) => post[key as keyof UpdatePostDto] !== value);
 
-    if (!hasChanges) {
-      return post;
+    if (dto.slug !== undefined) post.slug = dto.slug;
+    if (dto.title !== undefined) post.title = dto.title;
+    if (dto.description !== undefined) post.description = dto.description;
+    if (dto.contentMdx !== undefined) post.contentMdx = dto.contentMdx;
+    if (dto.author !== undefined) post.author = dto.author;
+    if (dto.category !== undefined) post.category = dto.category;
+    if (dto.thumbnailUrl !== undefined) post.thumbnailUrl = dto.thumbnailUrl;
+
+    try {
+      return await this.postsRepository.save(post);
+    } catch (err) {
+      if (isPgUniqueViolation(err)) {
+        throw new ConflictException(PostsError.postSlugConflict(dto.slug ?? post.slug));
+      }
+      throw err;
     }
-
-    Object.assign(post, Object.fromEntries(entries));
-
-    return this.postsRepository.save(post);
   }
 
   async publish(id: string): Promise<Post> {
@@ -79,13 +107,9 @@ export class PostsService {
   }
 
   async delete(id: string): Promise<void> {
-    const post = await this.postsRepository.findById(id);
+    const post = await this.findEntityById(id);
 
-    if (!post) {
-      throw new NotFoundException(PostsError.postDeleteTargetNotFound(id));
-    }
-
-    await this.postsRepository.softDeleteById(id);
+    await this.postsRepository.softDeleteById(post.id);
   }
 
   private async findEntityById(id: string): Promise<Post> {
