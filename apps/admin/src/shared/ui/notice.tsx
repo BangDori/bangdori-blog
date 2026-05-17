@@ -9,10 +9,7 @@ interface NoticeProps {
 export function Notice({ className, children }: NoticeProps) {
   return (
     <div
-      className={cn(
-        'rounded-md border border-border p-6 text-sm text-muted-foreground',
-        className,
-      )}
+      className={cn('rounded-md border border-border p-6 text-sm text-muted-foreground', className)}
     >
       {children}
     </div>

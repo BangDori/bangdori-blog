@@ -1,5 +1,5 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { parsePostsFilter, PostsList, type PostsFilter, PostsStatusFilter } from '@/domains/posts';
+import { type PostsFilter, PostsList, PostsStatusFilter, parsePostsFilter } from '@/domains/posts';
 import { ROUTES } from '@/shared/lib/routes';
 import { Button } from '@/shared/ui/button';
 

@@ -3,11 +3,7 @@ import { cn } from '@/shared/lib/cn';
 
 export type IconProps = SVGProps<SVGSVGElement>;
 
-export function IconBase({
-  className,
-  children,
-  ...props
-}: IconProps & { children: ReactNode }) {
+export function IconBase({ className, children, ...props }: IconProps & { children: ReactNode }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

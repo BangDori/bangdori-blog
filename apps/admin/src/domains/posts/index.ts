@@ -1,5 +1,4 @@
 export { useGetPost, useListPosts } from './api/queries';
-
+export { type PostsFilter, parsePostsFilter } from './model/filter';
 export { PostsList } from './ui/posts-list';
-export { parsePostsFilter, type PostsFilter } from './model/filter';
 export { PostsStatusFilter } from './ui/posts-status-filter';
