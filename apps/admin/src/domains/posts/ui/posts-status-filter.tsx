@@ -1,8 +1,6 @@
 import { cn } from '@/shared/lib/cn';
 import { POST_STATUS_LABEL, POST_STATUS_VALUES } from '../model/constants';
-import type { PostStatus } from '../model/types';
-
-export type PostsFilter = 'all' | PostStatus;
+import type { PostsFilter } from '../model/filter';
 
 const FILTERS: { value: PostsFilter; label: string }[] = [
   { value: 'all', label: '전체' },
