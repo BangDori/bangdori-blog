@@ -1,9 +1,11 @@
 import { DashboardIcon } from './dashboard';
 import type { IconProps } from './icon-base';
+import { MenuIcon } from './menu';
 import { PostsIcon } from './posts';
 
 const ICONS = {
   dashboard: DashboardIcon,
+  menu: MenuIcon,
   posts: PostsIcon,
 } as const;
 
