@@ -18,15 +18,17 @@ interface DisplayProps {
  * 머지한다 (cloneElement). element 의 원래 display(flex/grid/inline)는 그대로
  * 유지하고 "어디서 숨길지" 만 적용한다.
  */
+// key 는 [mobile?, tablet?, desktop?].sort().join(',') 로 만들어진다.
+// 알파벳 순(d < m < t)이라 'desktop,tablet' 같이 정렬된 형태가 와야 lookup 된다.
 const HIDE_CLASS: Record<string, string> = {
   '': 'hidden',
   mobile: 'md:hidden',
   tablet: 'max-md:hidden lg:hidden',
   desktop: 'max-lg:hidden',
   'mobile,tablet': 'lg:hidden',
-  'tablet,desktop': 'max-md:hidden',
-  'mobile,desktop': 'md:max-lg:hidden',
-  'mobile,tablet,desktop': '',
+  'desktop,tablet': 'max-md:hidden',
+  'desktop,mobile': 'md:max-lg:hidden',
+  'desktop,mobile,tablet': '',
 };
 
 export function Display({ mobile, tablet, desktop, children }: DisplayProps) {
