@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { formatDateTime } from '@/shared/lib/date';
+import { ROUTES } from '@/shared/lib/routes';
 import type { Post } from '../model/types';
 import { PostStatusBadge } from './post-status-badge';
 
@@ -31,7 +32,7 @@ export function PostsTable({ rows, onRowClick }: Props) {
             >
               <td className="px-3 py-2">
                 <Link
-                  to={`/posts/${post.id}/edit`}
+                  to={ROUTES.postEdit(post.id)}
                   onClick={(e) => e.stopPropagation()}
                   className="font-medium text-foreground hover:text-primary"
                 >

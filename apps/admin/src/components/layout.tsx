@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Icon, type IconName } from '@/shared/icons';
 import { cn } from '@/shared/lib/cn';
+import { ROUTES } from '@/shared/lib/routes';
 import { Display } from '@/shared/ui/display';
 
 interface NavItem {
@@ -12,8 +13,8 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { to: '/', label: 'Dashboard', icon: 'dashboard', end: true },
-  { to: '/posts', label: 'Posts', icon: 'posts' },
+  { to: ROUTES.dashboard, label: 'Dashboard', icon: 'dashboard', end: true },
+  { to: ROUTES.posts, label: 'Posts', icon: 'posts' },
 ];
 
 export function Layout() {
