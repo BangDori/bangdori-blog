@@ -17,6 +17,9 @@ importers:
       '@tanstack/react-query':
         specifier: 5.62.0
         version: 5.62.0(react@19.0.0)
+      clsx:
+        specifier: 2.1.1
+        version: 2.1.1
       react:
         specifier: 19.0.0
         version: 19.0.0
@@ -26,6 +29,9 @@ importers:
       react-router-dom:
         specifier: 7.15.0
         version: 7.15.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      tailwind-merge:
+        specifier: 2.5.5
+        version: 2.5.5
     devDependencies:
       '@bangdori/ui':
         specifier: workspace:*
@@ -5200,6 +5206,9 @@ packages:
   synckit@0.11.12:
     resolution: {integrity: sha512-Bh7QjT8/SuKUIfObSXNHNSK6WHo6J1tHCqJsuaFDP7gP0fkzSfTxI8y85JrppZ0h8l0maIgc2tfuZQ6/t3GtnQ==}
     engines: {node: ^14.18.0 || >=16.0.0}
+
+  tailwind-merge@2.5.5:
+    resolution: {integrity: sha512-0LXunzzAZzo0tEPxV3I297ffKZPlKDrjj7NXphC8V5ak9yHC5zRmxnOe2m/Rd/7ivsOMJe3JZ2JVocoDdQTRBA==}
 
   tailwind-merge@3.3.0:
     resolution: {integrity: sha512-fyW/pEfcQSiigd5SNn0nApUOxx0zB/dm6UDU/rEwc2c3sX2smWUNbapHv+QRqLGVp9GWX3THIa7MUGPo+YkDzQ==}
@@ -11195,6 +11204,8 @@ snapshots:
   synckit@0.11.12:
     dependencies:
       '@pkgr/core': 0.2.9
+
+  tailwind-merge@2.5.5: {}
 
   tailwind-merge@3.3.0: {}
 
