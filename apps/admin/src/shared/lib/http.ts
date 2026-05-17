@@ -92,3 +92,8 @@ export const api = {
   patch: <T>(path: string, body?: unknown) => request<T>(path, { method: 'PATCH', body }),
   delete: <T>(path: string) => request<T>(path, { method: 'DELETE' }),
 };
+
+export function formatError(err: Error): string {
+  if (err instanceof ApiError) return `[${err.status}] ${err.message}`;
+  return err.message;
+}

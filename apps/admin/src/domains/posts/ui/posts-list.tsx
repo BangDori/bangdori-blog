@@ -1,3 +1,4 @@
+import { formatError } from '@/shared/lib/http';
 import { ErrorAlert } from '@/shared/ui/alert';
 import { Notice } from '@/shared/ui/notice';
 import { QueryBoundary } from '@/shared/ui/query-boundary';
@@ -17,7 +18,7 @@ export function PostsList({ filter, onRowClick }: Props) {
     <QueryBoundary
       query={query}
       loading={<Notice>불러오는 중…</Notice>}
-      error={(err) => <ErrorAlert>{err.message}</ErrorAlert>}
+      error={(err) => <ErrorAlert>{formatError(err)}</ErrorAlert>}
       isEmpty={(data) => data.length === 0}
       empty={<Notice>글이 없습니다.</Notice>}
     >
