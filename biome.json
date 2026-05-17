@@ -57,6 +57,16 @@
   },
   "overrides": [
     {
+      "includes": ["**/*.d.ts"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off"
+          }
+        }
+      }
+    },
+    {
       "includes": ["apps/server/**"],
       "linter": {
         "rules": {
