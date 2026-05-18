@@ -162,6 +162,14 @@ interface ThumbnailPreviewProps {
 function ThumbnailPreview({ url }: ThumbnailPreviewProps) {
   const [broken, setBroken] = useState(false);
   const trimmed = url.trim();
+
+  // url 이 바뀌면 이전 로드 실패 상태(broken=true)를 초기화한다.
+  // 만약 그렇게 하지 않으면 잘못된 URL 다음 올바른 URL 로 수정해도
+  // broken=true 가 남아 이미지가 다시 표시되지 않는다.
+  useEffect(() => {
+    setBroken(false);
+  }, [trimmed]);
+
   const showImage = trimmed !== '' && !broken;
 
   return (
