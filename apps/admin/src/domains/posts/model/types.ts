@@ -17,6 +17,16 @@ export interface Post {
   updatedAt: string;
 }
 
-export interface ListPostsQuery {
+export interface ListPostsQueryDto {
   status?: PostStatus;
+}
+
+export interface CreatePostDto {
+  slug: string;
+  title: string;
+  description?: string | null;
+  contentMdx: string;
+  author: string;
+  category: string;
+  thumbnailUrl?: string | null;
 }
