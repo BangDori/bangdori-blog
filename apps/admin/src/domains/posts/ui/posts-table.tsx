@@ -4,12 +4,12 @@ import { ROUTES } from '@shared/lib/routes';
 import type { Post } from '../model/types';
 import { PostStatusBadge } from './post-status-badge';
 
-interface Props {
+interface PostsTableProps {
   rows: Post[];
   onRowClick: (id: string) => void;
 }
 
-export function PostsTable({ rows, onRowClick }: Props) {
+export function PostsTable({ rows, onRowClick }: PostsTableProps) {
   return (
     <div className="overflow-x-auto rounded-md border border-border">
       <table className="w-full text-sm">

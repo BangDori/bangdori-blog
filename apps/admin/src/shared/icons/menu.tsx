@@ -1,6 +1,6 @@
-import { IconBase, type IconProps } from './icon-base';
+import { IconBase, type IconProps as MenuIconProps } from './icon-base';
 
-export function MenuIcon(props: IconProps) {
+export function MenuIcon(props: MenuIconProps) {
   return (
     <IconBase {...props}>
       <line x1="4" y1="6" x2="20" y2="6" />

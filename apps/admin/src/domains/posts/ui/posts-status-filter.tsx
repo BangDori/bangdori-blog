@@ -7,12 +7,12 @@ const FILTERS: { value: PostsFilter; label: string }[] = [
   ...POST_STATUS_VALUES.map((s) => ({ value: s as PostsFilter, label: POST_STATUS_LABEL[s] })),
 ];
 
-interface Props {
+interface PostsStatusFilterProps {
   value: PostsFilter;
   onChange: (next: PostsFilter) => void;
 }
 
-export function PostsStatusFilter({ value, onChange }: Props) {
+export function PostsStatusFilter({ value, onChange }: PostsStatusFilterProps) {
   return (
     <div className="flex flex-wrap items-center gap-2">
       {FILTERS.map((f) => {

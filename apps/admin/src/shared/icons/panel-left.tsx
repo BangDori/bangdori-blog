@@ -1,6 +1,6 @@
-import { IconBase, type IconProps } from './icon-base';
+import { IconBase, type IconProps as PanelLeftIconProps } from './icon-base';
 
-export function PanelLeftIcon(props: IconProps) {
+export function PanelLeftIcon(props: PanelLeftIconProps) {
   return (
     <IconBase {...props}>
       <rect x="3" y="3" width="18" height="18" rx="2" />
