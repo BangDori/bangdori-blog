@@ -62,6 +62,10 @@ function MetaBody({ submitError, disabled }: MetaBodyProps) {
   const title = useWatch({ control, name: 'title' });
   const description = useWatch({ control, name: 'description' });
   const thumbnailUrl = useWatch({ control, name: 'thumbnailUrl' });
+  const slug = useWatch({ control, name: 'slug' });
+  const author = useWatch({ control, name: 'author' });
+  const category = useWatch({ control, name: 'category' });
+  const canSubmit = slug.trim() !== '' && author !== '' && category !== '';
 
   return (
     <div className="mx-auto grid max-w-5xl gap-10 md:grid-cols-2">
@@ -138,7 +142,7 @@ function MetaBody({ submitError, disabled }: MetaBodyProps) {
         </div>
 
         <div className="pt-2">
-          <Button type="submit" disabled={disabled} className="w-full">
+          <Button type="submit" disabled={disabled || !canSubmit} className="w-full">
             {disabled ? '발행 중…' : '발행하기'}
           </Button>
         </div>
