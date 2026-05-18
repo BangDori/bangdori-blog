@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Icon, type IconName } from '@shared/icons';
 import { cn } from '@shared/lib/cn';
 import { ROUTES } from '@shared/lib/routes';
@@ -17,74 +16,47 @@ const NAV_ITEMS: NavItem[] = [
   { to: ROUTES.posts, label: 'Posts', icon: 'posts' },
 ];
 
-export function Layout() {
-  const [open, setOpen] = useState(false);
-  const location = useLocation();
+interface SidebarProps {
+  mobileOpen: boolean;
+  desktopOpen: boolean;
+  onCloseMobile: () => void;
+}
 
-  // biome-ignore lint/correctness/useExhaustiveDependencies: location.pathname 을 trigger 로 사용 (effect 본문에서 직접 참조하지 않지만, 라우트 변경 감지가 목적이라 의존성으로 둠)
-  useEffect(() => {
-    setOpen(false);
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (!open) return;
-
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
-    };
-
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [open]);
-
+export function Sidebar({ mobileOpen, desktopOpen, onCloseMobile }: SidebarProps) {
   return (
-    <div className="min-h-screen flex">
+    <>
       <Display tablet desktop>
-        <aside className="w-60 shrink-0 flex flex-col border-r border-border bg-background">
+        <aside
+          inert={!desktopOpen}
+          className={cn(
+            'shrink-0 flex flex-col bg-background overflow-hidden transition-[width] duration-200',
+            desktopOpen ? 'w-60 border-r border-border' : 'w-0',
+          )}
+        >
           <SidebarContent />
         </aside>
       </Display>
 
       <Display mobile>
         <aside
+          inert={!mobileOpen}
           className={cn(
             'fixed inset-y-0 left-0 z-50 w-60 flex flex-col border-r border-border bg-background transition-transform',
-            open ? 'translate-x-0' : '-translate-x-full',
+            mobileOpen ? 'translate-x-0' : '-translate-x-full',
           )}
         >
           <SidebarContent />
         </aside>
-        {open && (
+        {mobileOpen && (
           <button
             type="button"
-            onClick={() => setOpen(false)}
+            onClick={onCloseMobile}
             className="fixed inset-0 z-40 bg-black/40"
             aria-label="메뉴 닫기"
           />
         )}
       </Display>
-
-      <div className="flex-1 min-w-0 flex flex-col">
-        <Display mobile>
-          <header className="h-12 border-b border-border flex items-center gap-2 px-4">
-            <button
-              type="button"
-              onClick={() => setOpen(true)}
-              className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground"
-              aria-label="메뉴 열기"
-            >
-              <Icon name="menu" className="size-5" />
-            </button>
-            <span className="text-sm font-semibold tracking-tight">bangdori.kr admin</span>
-          </header>
-        </Display>
-        <main className="flex-1 px-6 lg:px-10 py-8">
-          <div className="mx-auto max-w-6xl">
-            <Outlet />
-          </div>
-        </main>
-      </div>
-    </div>
+    </>
   );
 }
 
