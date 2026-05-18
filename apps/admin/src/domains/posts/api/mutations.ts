@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { CreatePostDto, Post } from '../model/types';
+import type { CreatePostDto } from '../model/schema';
+import type { Post } from '../model/types';
 import { createPost } from './index';
 import { postsKeys } from './keys';
 
