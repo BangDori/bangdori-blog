@@ -1,4 +1,4 @@
-import { type FormEvent, type KeyboardEvent, type UIEvent, useRef } from 'react';
+import { type FormEvent, type UIEvent, useRef } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Button } from '@shared/ui/button';
 import { MarkdownPreview } from '@shared/ui/markdown-preview';
@@ -21,15 +21,6 @@ export function PostCreateWriteStep({ disabled, onCancel, onNext }: PostCreateWr
     onNext();
   };
 
-  const onKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
-      // 버튼(`disabled || !canProceed`)과 일관되게 단축키도 제한.
-      if (disabled || !canProceed) return;
-      e.preventDefault();
-      onNext();
-    }
-  };
-
   return (
     <div className="space-y-10">
       <div className="flex items-center justify-end gap-2">
@@ -41,7 +32,7 @@ export function PostCreateWriteStep({ disabled, onCancel, onNext }: PostCreateWr
         </Button>
       </div>
 
-      <form onSubmit={onSubmit} onKeyDown={onKeyDown} noValidate>
+      <form onSubmit={onSubmit} noValidate>
         <WriteBody disabled={disabled} />
       </form>
     </div>
