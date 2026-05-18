@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "@bangdori/ui/css/tokens.css";
+@import "@bangdori/ui/css/prose.css" layer(prose-overrides);
 
 @plugin "@tailwindcss/typography";
 
@@ -62,56 +63,4 @@
 .container {
   @apply mx-auto max-w-2xl px-4 py-8 md:max-w-3xl lg:max-w-4xl;
   width: 100%;
-}
-
-.prose code:not(pre code) {
-  @apply rounded-sm;
-  padding: 0.15rem 0.3rem;
-  border-radius: 0.3rem;
-  font-size: 0.95em;
-  font-weight: 500;
-  background-color: #ededeb;
-  color: #bf3f29;
-}
-
-.dark .prose code:not(pre code) {
-  background-color: #22272e;
-  color: #f47067;
-}
-
-.prose code::before,
-.prose code::after {
-  content: none;
-}
-
-.prose strong,
-.prose b {
-  font-weight: 600;
-}
-
-.prose blockquote {
-  @apply border-muted bg-muted-foreground/15 rounded-sm border-none px-4 py-1;
-}
-
-.prose blockquote ol > li > p,
-.prose blockquote ul > li > p {
-  @apply my-2;
-}
-
-.prose blockquote p {
-  font-style: normal;
-}
-
-.prose blockquote *::before,
-.prose blockquote *::after {
-  content: none;
-}
-
-.prose img {
-  @apply mx-auto max-h-[320px] rounded-lg md:max-h-[360px] lg:max-h-[400px];
-  display: block;
-}
-
-.prose video {
-  @apply mx-auto max-h-[320px] rounded-lg md:max-h-[360px] lg:max-h-[400px];
 }
