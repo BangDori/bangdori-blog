@@ -52,5 +52,6 @@ apps/admin/src/
 | R2 | domain 끼리 import 금지. 공유 필요 시 `shared/` 로 승격 (= 도메인 경계 설계 시그널) |
 | R3 | 도메인 타입은 `domains/{domain}/model/` 안에서 소유. 외부엔 barrel(`domains/{domain}/index.ts`)만 노출 |
 | R4 | 부수효과(`navigate`, `confirm`, `localStorage`, `fetch`, toast)는 L3/L4 에서만. L2/L1 은 순수 함수 |
-| R5 | 같은 도메인 내부는 상대경로, 도메인·레이어 경계 넘으면 `@/` 절대경로 강제 |
+| R5 | 같은 도메인 내부는 상대경로, 도메인·레이어 경계 넘으면 layer alias(`@components`, `@pages`, `@domains`, `@shared`) 사용. 자세한 내용은 [admin-import-rules.md](./admin-import-rules.md) |
 | R6 | 순환 의존 금지. 발생 시 도메인 경계 설계 실수로 본다 |
+| R7 | 위 R1~R3 은 ESLint(`boundaries` + `no-restricted-imports`) 가 강제. `pnpm --filter admin lint` |

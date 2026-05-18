@@ -114,16 +114,12 @@
                   [
                     ":NODE:",
                     ":PACKAGE:",
-                    "!@/**",
-                    "!@app/**",
                     "!@components/**",
                     "!@pages/**",
                     "!@domains/**",
                     "!@shared/**"
                   ],
                   [
-                    "@/**",
-                    "@app/**",
                     "@components/**",
                     "@pages/**",
                     "@domains/**",
