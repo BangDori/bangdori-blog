@@ -1,16 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
-import type { ListPostsQuery } from '../model/types';
+import type { ListPostsQueryDto } from '../model/types';
 import { getPost, listPosts } from './index';
+import { postsKeys } from './keys';
 
-const postsKeys = {
-  all: ['posts'] as const,
-  lists: () => [...postsKeys.all, 'list'] as const,
-  list: (q: ListPostsQuery) => [...postsKeys.lists(), q] as const,
-  details: () => [...postsKeys.all, 'detail'] as const,
-  detail: (id: string) => [...postsKeys.details(), id] as const,
-};
-
-export function useListPosts(query: ListPostsQuery) {
+export function useListPosts(query: ListPostsQueryDto) {
   return useQuery({
     queryKey: postsKeys.list(query),
     queryFn: () => listPosts(query),
