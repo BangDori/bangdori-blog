@@ -1,4 +1,4 @@
-import { IconBase, type IconProps as DashboardIconProps } from './icon-base';
+import { type IconProps as DashboardIconProps, IconBase } from './icon-base';
 
 export function DashboardIcon(props: DashboardIconProps) {
   return (

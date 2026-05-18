@@ -1,4 +1,4 @@
-import { IconBase, type IconProps as CloseIconProps } from './icon-base';
+import { type IconProps as CloseIconProps, IconBase } from './icon-base';
 
 export function CloseIcon(props: CloseIconProps) {
   return (
