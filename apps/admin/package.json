@@ -13,12 +13,15 @@
     "lint:ci": "eslint ."
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
     "@tanstack/react-query": "5.62.0",
     "clsx": "2.1.1",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "react-hook-form": "^7.76.0",
     "react-router-dom": "7.15.0",
-    "tailwind-merge": "2.5.5"
+    "tailwind-merge": "2.5.5",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@bangdori/ui": "workspace:*",
