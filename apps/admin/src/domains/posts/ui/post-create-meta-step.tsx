@@ -1,9 +1,10 @@
-import { type FormEvent, useEffect, useState } from 'react';
+import type { FormEvent } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Icon } from '@shared/icons';
 import { ErrorAlert } from '@shared/ui/alert';
 import { Button } from '@shared/ui/button';
 import { Field } from '@shared/ui/field';
+import { ImagePicker } from '@shared/ui/image-picker';
 import { Input } from '@shared/ui/input';
 import { NativeSelect } from '@shared/ui/native-select';
 import { AUTHOR_OPTIONS, CATEGORY_OPTIONS, type CreatePostInput } from '../model/schema';
@@ -54,6 +55,7 @@ function MetaBody({ submitError, disabled }: MetaBodyProps) {
   const {
     register,
     control,
+    setValue,
     formState: { errors },
   } = useFormContext<CreatePostInput>();
 
@@ -68,7 +70,14 @@ function MetaBody({ submitError, disabled }: MetaBodyProps) {
           미리보기
         </h2>
 
-        <ThumbnailPreview url={thumbnailUrl} />
+        <ImagePicker
+          url={thumbnailUrl}
+          disabled={disabled}
+          error={errors.thumbnailUrl?.message}
+          onUrlChange={(next) =>
+            setValue('thumbnailUrl', next, { shouldValidate: true, shouldDirty: true })
+          }
+        />
 
         <div className="space-y-2">
           <h3 className="text-xl font-bold text-foreground">
@@ -128,66 +137,12 @@ function MetaBody({ submitError, disabled }: MetaBodyProps) {
           </Field>
         </div>
 
-        <Field
-          htmlFor="thumbnailUrl"
-          label="thumbnailUrl"
-          hint="(선택)"
-          error={errors.thumbnailUrl?.message}
-        >
-          <Input
-            {...register('thumbnailUrl')}
-            id="thumbnailUrl"
-            type="url"
-            placeholder="https://…"
-            autoComplete="off"
-            invalid={!!errors.thumbnailUrl}
-            disabled={disabled}
-          />
-        </Field>
-
         <div className="pt-2">
           <Button type="submit" disabled={disabled} className="w-full">
             {disabled ? '발행 중…' : '발행하기'}
           </Button>
         </div>
       </div>
-    </div>
-  );
-}
-
-interface ThumbnailPreviewProps {
-  url: string;
-}
-
-function ThumbnailPreview({ url }: ThumbnailPreviewProps) {
-  const [broken, setBroken] = useState(false);
-  const trimmed = url.trim();
-
-  // url 이 바뀌면 이전 로드 실패 상태(broken=true)를 초기화한다.
-  // 만약 그렇게 하지 않으면 잘못된 URL 다음 올바른 URL 로 수정해도
-  // broken=true 가 남아 이미지가 다시 표시되지 않는다.
-  useEffect(() => {
-    setBroken(false);
-  }, [trimmed]);
-
-  const showImage = trimmed !== '' && !broken;
-
-  return (
-    <div className="aspect-video overflow-hidden rounded-md border border-border bg-secondary">
-      {showImage ? (
-        <img
-          src={trimmed}
-          alt=""
-          onError={() => setBroken(true)}
-          className="h-full w-full object-cover"
-        />
-      ) : (
-        <div className="flex h-full items-center justify-center px-4 text-center text-sm text-muted-foreground">
-          {trimmed === ''
-            ? '썸네일 URL을 입력하면 여기에 미리보기가 표시됩니다.'
-            : '이미지를 불러오지 못했습니다. URL을 확인해주세요.'}
-        </div>
-      )}
     </div>
   );
 }
