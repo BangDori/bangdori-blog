@@ -9,12 +9,6 @@ interface ImagePickerProps {
   onUrlChange: (next: string) => void;
 }
 
-/**
- * 단일 이미지 선택 위젯 — 클릭하면 파일 피커가 열리고, 고른 파일을 blob URL 로 변환해 부모에게 전달한다.
- * 저장소가 붙으면 부모가 onUrlChange 안에서 업로드 후 영구 URL 로 교체하면 된다.
- *
- * 새 파일을 받거나 unmount 될 때 이전 blob URL 을 revoke 해 메모리 누수를 방지한다.
- */
 export function ImagePicker({ url, disabled, error, onUrlChange }: ImagePickerProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const objectUrlRef = useRef<string | null>(null);
