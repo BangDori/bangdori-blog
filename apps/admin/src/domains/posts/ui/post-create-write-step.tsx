@@ -22,6 +22,8 @@ export function PostCreateWriteStep({ disabled, onCancel, onNext }: PostCreateWr
 
   const onKeyDown = (e: KeyboardEvent<HTMLFormElement>) => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+      // 버튼(`disabled || !canProceed`)과 일관되게 단축키도 제한.
+      if (disabled || !canProceed) return;
       e.preventDefault();
       onNext();
     }
