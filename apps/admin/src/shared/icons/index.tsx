@@ -1,3 +1,4 @@
+import { CloseIcon } from './close';
 import { DashboardIcon } from './dashboard';
 import type { IconProps } from './icon-base';
 import { MenuIcon } from './menu';
@@ -5,6 +6,7 @@ import { PanelLeftIcon } from './panel-left';
 import { PostsIcon } from './posts';
 
 const ICONS = {
+  close: CloseIcon,
   dashboard: DashboardIcon,
   menu: MenuIcon,
   'panel-left': PanelLeftIcon,
