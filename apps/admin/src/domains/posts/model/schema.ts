@@ -17,7 +17,11 @@ export const createPostSchema = z.object({
     .min(1, 'slug 는 필수입니다.')
     .regex(SLUG_PATTERN, '영문 소문자/숫자/하이픈(-) 만 사용할 수 있습니다.'),
   title: z.string().trim().min(1, '제목은 필수입니다.'),
-  description: z.string().max(100, '설명은 100자 이하로 작성해 주세요.').transform(emptyToNull),
+  description: z
+    .string()
+    .trim()
+    .max(100, '설명은 100자 이하로 작성해 주세요.')
+    .transform(emptyToNull),
   contentMdx: z.string().trim().min(1, '본문은 필수입니다.'),
   author: z
     .string()
