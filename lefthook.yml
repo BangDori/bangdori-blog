@@ -1,4 +1,11 @@
 pre-push:
+  parallel: true
   commands:
-    biome-check:
-      run: pnpm biome check apps/user-web/ apps/admin/
+    user-web-biome:
+      run: pnpm check:user-web:ci
+    admin-biome:
+      run: pnpm check:admin:ci
+    admin-eslint:
+      run: pnpm lint:admin:ci
+    server-biome:
+      run: pnpm check:server:ci
