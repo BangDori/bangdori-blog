@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { Sidebar } from './layout/sidebar';
-import { TopBar } from './layout/top-bar';
+import { Sidebar } from './sidebar';
+import { TopBar } from './top-bar';
 
 const DESKTOP_SIDEBAR_KEY = 'admin:sidebar:desktop-open';
 
