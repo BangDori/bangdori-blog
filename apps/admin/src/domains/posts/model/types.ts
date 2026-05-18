@@ -17,6 +17,6 @@ export interface Post {
   updatedAt: string;
 }
 
-export interface ListPostsQuery {
+export interface ListPostsQueryDto {
   status?: PostStatus;
 }

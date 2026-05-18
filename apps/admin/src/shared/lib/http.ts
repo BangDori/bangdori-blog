@@ -1,6 +1,6 @@
 const BASE_URL = (import.meta.env.VITE_SERVER_API_URL ?? '').replace(/\/$/, '');
 
-class ApiError extends Error {
+export class ApiError extends Error {
   readonly status: number;
   readonly body: unknown;
 
