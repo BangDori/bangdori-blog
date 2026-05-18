@@ -2,6 +2,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import tseslint from 'typescript-eslint';
 import barrel from './eslint/barrel.mjs';
+import componentPropsName from './eslint/component-props-name.mjs';
 import layers from './eslint/layers.mjs';
 import tsOverrides from './eslint/typescript-overrides.mjs';
 
@@ -21,4 +22,5 @@ export default tseslint.config(
   tsOverrides,
   layers({ rootPath, tsconfigPath }),
   barrel,
+  componentPropsName,
 );
