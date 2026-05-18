@@ -103,6 +103,40 @@
       }
     },
     {
+      "includes": ["apps/admin/**"],
+      "assist": {
+        "actions": {
+          "source": {
+            "organizeImports": {
+              "level": "on",
+              "options": {
+                "groups": [
+                  [
+                    ":NODE:",
+                    ":PACKAGE:",
+                    "!@/**",
+                    "!@app/**",
+                    "!@components/**",
+                    "!@pages/**",
+                    "!@domains/**",
+                    "!@shared/**"
+                  ],
+                  [
+                    "@/**",
+                    "@app/**",
+                    "@components/**",
+                    "@pages/**",
+                    "@domains/**",
+                    "@shared/**"
+                  ]
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    {
       "includes": ["apps/server/src/database/seed.ts"],
       "linter": {
         "rules": {

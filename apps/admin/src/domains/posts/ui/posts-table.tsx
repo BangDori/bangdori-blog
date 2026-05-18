@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import { formatDateTime } from '@/shared/lib/date';
-import { ROUTES } from '@/shared/lib/routes';
+import { formatDateTime } from '@shared/lib/date';
+import { ROUTES } from '@shared/lib/routes';
 import type { Post } from '../model/types';
 import { PostStatusBadge } from './post-status-badge';
 

@@ -13,8 +13,13 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@domains/*": ["./src/domains/*"],
+      "@shared/*": ["./src/shared/*"]
     }
   },
   "include": ["src", "vite-env.d.ts"]

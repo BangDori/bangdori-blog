@@ -1,5 +1,5 @@
 import { Children, cloneElement, isValidElement, type ReactElement } from 'react';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@shared/lib/cn';
 
 // className 을 받을 수 있는 element 만 허용. Fragment/string/number 는 컴파일 타임에 차단.
 // {cond && <X />} 패턴 호환을 위해 false/null/undefined 도 허용.

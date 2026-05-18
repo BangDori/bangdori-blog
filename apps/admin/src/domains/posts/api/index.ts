@@ -1,4 +1,4 @@
-import { api } from '@/shared/lib/http';
+import { api } from '@shared/lib/http';
 import type { ListPostsQuery, Post } from '../model/types';
 
 export function listPosts(query: ListPostsQuery = {}): Promise<Post[]> {

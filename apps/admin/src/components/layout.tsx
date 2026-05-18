@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Icon, type IconName } from '@/shared/icons';
-import { cn } from '@/shared/lib/cn';
-import { ROUTES } from '@/shared/lib/routes';
-import { Display } from '@/shared/ui/display';
+import { Icon, type IconName } from '@shared/icons';
+import { cn } from '@shared/lib/cn';
+import { ROUTES } from '@shared/lib/routes';
+import { Display } from '@shared/ui/display';
 
 interface NavItem {
   to: string;
