@@ -31,8 +31,11 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
-      - name: Lint
+      - name: Lint (Biome)
         run: pnpm check:admin:ci
+
+      - name: Lint (ESLint architecture)
+        run: pnpm lint:admin:ci
 
       - name: Type Check
         run: pnpm --filter admin exec tsc -b

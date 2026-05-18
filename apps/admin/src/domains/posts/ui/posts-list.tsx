@@ -1,7 +1,7 @@
-import { formatError } from '@/shared/lib/http';
-import { ErrorAlert } from '@/shared/ui/alert';
-import { Notice } from '@/shared/ui/notice';
-import { QueryBoundary } from '@/shared/ui/query-boundary';
+import { formatError } from '@shared/lib/http';
+import { ErrorAlert } from '@shared/ui/alert';
+import { Notice } from '@shared/ui/notice';
+import { QueryBoundary } from '@shared/ui/query-boundary';
 import { useListPosts } from '../api/queries';
 import type { PostsFilter } from '../model/filter';
 import { PostsTable } from './posts-table';

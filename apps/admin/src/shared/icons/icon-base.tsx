@@ -1,5 +1,5 @@
 import type { ReactNode, SVGProps } from 'react';
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@shared/lib/cn';
 
 export type IconProps = SVGProps<SVGSVGElement>;
 

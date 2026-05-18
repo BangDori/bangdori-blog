@@ -1,4 +1,4 @@
-import { cn } from '@/shared/lib/cn';
+import { cn } from '@shared/lib/cn';
 import { POST_STATUS_LABEL } from '../model/constants';
 import type { PostStatus } from '../model/types';
 
