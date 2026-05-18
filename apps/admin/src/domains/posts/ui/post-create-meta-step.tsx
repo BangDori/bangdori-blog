@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from 'react';
+import { type FormEvent, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Icon } from '@shared/icons';
 import { ErrorAlert } from '@shared/ui/alert';
