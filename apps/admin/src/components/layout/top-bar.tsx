@@ -1,5 +1,6 @@
 import { Icon } from '@shared/icons';
 import { Display } from '@shared/ui/display';
+import { ThemeToggle } from '@shared/ui/theme-toggle';
 
 interface TopBarProps {
   desktopOpen: boolean;
@@ -35,6 +36,9 @@ export function TopBar({ desktopOpen, onToggleDesktop, onOpenMobile }: TopBarPro
         </button>
         <span className="text-sm font-semibold tracking-tight">bangdori.kr admin</span>
       </Display>
+      <div className="ml-auto flex items-center gap-1">
+        <ThemeToggle />
+      </div>
     </header>
   );
 }
