@@ -1,5 +1,10 @@
 @import "tailwindcss";
 @import "@bangdori/ui/css/tokens.css";
+@import "@bangdori/ui/css/prose.css" layer(prose-overrides);
+
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);

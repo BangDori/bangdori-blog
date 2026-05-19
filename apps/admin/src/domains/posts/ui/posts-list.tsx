@@ -6,12 +6,12 @@ import { useListPosts } from '../api/queries';
 import type { PostsFilter } from '../model/filter';
 import { PostsTable } from './posts-table';
 
-interface Props {
+interface PostsListProps {
   filter: PostsFilter;
   onRowClick: (id: string) => void;
 }
 
-export function PostsList({ filter, onRowClick }: Props) {
+export function PostsList({ filter, onRowClick }: PostsListProps) {
   const query = useListPosts({ status: filter === 'all' ? undefined : filter });
 
   return (

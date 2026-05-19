@@ -1,6 +1,6 @@
-import { IconBase, type IconProps } from './icon-base';
+import { type IconProps as CloseIconProps, IconBase } from './icon-base';
 
-export function CloseIcon(props: IconProps) {
+export function CloseIcon(props: CloseIconProps) {
   return (
     <IconBase {...props}>
       <line x1="6" y1="6" x2="18" y2="18" />
