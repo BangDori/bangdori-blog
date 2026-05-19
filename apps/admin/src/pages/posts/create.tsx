@@ -43,8 +43,8 @@ export function PostsCreatePage() {
 
   const onSave = form.handleSubmit((dto) => {
     mutation.mutate(dto, {
-      onSuccess: () => {
-        navigate(ROUTES.posts);
+      onSuccess: (post) => {
+        navigate(ROUTES.postEdit(post.id));
       },
     });
   });
