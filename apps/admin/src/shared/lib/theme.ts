@@ -15,8 +15,12 @@ export const ThemeContext = createContext<ThemeContextValue | null>(null);
 
 export function readStoredTheme(): Theme {
   if (typeof window === 'undefined') return DEFAULT_THEME;
-  const v = window.localStorage.getItem(THEME_STORAGE_KEY);
-  return v === 'light' || v === 'dark' ? v : DEFAULT_THEME;
+  try {
+    const v = window.localStorage.getItem(THEME_STORAGE_KEY);
+    return v === 'light' || v === 'dark' ? v : DEFAULT_THEME;
+  } catch {
+    return DEFAULT_THEME;
+  }
 }
 
 export function applyThemeClass(theme: Theme) {
