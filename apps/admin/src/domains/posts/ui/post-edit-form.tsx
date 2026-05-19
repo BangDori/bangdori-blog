@@ -52,10 +52,12 @@ export function PostEditForm({ post }: PostEditFormProps) {
 
   const mutation = useUpdatePost(post.id);
 
-  // 캐시 갱신 등으로 initial 이 새로 내려오면 폼 초기값을 같이 따라간다.
+  // 캠시 갱신으로 initial 이 새로 내려오면 폼 초기값을 따라가되, 사용자가 입력 중이면(dirty)
+  // 미저장 값이 덮어쓰이지 않도록 skip 한다. 저장 성공 시점에는 dirty 가 0 개라
+  // 자연스럽게 reset 된다 (서버 응답 == 사용자 입력).
   useEffect(() => {
-    setState(initialState);
-    setErrors({});
+    setState((prev) => (dirtyKeys(initialState, prev).length > 0 ? prev : initialState));
+    setErrors((prev) => (Object.keys(prev).length > 0 ? {} : prev));
   }, [initialState]);
 
   const dirty = dirtyKeys(initialState, state);
