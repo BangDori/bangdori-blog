@@ -4,13 +4,8 @@
   border-radius: 0.3rem;
   font-size: 0.95em;
   font-weight: 500;
-  background-color: #ededeb;
-  color: #bf3f29;
-}
-
-.dark .prose code:not(pre code) {
-  background-color: #22272e;
-  color: #f47067;
+  background-color: var(--prose-code-bg);
+  color: var(--prose-code-text);
 }
 
 .prose code::before,

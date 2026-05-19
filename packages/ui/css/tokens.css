@@ -42,6 +42,9 @@
   --sidebar-border: #e5e8eb;
   --sidebar-ring: #0064ff;
 
+  --prose-code-bg: #ededeb;
+  --prose-code-text: #bf3f29;
+
   --header-height: 3.5rem;
   --sticky-offset: 1.5rem;
   --sticky-top: calc(var(--header-height) + var(--sticky-offset));
@@ -79,4 +82,7 @@
   --sidebar-accent-foreground: #339dff;
   --sidebar-border: #23272f;
   --sidebar-ring: #339dff;
+
+  --prose-code-bg: #22272e;
+  --prose-code-text: #f47067;
 }

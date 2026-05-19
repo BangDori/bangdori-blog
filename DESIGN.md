@@ -18,6 +18,10 @@ colors:
   destructive: "#cc2222"
   code-bg: "#ededeb"
   code-text: "#bf3f29"
+  prose-code-bg: "#ededeb"
+  prose-code-text: "#bf3f29"
+  prose-code-bg-dark: "#22272e"
+  prose-code-text-dark: "#f47067"
 typography:
   h1:
     fontFamily: Pretendard Variable
@@ -136,6 +140,11 @@ components:
     textColor: "{colors.code-text}"
     rounded: "{rounded.DEFAULT}"
     padding: 2px 5px
+  prose-code-inline:
+    backgroundColor: "{colors.prose-code-bg}"
+    textColor: "{colors.prose-code-text}"
+    rounded: "{rounded.DEFAULT}"
+    padding: 0.15rem 0.3rem
   blockquote:
     backgroundColor: "{colors.muted-foreground}"
     rounded: "{rounded.sm}"
@@ -179,6 +188,7 @@ The palette follows a strict two-tone + accent strategy. White/dark backgrounds 
 - **Accent (#e8f3ff):** Light-blue tint for hover states and social icon backgrounds. Paired with primary text color.
 - **Destructive (#cc2222):** Error states and destructive actions.
 - **Code (#ededeb bg + #bf3f29 text):** Inline code uses a warm gray background with a deep coral-red text color.
+- **Prose Code (`--prose-code-bg` / `--prose-code-text`):** Dedicated tokens for inline code rendered inside the `prose` plugin (Markdown article body). Light mode mirrors the base code colors (`#ededeb` / `#bf3f29`); dark mode shifts to GitHub-style charcoal + coral (`#22272e` / `#f47067`) for sufficient contrast on dark surfaces. Defined in `packages/ui/css/tokens.css` and consumed by `packages/ui/css/prose.css`.
 
 ## Typography
 
