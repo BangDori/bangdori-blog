@@ -10,6 +10,18 @@
       crossorigin
       href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
     />
+    <script>
+      (() => {
+        const root = document.documentElement;
+        let theme = 'dark';
+        try {
+          const stored = localStorage.getItem('admin:theme');
+          if (stored === 'light' || stored === 'dark') theme = stored;
+        } catch (_) {}
+        if (theme === 'dark') root.classList.add('dark');
+        root.style.colorScheme = theme;
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
