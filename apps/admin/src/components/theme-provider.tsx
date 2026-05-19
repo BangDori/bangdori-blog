@@ -12,7 +12,11 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     applyThemeClass(theme);
-    window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    try {
+      window.localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch {
+      // storage 사용 불가(Safari private, ITP, quota 초과 등) — DOM 적용만 유지
+    }
   }, [theme]);
 
   const setTheme = useCallback((next: Theme) => {
