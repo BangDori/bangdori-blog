@@ -7,4 +7,6 @@ export const postsKeys = {
   details: () => [...postsKeys.all, 'detail'] as const,
   detail: (id: string) => [...postsKeys.details(), id] as const,
   publishMutation: (id: string) => [...postsKeys.detail(id), 'publish'] as const,
+  archiveMutation: (id: string) => [...postsKeys.detail(id), 'archive'] as const,
+  deleteMutation: (id: string) => [...postsKeys.detail(id), 'delete'] as const,
 };
