@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import {
   type CreatePostDto,
   type CreatePostInput,
@@ -44,13 +45,14 @@ export function PostsCreatePage() {
   const onSave = form.handleSubmit((dto) => {
     mutation.mutate(dto, {
       onSuccess: (post) => {
+        toast.success('발행되었습니다.');
         navigate(ROUTES.postEdit(post.id));
       },
+      onError: (err) => toast.error(describeCreatePostError(err)),
     });
   });
 
   const disabled = mutation.isPending;
-  const submitError = mutation.error ? describeCreatePostError(mutation.error) : null;
 
   return (
     <FormProvider {...form}>
@@ -61,12 +63,7 @@ export function PostsCreatePage() {
           onNext={proceedToMeta}
         />
       ) : (
-        <PostCreateMetaStep
-          disabled={disabled}
-          submitError={submitError}
-          onBack={() => setStep('write')}
-          onSubmit={onSave}
-        />
+        <PostCreateMetaStep disabled={disabled} onBack={() => setStep('write')} onSubmit={onSave} />
       )}
     </FormProvider>
   );

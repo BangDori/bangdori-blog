@@ -1,10 +1,9 @@
-import { type ReactNode, useState } from 'react';
+import type { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { ApiError } from '@shared/lib/http';
 import { ROUTES } from '@shared/lib/routes';
-import { ErrorAlert } from '@shared/ui/alert';
 import { Button } from '@shared/ui/button';
-import { Toast } from '@shared/ui/toast';
 import {
   describeArchivePostError,
   describeDeletePostError,
@@ -12,6 +11,14 @@ import {
 } from '../api/errors';
 import { useArchivePost, useDeletePost, usePublishPost } from '../api/mutations';
 import type { Post } from '../model/types';
+
+/** 404 응답일 때만 toast에 "목록으로" 액션을 붙여준다 */
+function notFoundAction(err: Error, onClick: () => void) {
+  if (err instanceof ApiError && err.status === 404) {
+    return { action: { label: '목록으로', onClick } };
+  }
+  return undefined;
+}
 
 interface PostActionsProps {
   post: Post;
@@ -32,20 +39,23 @@ export function PostActions({ post, saveSlot }: PostActionsProps) {
   const isBusy = isPublishing || isArchiving || isDeleting;
 
   const publishLabel = post.status === 'archived' ? '다시 발행' : '발행';
-
-  const [archivedAt, setArchivedAt] = useState<string | null>(null);
+  const goToList = () => navigate(ROUTES.posts);
 
   const onPublish = () => {
     if (isPublished || isBusy) return;
     if (!window.confirm('이 글을 발행하시겠습니까?')) return;
-    publishMutation.mutate();
+    publishMutation.mutate(undefined, {
+      onSuccess: () => toast.success('발행되었습니다.'),
+      onError: (err) => toast.error(describePublishPostError(err), notFoundAction(err, goToList)),
+    });
   };
 
   const onArchive = () => {
     if (isArchived || isBusy) return;
     if (!window.confirm('이 글을 보관(archive)하시겠습니까?\n공개 목록에서 숨겨집니다.')) return;
     archiveMutation.mutate(undefined, {
-      onSuccess: () => setArchivedAt(new Date().toISOString()),
+      onSuccess: () => toast.success('보관되었습니다.'),
+      onError: (err) => toast.error(describeArchivePostError(err), notFoundAction(err, goToList)),
     });
   };
 
@@ -53,102 +63,47 @@ export function PostActions({ post, saveSlot }: PostActionsProps) {
     if (isBusy) return;
     if (!window.confirm('이 글을 삭제하시겠습니까?\n삭제된 글은 목록에서 사라집니다.')) return;
     deleteMutation.mutate(undefined, {
-      onSuccess: () => navigate(ROUTES.posts),
+      onSuccess: () => {
+        toast.success('삭제되었습니다.');
+        navigate(ROUTES.posts);
+      },
+      onError: (err) => toast.error(describeDeletePostError(err), notFoundAction(err, goToList)),
     });
   };
-
-  const publishError = publishMutation.error;
-  const archiveError = archiveMutation.error;
-  const deleteError = deleteMutation.error;
-
-  const isPublishNotFound = publishError instanceof ApiError && publishError.status === 404;
-  const isArchiveNotFound = archiveError instanceof ApiError && archiveError.status === 404;
-  const isDeleteNotFound = deleteError instanceof ApiError && deleteError.status === 404;
 
   return (
     <section
       aria-label="포스트 액션"
-      className="space-y-3 rounded-md border border-border bg-secondary/30 p-4"
+      className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-border bg-secondary/30 p-4"
     >
-      <Toast open={!!archivedAt && !archiveError} onClose={() => setArchivedAt(null)}>
-        보관되었습니다.
-      </Toast>
-
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex flex-wrap items-center gap-2">
-          {isPublished ? (
-            <>
-              <Button variant="outline" disabled title="이미 발행된 글입니다">
-                발행됨
-              </Button>
-              <span className="text-xs text-muted-foreground">이미 발행된 글입니다.</span>
-            </>
-          ) : (
-            <Button onClick={onPublish} disabled={isBusy}>
-              {isPublishing ? '발행 중…' : publishLabel}
+      <div className="flex flex-wrap items-center gap-2">
+        {isPublished ? (
+          <>
+            <Button variant="outline" disabled title="이미 발행된 글입니다">
+              발행됨
             </Button>
-          )}
-          {isArchived ? (
-            <Button variant="outline" disabled title="이미 보관된 글입니다">
-              보관됨
-            </Button>
-          ) : (
-            <Button variant="outline" onClick={onArchive} disabled={isBusy}>
-              {isArchiving ? '보관 중…' : '보관'}
-            </Button>
-          )}
-          <Button variant="destructive" onClick={onDelete} disabled={isBusy}>
-            {isDeleting ? '삭제 중…' : '삭제'}
+            <span className="text-xs text-muted-foreground">이미 발행된 글입니다.</span>
+          </>
+        ) : (
+          <Button onClick={onPublish} disabled={isBusy}>
+            {isPublishing ? '발행 중…' : publishLabel}
           </Button>
-        </div>
-
-        {saveSlot && <div className="flex flex-wrap items-center gap-3">{saveSlot}</div>}
+        )}
+        {isArchived ? (
+          <Button variant="outline" disabled title="이미 보관된 글입니다">
+            보관됨
+          </Button>
+        ) : (
+          <Button variant="outline" onClick={onArchive} disabled={isBusy}>
+            {isArchiving ? '보관 중…' : '보관'}
+          </Button>
+        )}
+        <Button variant="destructive" onClick={onDelete} disabled={isBusy}>
+          {isDeleting ? '삭제 중…' : '삭제'}
+        </Button>
       </div>
 
-      {publishMutation.isSuccess && !publishError && (
-        <div className="rounded-md border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground">
-          발행되었습니다.
-        </div>
-      )}
-
-      {publishError && (
-        <ErrorAlert>
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span>{describePublishPostError(publishError)}</span>
-            {isPublishNotFound && (
-              <Button variant="outline" onClick={() => navigate(ROUTES.posts)}>
-                목록으로
-              </Button>
-            )}
-          </div>
-        </ErrorAlert>
-      )}
-
-      {archiveError && (
-        <ErrorAlert>
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span>{describeArchivePostError(archiveError)}</span>
-            {isArchiveNotFound && (
-              <Button variant="outline" onClick={() => navigate(ROUTES.posts)}>
-                목록으로
-              </Button>
-            )}
-          </div>
-        </ErrorAlert>
-      )}
-
-      {deleteError && (
-        <ErrorAlert>
-          <div className="flex flex-wrap items-center justify-between gap-2">
-            <span>{describeDeletePostError(deleteError)}</span>
-            {isDeleteNotFound && (
-              <Button variant="outline" onClick={() => navigate(ROUTES.posts)}>
-                목록으로
-              </Button>
-            )}
-          </div>
-        </ErrorAlert>
-      )}
+      {saveSlot && <div className="flex flex-wrap items-center gap-3">{saveSlot}</div>}
     </section>
   );
 }

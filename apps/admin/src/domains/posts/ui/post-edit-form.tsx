@@ -1,7 +1,6 @@
 import { useIsMutating } from '@tanstack/react-query';
 import { type FormEvent, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
-import { ErrorAlert } from '@shared/ui/alert';
 import { Button } from '@shared/ui/button';
 import { Field } from '@shared/ui/field';
 import { ImagePicker } from '@shared/ui/image-picker';
@@ -97,15 +96,12 @@ export function PostEditForm({ post }: PostEditFormProps) {
     const payload: UpdatePostDto = result.data;
     mutation.mutate(payload, {
       onSuccess: () => toast.success('저장되었습니다.'),
+      onError: (err) => toast.error(describeUpdatePostError(err)),
     });
   };
 
-  const submitError = mutation.error ? describeUpdatePostError(mutation.error) : null;
-
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-10">
-      {submitError && <ErrorAlert>{submitError}</ErrorAlert>}
-
       <PostEditSection state={state} errors={errors} disabled={isBusy} update={update} />
 
       <PostBodyEditor
