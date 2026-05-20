@@ -33,7 +33,6 @@ export function PostsEditPage() {
       {(post) => (
         <div className="space-y-8">
           <PostEditHeader
-            status={post.status}
             viewCount={post.viewCount}
             createdAt={post.createdAt}
             updatedAt={post.updatedAt}

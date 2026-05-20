@@ -1,3 +1,4 @@
+import { useIsMutating } from '@tanstack/react-query';
 import { type FormEvent, useEffect, useMemo, useState } from 'react';
 import { ErrorAlert } from '@shared/ui/alert';
 import { Button } from '@shared/ui/button';
@@ -5,7 +6,9 @@ import { Field } from '@shared/ui/field';
 import { ImagePicker } from '@shared/ui/image-picker';
 import { Input } from '@shared/ui/input';
 import { NativeSelect } from '@shared/ui/native-select';
+import { Toast } from '@shared/ui/toast';
 import { describeUpdatePostError } from '../api/errors';
+import { postsKeys } from '../api/keys';
 import { useUpdatePost } from '../api/mutations';
 import {
   AUTHOR_OPTIONS,
@@ -15,6 +18,7 @@ import {
   updatePostSchema,
 } from '../model/schema';
 import type { Post } from '../model/types';
+import { PostActions } from './post-actions';
 import { PostBodyEditor } from './post-body-editor';
 
 interface PostEditFormProps {
@@ -63,6 +67,8 @@ export function PostEditForm({ post }: PostEditFormProps) {
   const dirty = dirtyKeys(initialState, state);
   const isDirty = dirty.length > 0;
   const isSubmitting = mutation.isPending;
+  const isPublishing = useIsMutating({ mutationKey: postsKeys.publishMutation(post.id) }) > 0;
+  const isBusy = isSubmitting || isPublishing;
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setState((prev) => ({ ...prev, [key]: value }));
@@ -99,32 +105,36 @@ export function PostEditForm({ post }: PostEditFormProps) {
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-10">
       {submitError && <ErrorAlert>{submitError}</ErrorAlert>}
-      {!submitError && savedAt && (
-        <div className="rounded-md border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground">
-          저장되었습니다.
-        </div>
-      )}
 
-      <PostEditSection state={state} errors={errors} disabled={isSubmitting} update={update} />
+      <Toast open={!submitError && !!savedAt} onClose={() => setSavedAt(null)}>
+        저장되었습니다.
+      </Toast>
+
+      <PostEditSection state={state} errors={errors} disabled={isBusy} update={update} />
 
       <PostBodyEditor
         title={state.title}
         contentMdx={state.contentMdx}
-        disabled={isSubmitting}
+        disabled={isBusy}
         titleError={errors.title}
         contentError={errors.contentMdx}
         onTitleChange={(v) => update('title', v)}
         onContentChange={(v) => update('contentMdx', v)}
       />
 
-      <div className="flex items-center justify-end gap-3">
-        <span className="text-xs text-muted-foreground">
-          {isDirty ? `변경된 필드: ${dirty.length}개` : '변경 사항 없음'}
-        </span>
-        <Button type="submit" disabled={isSubmitting || !isDirty}>
-          {isSubmitting ? '저장 중…' : '수정 저장'}
-        </Button>
-      </div>
+      <PostActions
+        post={post}
+        saveSlot={
+          <>
+            <span className="text-xs text-muted-foreground">
+              {isDirty ? `변경된 필드: ${dirty.length}개` : '변경 사항 없음'}
+            </span>
+            <Button type="submit" disabled={isBusy || !isDirty}>
+              {isSubmitting ? '저장 중…' : '저장하기'}
+            </Button>
+          </>
+        }
+      />
     </form>
   );
 }
