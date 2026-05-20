@@ -21,3 +21,11 @@ export function updatePost(id: string, dto: UpdatePostDto): Promise<Post> {
 export function publishPost(id: string): Promise<Post> {
   return api.post<Post>(`/admin/posts/${id}/publish`);
 }
+
+export function archivePost(id: string): Promise<Post> {
+  return api.post<Post>(`/admin/posts/${id}/archive`);
+}
+
+export function deletePost(id: string): Promise<void> {
+  return api.delete<void>(`/admin/posts/${id}`);
+}

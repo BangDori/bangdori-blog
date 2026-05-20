@@ -68,7 +68,9 @@ export function PostEditForm({ post }: PostEditFormProps) {
   const isDirty = dirty.length > 0;
   const isSubmitting = mutation.isPending;
   const isPublishing = useIsMutating({ mutationKey: postsKeys.publishMutation(post.id) }) > 0;
-  const isBusy = isSubmitting || isPublishing;
+  const isArchiving = useIsMutating({ mutationKey: postsKeys.archiveMutation(post.id) }) > 0;
+  const isDeleting = useIsMutating({ mutationKey: postsKeys.deleteMutation(post.id) }) > 0;
+  const isBusy = isSubmitting || isPublishing || isArchiving || isDeleting;
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setState((prev) => ({ ...prev, [key]: value }));
