@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import invariant from 'tiny-invariant';
 import { PostEditForm, PostEditHeader, useGetPost } from '@domains/posts';
 import { ApiError, formatError } from '@shared/lib/http';
 import { ROUTES } from '@shared/lib/routes';
-import { ErrorAlert } from '@shared/ui/alert';
 import { Button } from '@shared/ui/button';
 import { Notice } from '@shared/ui/notice';
 import { QueryBoundary } from '@shared/ui/query-boundary';
@@ -18,6 +18,10 @@ export function PostsEditPage() {
     <QueryBoundary
       query={query}
       loading={<Notice>불러오는 중…</Notice>}
+      onError={(err) => {
+        if (err instanceof ApiError && err.status === 404) return;
+        toast.error(formatError(err));
+      }}
       error={(err) => {
         if (err instanceof ApiError && err.status === 404) {
           return (
@@ -29,7 +33,7 @@ export function PostsEditPage() {
             </div>
           );
         }
-        return <ErrorAlert>{formatError(err)}</ErrorAlert>;
+        return <Notice>글을 불러올 수 없습니다.</Notice>;
       }}
     >
       {(post) => (
