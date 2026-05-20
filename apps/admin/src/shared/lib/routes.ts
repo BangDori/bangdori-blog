@@ -8,5 +8,6 @@ export const ROUTES = {
   dashboard: '/',
   posts: '/posts',
   postsNew: '/posts/new',
+  postsEdit: '/posts/:id/edit',
   postEdit: (id: string) => `/posts/${id}/edit`,
 } as const;

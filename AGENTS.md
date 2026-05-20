@@ -33,6 +33,19 @@ infra/
 - `pnpm start:server` — NestJS 프로덕션 실행
 - `pnpm check:server` — Biome lint + format (자동 수정)
 
+## 빠른 검증
+
+전체 스택을 띄워서 admin / user-web 화면을 검증할 때:
+
+- 서버 띄우기
+  - DB: `docker compose -f infra/docker/docker-compose.local.yml up -d postgres`
+  - API: `pnpm dev:server` (NestJS watch, http://localhost:4000)
+- 클라이언트 띄우기
+  - 유저 웹: `pnpm dev:user-web` (http://localhost:3000)
+  - 어드민: `pnpm dev:admin` (http://localhost:3001)
+
+DB 종료: `docker compose -f infra/docker/docker-compose.local.yml down`
+
 ## 브랜치 전략
 
 - `main` — 프로덕션

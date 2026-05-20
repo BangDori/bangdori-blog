@@ -46,3 +46,8 @@ export const createPostSchema = z.object({
 
 export type CreatePostInput = z.input<typeof createPostSchema>;
 export type CreatePostDto = z.output<typeof createPostSchema>;
+
+export const updatePostSchema = createPostSchema.partial();
+
+export type UpdatePostInput = z.input<typeof updatePostSchema>;
+export type UpdatePostDto = z.output<typeof updatePostSchema>;

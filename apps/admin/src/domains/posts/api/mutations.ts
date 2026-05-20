@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { CreatePostDto } from '../model/schema';
+import type { CreatePostDto, UpdatePostDto } from '../model/schema';
 import type { Post } from '../model/types';
-import { createPost } from './index';
+import { createPost, updatePost } from './index';
 import { postsKeys } from './keys';
 
 export function useCreatePost() {
@@ -10,6 +10,19 @@ export function useCreatePost() {
   return useMutation<Post, Error, CreatePostDto>({
     mutationFn: (dto) => createPost(dto),
     onSuccess: () => {
+      qc.invalidateQueries({ queryKey: postsKeys.lists() });
+    },
+  });
+}
+
+export function useUpdatePost(id: string) {
+  const qc = useQueryClient();
+
+  return useMutation<Post, Error, UpdatePostDto>({
+    mutationFn: (dto) => updatePost(id, dto),
+    onSuccess: (next) => {
+      qc.setQueryData(postsKeys.detail(id), next);
+      qc.invalidateQueries({ queryKey: postsKeys.detail(id) });
       qc.invalidateQueries({ queryKey: postsKeys.lists() });
     },
   });
