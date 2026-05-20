@@ -1,12 +1,12 @@
 import { useIsMutating } from '@tanstack/react-query';
 import { type FormEvent, useEffect, useMemo, useState } from 'react';
+import { toast } from 'sonner';
 import { ErrorAlert } from '@shared/ui/alert';
 import { Button } from '@shared/ui/button';
 import { Field } from '@shared/ui/field';
 import { ImagePicker } from '@shared/ui/image-picker';
 import { Input } from '@shared/ui/input';
 import { NativeSelect } from '@shared/ui/native-select';
-import { Toast } from '@shared/ui/toast';
 import { describeUpdatePostError } from '../api/errors';
 import { postsKeys } from '../api/keys';
 import { useUpdatePost } from '../api/mutations';
@@ -52,7 +52,6 @@ export function PostEditForm({ post }: PostEditFormProps) {
   );
   const [state, setState] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<FieldErrors>({});
-  const [savedAt, setSavedAt] = useState<string | null>(null);
 
   const mutation = useUpdatePost(post.id);
 
@@ -75,7 +74,6 @@ export function PostEditForm({ post }: PostEditFormProps) {
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setState((prev) => ({ ...prev, [key]: value }));
     if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
-    setSavedAt(null);
   };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -98,7 +96,7 @@ export function PostEditForm({ post }: PostEditFormProps) {
 
     const payload: UpdatePostDto = result.data;
     mutation.mutate(payload, {
-      onSuccess: () => setSavedAt(new Date().toISOString()),
+      onSuccess: () => toast.success('저장되었습니다.'),
     });
   };
 
@@ -107,10 +105,6 @@ export function PostEditForm({ post }: PostEditFormProps) {
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-10">
       {submitError && <ErrorAlert>{submitError}</ErrorAlert>}
-
-      <Toast open={!submitError && !!savedAt} onClose={() => setSavedAt(null)}>
-        저장되었습니다.
-      </Toast>
 
       <PostEditSection state={state} errors={errors} disabled={isBusy} update={update} />
 
