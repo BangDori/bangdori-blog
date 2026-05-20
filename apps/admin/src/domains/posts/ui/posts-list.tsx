@@ -1,5 +1,5 @@
+import { toast } from 'sonner';
 import { formatError } from '@shared/lib/http';
-import { ErrorAlert } from '@shared/ui/alert';
 import { Notice } from '@shared/ui/notice';
 import { QueryBoundary } from '@shared/ui/query-boundary';
 import { useListPosts } from '../api/queries';
@@ -18,7 +18,8 @@ export function PostsList({ filter, onRowClick }: PostsListProps) {
     <QueryBoundary
       query={query}
       loading={<Notice>불러오는 중…</Notice>}
-      error={(err) => <ErrorAlert>{formatError(err)}</ErrorAlert>}
+      error={() => <Notice>목록을 불러올 수 없습니다.</Notice>}
+      onError={(err) => toast.error(formatError(err))}
       isEmpty={(data) => data.length === 0}
       empty={<Notice>글이 없습니다.</Notice>}
     >

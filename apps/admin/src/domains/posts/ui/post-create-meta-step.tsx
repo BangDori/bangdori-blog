@@ -1,7 +1,6 @@
 import type { FormEvent } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Icon } from '@shared/icons';
-import { ErrorAlert } from '@shared/ui/alert';
 import { Button } from '@shared/ui/button';
 import { Field } from '@shared/ui/field';
 import { ImagePicker } from '@shared/ui/image-picker';
@@ -11,17 +10,11 @@ import { AUTHOR_OPTIONS, CATEGORY_OPTIONS, type CreatePostInput } from '../model
 
 interface PostCreateMetaStepProps {
   disabled: boolean;
-  submitError: string | null;
   onBack: () => void;
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
 
-export function PostCreateMetaStep({
-  disabled,
-  submitError,
-  onBack,
-  onSubmit,
-}: PostCreateMetaStepProps) {
+export function PostCreateMetaStep({ disabled, onBack, onSubmit }: PostCreateMetaStepProps) {
   return (
     <div className="space-y-10">
       <div className="flex items-center justify-between gap-3">
@@ -40,18 +33,17 @@ export function PostCreateMetaStep({
       </div>
 
       <form onSubmit={onSubmit} noValidate>
-        <MetaBody submitError={submitError} disabled={disabled} />
+        <MetaBody disabled={disabled} />
       </form>
     </div>
   );
 }
 
 interface MetaBodyProps {
-  submitError: string | null;
   disabled: boolean;
 }
 
-function MetaBody({ submitError, disabled }: MetaBodyProps) {
+function MetaBody({ disabled }: MetaBodyProps) {
   const {
     register,
     control,
@@ -105,8 +97,6 @@ function MetaBody({ submitError, disabled }: MetaBodyProps) {
       </section>
 
       <div className="space-y-5">
-        {submitError && <ErrorAlert>{submitError}</ErrorAlert>}
-
         <Field htmlFor="slug" label="slug" required error={errors.slug?.message}>
           <Input
             {...register('slug')}
