@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from 'react-router-dom';
+import invariant from 'tiny-invariant';
 import { PostEditForm, PostEditHeader, useGetPost } from '@domains/posts';
 import { ApiError, formatError } from '@shared/lib/http';
 import { ROUTES } from '@shared/lib/routes';
@@ -8,7 +9,8 @@ import { Notice } from '@shared/ui/notice';
 import { QueryBoundary } from '@shared/ui/query-boundary';
 
 export function PostsEditPage() {
-  const { id = '' } = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
+  invariant(id, 'posts edit route에서는 id 파라미터가 반드시 존재해야 합니다.');
   const navigate = useNavigate();
   const query = useGetPost(id);
 
