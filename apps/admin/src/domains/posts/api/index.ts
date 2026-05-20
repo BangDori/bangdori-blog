@@ -17,3 +17,7 @@ export function createPost(dto: CreatePostDto): Promise<Post> {
 export function updatePost(id: string, dto: UpdatePostDto): Promise<Post> {
   return api.patch<Post>(`/admin/posts/${id}`, dto);
 }
+
+export function publishPost(id: string): Promise<Post> {
+  return api.post<Post>(`/admin/posts/${id}/publish`);
+}
