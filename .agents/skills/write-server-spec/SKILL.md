@@ -167,4 +167,3 @@ pnpm --filter server test:integration
 ## 모범 사례 파일
 
 - `apps/server/src/admin/auth/tests/auth.service.spec.ts` — unit, 행위 위주 제목
-- `apps/server/src/admin/auth/tests/auth.controller.integration.spec.ts` — integration, HTTP + 쿠키
