@@ -51,4 +51,3 @@ pnpm migration:revert
 ```bash
 pnpm seed
 ```
-
