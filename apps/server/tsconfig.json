@@ -23,6 +23,5 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["src/**/*.spec.ts", "src/**/*.integration.spec.ts"]
+  "include": ["src/**/*"]
 }
