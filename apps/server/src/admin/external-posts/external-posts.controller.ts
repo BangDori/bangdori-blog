@@ -9,11 +9,14 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAccessGuard } from '@admin/auth/jwt-access.guard';
 import { CreateExternalPostDto } from '@admin/external-posts/dto/create-external-post.dto';
 import { UpdateExternalPostDto } from '@admin/external-posts/dto/update-external-post.dto';
 import { ExternalPostsService } from '@admin/external-posts/external-posts.service';
 
+@UseGuards(JwtAccessGuard)
 @Controller('admin/external-posts')
 export class ExternalPostsController {
   constructor(private readonly externalPostsService: ExternalPostsService) {}
