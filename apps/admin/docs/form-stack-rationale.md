@@ -102,3 +102,8 @@ interface를 따로 정의하지 않고 schema에서 추론 -> 한 곳만 바꾸
 - zod 는 "검증 로직 + 타입" 역할
 
 책임 분리가 깔끔해서 같이 쓰는 게 흔한 조합이다.
+
+## 6. 적용 사례
+
+- `domains/posts/ui/post-edit-form.tsx` — partial dirty 검증이 필요해 zod `safeParse` 를 수동으로 부르고 rhf 의 `register` 는 쓰지 않는 변형(legacy 흐름).
+- `domains/auth/ui/login-form.tsx` — 가장 표준적인 사용. `useForm` + `zodResolver(loginSchema)` 로 등록·검증·제출을 모두 rhf 에 위임. zod schema 한 곳에서 `LoginInput`/`LoginDto` 타입이 derived 된다 — 서버 `LoginDto` (class-validator) 와 1:1 매칭.
