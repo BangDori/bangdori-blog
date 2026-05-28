@@ -17,6 +17,17 @@ interface RequestOptions {
   query?: Record<string, string | undefined>;
   body?: unknown;
   signal?: AbortSignal;
+  skipAuthRedirect?: boolean;
+}
+
+interface HttpConfig {
+  onAuthFailure?: () => void;
+}
+
+const httpConfig: HttpConfig = {};
+
+export function configureHttp(next: HttpConfig): void {
+  httpConfig.onAuthFailure = next.onAuthFailure;
 }
 
 function buildUrl(path: string, query?: RequestOptions['query']): string {
@@ -44,9 +55,10 @@ function extractMessage(body: unknown, fallback: string): string {
 }
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { method = 'GET', query, body, signal } = options;
+  const { method = 'GET', query, body, signal, skipAuthRedirect = false } = options;
 
   const headers: Record<string, string> = { Accept: 'application/json' };
+
   let payload: BodyInit | undefined;
   if (body !== undefined) {
     headers['Content-Type'] = 'application/json';
@@ -60,9 +72,14 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
       headers,
       body: payload,
       signal,
+      credentials: 'include',
     });
   } catch (err) {
     throw new ApiError(0, err instanceof Error ? err.message : '네트워크 오류', null);
+  }
+
+  if (response.status === 401 && !skipAuthRedirect) {
+    httpConfig.onAuthFailure?.();
   }
 
   if (response.status === 204) {
@@ -86,11 +103,17 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
 }
 
 export const api = {
-  get: <T>(path: string, query?: RequestOptions['query']) =>
-    request<T>(path, { method: 'GET', query }),
-  post: <T>(path: string, body?: unknown) => request<T>(path, { method: 'POST', body }),
-  patch: <T>(path: string, body?: unknown) => request<T>(path, { method: 'PATCH', body }),
-  delete: <T>(path: string) => request<T>(path, { method: 'DELETE' }),
+  get: <T>(
+    path: string,
+    query?: RequestOptions['query'],
+    options?: Omit<RequestOptions, 'method' | 'query' | 'body'>,
+  ) => request<T>(path, { method: 'GET', query, ...options }),
+  post: <T>(path: string, body?: unknown, options?: Omit<RequestOptions, 'method' | 'body'>) =>
+    request<T>(path, { method: 'POST', body, ...options }),
+  patch: <T>(path: string, body?: unknown, options?: Omit<RequestOptions, 'method' | 'body'>) =>
+    request<T>(path, { method: 'PATCH', body, ...options }),
+  delete: <T>(path: string, options?: Omit<RequestOptions, 'method'>) =>
+    request<T>(path, { method: 'DELETE', ...options }),
 };
 
 export function formatError(err: Error): string {
