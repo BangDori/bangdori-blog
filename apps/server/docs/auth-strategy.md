@@ -35,8 +35,8 @@
 서버 코드에서 자동 seed 하지 않는다 — 평문 비밀번호를 서버 env 에 영구 보관하지 않기 위함.
 
 ```bash
-# 1) 운영자 로컬에서 hash 생성 (평문은 터미널 + argon2.hash 순간만 존재)
-pnpm --filter server hash-password '실제비밀번호'
+# 1) 운영자 로컬에서 hash 생성 (평문은 stdin 으로만 전달 — argv/쉬히스토리/ps 에 노출 안 됨)
+printf '%s' '실제비밀번호' | pnpm --filter server hash-password
 # → $argon2id$v=19$m=...
 ```
 
