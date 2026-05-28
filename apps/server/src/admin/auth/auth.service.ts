@@ -27,12 +27,14 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<LoginResult> {
     const user = await this.users.findByEmail(email);
-    if (!user) {
-      throw new UnauthorizedException(AuthError.invalidCredentials);
-    }
 
-    const ok = await this.users.verifyPassword(user, password);
-    if (!ok) {
+    // 타이밍 공격 방어: 사용자 존재 여부와 무관하게 argon2 검증 비용을 동일하게 소모한다.
+    // 이메일 미존재와 비밀번호 불일치의 응답 시간이 같아야 enumeration 을 차단할 수 있다.
+    const ok = user
+      ? await this.users.verifyPassword(user, password)
+      : await this.users.verifyDummyPassword(password);
+
+    if (!user || !ok) {
       throw new UnauthorizedException(AuthError.invalidCredentials);
     }
 

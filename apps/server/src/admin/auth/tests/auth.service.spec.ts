@@ -7,7 +7,9 @@ import { AuthService } from '@admin/auth/auth.service';
 import { UsersService } from '@admin/users/users.service';
 import type { User } from '@database/entities/user.entity';
 
-type UsersMock = jest.Mocked<Pick<UsersService, 'findByEmail' | 'verifyPassword'>>;
+type UsersMock = jest.Mocked<
+  Pick<UsersService, 'findByEmail' | 'verifyPassword' | 'verifyDummyPassword'>
+>;
 type JwtMock = { sign: jest.Mock };
 
 function makeUser(overrides: Partial<User> = {}): User {
@@ -31,6 +33,8 @@ describe('AuthService', () => {
     users = {
       findByEmail: jest.fn(),
       verifyPassword: jest.fn(),
+      // 기본 값: 사용자 미존재 경로에서 호출되며 항상 false 를 반환하는 더미 검증
+      verifyDummyPassword: jest.fn().mockResolvedValue(false),
     };
     jwt = { sign: jest.fn().mockReturnValue('jwt-token') };
 
