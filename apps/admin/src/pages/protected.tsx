@@ -20,13 +20,25 @@ export function ProtectedRoute() {
     return <Navigate to={ROUTES.login} replace state={{ from: location }} />;
   }
 
-  if (!me.data) {
+  if (me.isPending) {
     return (
       <div className="min-h-screen flex items-center justify-center p-6">
         <Notice>세션 확인 중…</Notice>
       </div>
     );
   }
+
+  // 비-401 에러(500 / 네트워크 등) — 재시도 소진 후에도 실패한 상태.
+  // splash 에 무한 고정되지 않도록 별도 피드백을 노출한다.
+  if (me.error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-6">
+        <Notice>세션 확인에 실패했습니다. 잠시 후 다시 시도해 주세요.</Notice>
+      </div>
+    );
+  }
+
+  if (!me.data) return null;
 
   const onLogout = () => {
     if (logoutMutation.isPending) return;
