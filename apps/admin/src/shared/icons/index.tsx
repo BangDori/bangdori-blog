@@ -1,6 +1,7 @@
 import { CloseIcon } from './close';
 import { DashboardIcon } from './dashboard';
 import type { IconProps } from './icon-base';
+import { LogOutIcon } from './log-out';
 import { MenuIcon } from './menu';
 import { MoonIcon } from './moon';
 import { PanelLeftIcon } from './panel-left';
@@ -10,6 +11,7 @@ import { SunIcon } from './sun';
 const ICONS = {
   close: CloseIcon,
   dashboard: DashboardIcon,
+  'log-out': LogOutIcon,
   menu: MenuIcon,
   moon: MoonIcon,
   'panel-left': PanelLeftIcon,
