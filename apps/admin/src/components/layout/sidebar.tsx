@@ -3,6 +3,7 @@ import { Icon, type IconName } from '@shared/icons';
 import { cn } from '@shared/lib/cn';
 import { ROUTES } from '@shared/lib/routes';
 import { Display } from '@shared/ui/display';
+import { useLayoutAuth } from './auth-context';
 
 interface NavItem {
   to: string;
@@ -61,6 +62,8 @@ export function Sidebar({ mobileOpen, desktopOpen, onCloseMobile }: SidebarProps
 }
 
 function SidebarContent() {
+  const { onLogout } = useLayoutAuth();
+
   return (
     <>
       <div className="px-5 pt-6 pb-4">
@@ -87,6 +90,16 @@ function SidebarContent() {
           </NavLink>
         ))}
       </nav>
+      <div className="px-3 py-3 border-t border-border">
+        <button
+          type="button"
+          onClick={onLogout}
+          className="flex w-full cursor-pointer items-center gap-2.5 rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground"
+        >
+          <Icon name="log-out" />
+          <span>로그아웃</span>
+        </button>
+      </div>
     </>
   );
 }

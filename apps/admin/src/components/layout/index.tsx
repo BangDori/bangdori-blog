@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import { LayoutAuthProvider } from './auth-context';
 import { Sidebar } from './sidebar';
 import { TopBar } from './top-bar';
 
 const DESKTOP_SIDEBAR_KEY = 'admin:sidebar:desktop-open';
 
-export function Layout() {
+interface LayoutProps {
+  auth: { email: string; onLogout: () => void };
+}
+
+export function Layout({ auth }: LayoutProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [desktopOpen, setDesktopOpen] = useState<boolean>(() => {
     const v = window.localStorage.getItem(DESKTOP_SIDEBAR_KEY);
@@ -34,25 +39,27 @@ export function Layout() {
   }, [desktopOpen]);
 
   return (
-    <div className="min-h-screen flex">
-      <Sidebar
-        mobileOpen={mobileOpen}
-        desktopOpen={desktopOpen}
-        onCloseMobile={() => setMobileOpen(false)}
-      />
-
-      <div className="flex-1 min-w-0 flex flex-col">
-        <TopBar
+    <LayoutAuthProvider value={auth}>
+      <div className="min-h-screen flex">
+        <Sidebar
+          mobileOpen={mobileOpen}
           desktopOpen={desktopOpen}
-          onToggleDesktop={() => setDesktopOpen((v) => !v)}
-          onOpenMobile={() => setMobileOpen(true)}
+          onCloseMobile={() => setMobileOpen(false)}
         />
-        <main className="flex-1 px-6 lg:px-10 py-8">
-          <div className="mx-auto max-w-6xl">
-            <Outlet />
-          </div>
-        </main>
+
+        <div className="flex-1 min-w-0 flex flex-col">
+          <TopBar
+            desktopOpen={desktopOpen}
+            onToggleDesktop={() => setDesktopOpen((v) => !v)}
+            onOpenMobile={() => setMobileOpen(true)}
+          />
+          <main className="flex-1 px-6 lg:px-10 py-8">
+            <div className="mx-auto max-w-6xl">
+              <Outlet />
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </LayoutAuthProvider>
   );
 }
