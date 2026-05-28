@@ -1,14 +1,10 @@
 /**
- * admin 비밀번호 1회용 hash 생성기.
+ * admin 비밀번호 1회용 argon2 hash 생성기.
  *
- * 사용 (stdin 으로 전달 — 쉘 history / ps 에 평문이 남지 않는다):
- *   printf '%s' '실제비번' | pnpm --filter server hash-password
+ * 평문 비밀번호는 stdin 으로만 전달 (argv 는 ps / 쉘 history 에 노출):
+ *   printf '%s' '실제비밀번호' | pnpm --filter server hash-password
  *
- * 출력된 argon2 hash 를 운영 DB users.password_hash 컬럼에 직접 INSERT 한다.
- * 평문 비번은 argv 가 아니라 stdin 으로 전달한다 — argv 는 다른 사용자가
- * `ps` 등으로 볼 수 있고, 쉘 history 에 그대로 남는다.
- *
- * 예:
+ * 출력된 hash 를 운영 DB users.password_hash 에 INSERT:
  *   INSERT INTO users (email, password_hash, role)
  *   VALUES ('me@bangdori.kr', '$argon2id$v=19$m=...', 'admin');
  */
@@ -27,17 +23,17 @@ async function readPasswordFromStdin(): Promise<string> {
 async function main(): Promise<void> {
   const password = await readPasswordFromStdin();
   if (!password) {
-    // biome-ignore lint/suspicious/noConsole: CLI 스크립트 사용법 출력
+    // biome-ignore lint/suspicious/noConsole: CLI 사용법 출력
     console.error("usage: printf '%s' '<password>' | pnpm --filter server hash-password");
     process.exit(1);
   }
   const hash = await argon2.hash(password);
-  // biome-ignore lint/suspicious/noConsole: CLI 스크립트 결과 출력
+  // biome-ignore lint/suspicious/noConsole: CLI 결과 출력
   console.log(hash);
 }
 
 main().catch((err) => {
-  // biome-ignore lint/suspicious/noConsole: CLI 스크립트 에러 출력
+  // biome-ignore lint/suspicious/noConsole: CLI 에러 출력
   console.error(err);
   process.exit(1);
 });

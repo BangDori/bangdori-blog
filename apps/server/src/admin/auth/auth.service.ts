@@ -28,8 +28,7 @@ export class AuthService {
   async login(email: string, password: string): Promise<LoginResult> {
     const user = await this.users.findByEmail(email);
 
-    // 타이밍 공격 방어: 사용자 존재 여부와 무관하게 argon2 검증 비용을 동일하게 소모한다.
-    // 이메일 미존재와 비밀번호 불일치의 응답 시간이 같아야 enumeration 을 차단할 수 있다.
+    // 타이밍 공격 방어 — docs/admin-auth-security.md "사용자 enumeration 방어선" 참조
     const ok = user
       ? await this.users.verifyPassword(user, password)
       : await this.users.verifyDummyPassword(password);
@@ -44,8 +43,7 @@ export class AuthService {
   }
 
   private issueAccessToken(user: User): IssuedAccessToken {
-    // JwtModule.registerAsync 에서 expiresIn 기본값을 이미 설정했으므로
-    // sign 시점에서는 추가 options 없이 payload 만 전달한다.
+    // expiresIn 은 JwtModule.registerAsync 에서 설정 — sign 시점에는 payload 만 전달한다.
     const ttl = this.config.get<string>('JWT_ACCESS_EXPIRES_IN') ?? '1d';
     const payload: JwtAccessPayload = {
       sub: user.id,
