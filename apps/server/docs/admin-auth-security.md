@@ -10,8 +10,63 @@
 | 토큰 탈취 (중간자) | Secure 플래그 + 운영 https | HSTS |
 | CSRF | SameSite=Lax + 같은 부모 도메인 | Origin/Referer 가드 |
 | 비번 brute force | argon2 (의도적으로 느린 hash) | rate limit |
-| user enumeration | 401 통일 메시지 | — |
+| user enumeration (응답 메시지) | 401 통일 메시지 | — |
+| user enumeration (응답 시간) | verifyDummyPassword 로 argon2 비용 일치 | — |
 | secret 유출 | 환경별 분리 + secret manager | 정기 rotation |
+
+## 사용자 enumeration 방어선 (응답 메시지 + 응답 시간)
+
+로그인 실패 응답이 "이메일 존재" / "비번 틀림" 을 구분하면 공격자가 존재하는 admin 계정 email 을 알아낼 수 있다. 두 경로를 더 이상 석이지 않게 세 가지를 맞춘다.
+
+### 1. 응답 메시지 통일
+
+`AuthError.invalidCredentials` 는 한 가지 문구만 쓴다:
+
+> `이메일 또는 비밀번호가 올바르지 않습니다.`
+
+- 이메일 미존재 → 이 메시지
+- 비번 불일치 → 이 메시지
+
+응답 본문만 봅서는 둘을 구분할 수 없다.
+
+### 2. 응답 시간 통일
+
+다만 메시지만 통일하면 **응답 시간** 으로 구분될 수 있다:
+
+- 이메일 미존재 → `findByEmail` 만 돌고 즉시 401 (~1ms)
+- 비번 불일치 → `findByEmail` + `argon2.verify` 후 401 (~100ms)
+
+공격자가 응답 시간을 측정하면 차이를 구분할 수 있다 (argon2 는 의도적으로 느린 알고리즘이라 편차가 크다).
+
+**해결**: 이메일이 없을 때도 `verifyDummyPassword` 를 호출해 argon2 비용을 동일하게 소모한다.
+
+```ts
+// AuthService.login
+const user = await this.users.findByEmail(email);
+const ok = user
+  ? await this.users.verifyPassword(user, password)
+  : await this.users.verifyDummyPassword(password);
+if (!user || !ok) {
+  throw new UnauthorizedException(AuthError.invalidCredentials);
+}
+```
+
+```ts
+// UsersService.verifyDummyPassword
+// process 시작 시 한 번 만든 dummy argon2 hash 와 verify 수행 → 자체는 항상 false 반환
+const dummyHashPromise = argon2.hash(randomBytes(32).toString('hex'));
+async verifyDummyPassword(plain: string): Promise<boolean> {
+  const dummyHash = await dummyHashPromise;
+  await argon2.verify(dummyHash, plain).catch(() => false);
+  return false;
+}
+```
+
+dummy hash 가 process 단위 random 값이라 공격자가 머맓 잡아도 재활용 불가.
+
+### 3. (선택) rate limit
+
+시간 통일이 되어도 충분한 시도 횟수가 필요한 공격은 탐지될 수 있으므로 향후 `POST /auth/login` 에 rate limit (e.g., IP 당 5시도/분) 를 추가하는 것을 검토한다 (현재 PR 의 범위 외).
 
 ## CSRF 방어선
 
