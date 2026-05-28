@@ -155,7 +155,7 @@ function makePost(overrides: Partial<Post> = {}): Post {
 - testcontainers 가 postgres 컨테이너 자동 기동(`globalSetup`)
 - 각 spec `beforeEach` 에서 `TRUNCATE ... RESTART IDENTITY CASCADE` 로 격리
 - `AppModule` 직접 import 금지 — `ConfigModule.forRoot({ ignoreEnvFile: true, isGlobal: true })` + 필요한 sub-module 만 import
-  - 이유: AppModule 의 ConfigModule 이 `.env` 의 `DATABASE_URL` 을 cache 해서 testcontainers URL 을 덮어쓴다
+  - 이유: AppModule 의 `ConfigModule.forRoot` 는 `envFilePath` 의 `.env`(dev `DATABASE_URL`) 을 internal config 에 cache 하고, `ConfigService.get('DATABASE_URL')` 시 `process.env`(globalSetup 이 주입한 `TEST_DATABASE_URL`) 보다 이 cache 를 우선시한다. 결과적으로 통합 spec 이 dev DB 로 연결될 수 있으니 `ignoreEnvFile: true` 로 `.env` cache 를 꺼 `process.env` 만 신뢰한다.
 
 검증:
 ```bash
