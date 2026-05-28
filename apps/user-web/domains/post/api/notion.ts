@@ -9,7 +9,6 @@ export const notion = new Client({
 
 const n2m = new NotionToMarkdown({ notionClient: notion });
 
-// Bookmark 블록을 커스텀 컴포넌트로 변환
 n2m.setCustomTransformer('bookmark', async (block) => {
   const { bookmark } = block as { bookmark: { url: string; caption?: { plain_text: string }[] } };
   const url = bookmark.url;
@@ -18,25 +17,12 @@ n2m.setCustomTransformer('bookmark', async (block) => {
 const NOTION_S3_IMAGE_URL_PATTERN =
   /https:\/\/prod-files-secure\.s3\.us-west-2\.amazonaws\.com\/[^)]+/g;
 
-/**
- * Notion S3 이미지 URL을 공개 접근 가능한 URL로 변환합니다.
- *
- * @param notionImageUrl Notion S3 이미지 URL
- * @param id pageId | blockId
- * @returns 공개 접근 가능한 이미지 URL
- */
 function convertToPublicImageUrl(notionImageUrl: string, id: string) {
   const encodedUrl = encodeURIComponent(notionImageUrl.split('?')[0]);
 
   return `${process.env.NEXT_PUBLIC_NOTION_SITE_URL}/image/${encodedUrl}?table=block&id=${id}&cache=v2`;
 }
 
-/**
- * 포스트 메타데이터를 추출합니다.
- *
- * @param page 페이지 객체
- * @returns 포스트 메타데이터
- */
 function getPostMetadata(page: PageObjectResponse): Post {
   const { properties } = page;
 
@@ -154,8 +140,8 @@ export async function getPublishedPosts(): Promise<Post[]> {
   });
 
   const posts = response.results
-    .filter((page): page is PageObjectResponse => 'properties' in page) // properties 타입이 존재하는 페이지만 필터링
-    .map(getPostMetadata); // 포스트 메타데이터 추출
+    .filter((page): page is PageObjectResponse => 'properties' in page)
+    .map(getPostMetadata);
 
   return posts;
 }

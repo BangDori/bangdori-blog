@@ -34,6 +34,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  // 정적 페이지와 블로그 게시물 결합
   return [...staticPages, ...blogPosts];
 }

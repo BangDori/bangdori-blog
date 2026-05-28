@@ -52,21 +52,18 @@ describe('PostsService', () => {
   let repository: PostsRepositoryMock;
 
   beforeEach(async () => {
-    // ① 새 mock repository 객체 만들기
     repository = createPostsRepositoryMock();
 
-    // ② NestJS DI 컨테이너의 "축소판"을 만들고 service + mock을 등록
     const moduleRef = await Test.createTestingModule({
       providers: [
         PostsService,
         {
           provide: PostsRepository,
-          useValue: repository, // ← 진짜 PostsRepository 대신 우리 mock 주입
+          useValue: repository,
         },
       ],
     }).compile();
 
-    // ③ 컨테이너에서 PostsService 인스턴스 꺼내기 (생성자에 mock이 자동 주입된 상태)
     service = moduleRef.get(PostsService);
   });
 

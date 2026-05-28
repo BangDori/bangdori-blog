@@ -67,7 +67,6 @@ export async function GET() {
       // Discussion 제목이 경로 (예: "/blog/my-post")
       const path = discussion.title;
 
-      // 최상위 댓글 수 + 대댓글 수
       commentCounts[path] = discussion.comments.nodes.reduce(
         (sum, comment) => sum + comment.replies.totalCount,
         discussion.comments.totalCount,

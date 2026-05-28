@@ -13,7 +13,6 @@ export async function POST(_request: NextRequest, segmentData: { params: Params 
 
     const redis = await getRedisClient();
 
-    // 게시물 조회수만 증가
     const views = await redis.incr(`post:${slug}:views`);
 
     return NextResponse.json({ views });
@@ -32,7 +31,6 @@ export async function GET(_request: NextRequest, segmentData: { params: Params }
 
     const redis = await getRedisClient();
 
-    // 게시물 조회수 조회
     const views = (await redis.get(`post:${slug}:views`)) || '0';
 
     return NextResponse.json({ views: parseInt(views, 10) });
