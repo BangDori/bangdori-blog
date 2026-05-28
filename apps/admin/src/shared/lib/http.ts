@@ -1,3 +1,5 @@
+import { ROUTES } from './routes';
+
 const BASE_URL = (import.meta.env.VITE_SERVER_API_URL ?? '').replace(/\/$/, '');
 
 export class ApiError extends Error {
@@ -18,16 +20,6 @@ interface RequestOptions {
   body?: unknown;
   signal?: AbortSignal;
   skipAuthRedirect?: boolean;
-}
-
-interface HttpConfig {
-  onAuthFailure?: () => void;
-}
-
-const httpConfig: HttpConfig = {};
-
-export function configureHttp(next: HttpConfig): void {
-  httpConfig.onAuthFailure = next.onAuthFailure;
 }
 
 function buildUrl(path: string, query?: RequestOptions['query']): string {
@@ -79,7 +71,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   }
 
   if (response.status === 401 && !skipAuthRedirect) {
-    httpConfig.onAuthFailure?.();
+    window.location.assign(ROUTES.login);
   }
 
   if (response.status === 204) {
