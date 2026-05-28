@@ -11,7 +11,6 @@ export default function CopyLinkButton() {
     try {
       await navigator.clipboard.writeText(window.location.href);
     } catch {
-      // clipboard 미지원 환경 — textarea + execCommand fallback
       const textArea = document.createElement('textarea');
 
       textArea.value = window.location.href;
