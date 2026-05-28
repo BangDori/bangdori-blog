@@ -37,9 +37,14 @@ export class UsersService {
   }
 
   verifyPassword(user: User, plain: string): Promise<boolean> {
-    // argon2.verify 는 깨진/형식 불일치 hash 를 만나면 reject 한다.
-    // 인증 실패는 단일하게 false 로 귀결되고 서버 500 으로 터지지 않도록 예외를 흡수한다.
-    return argon2.verify(user.passwordHash, plain).catch(() => false);
+    // argon2.verify 반환값 의미:
+    // - resolve(true)  → 일치 (인증 성공)
+    // - resolve(false) → 불일치 (비밀번호 틀림 — 사용자 에러)
+    // - reject(Error)  → hash 자체 손상/형식 불일치 (시스템 에러 — 운영자 즉시 인지 필요)
+    //
+    // 시스템 에러를 false 로 숨기면 401 로 위장되어 데이터 손상 감지가 늦어지므로
+    // 예외는 그대로 전파하여 NestJS 기본 filter 가 500 으로 응답하고 stack 을 로그한다.
+    return argon2.verify(user.passwordHash, plain);
   }
 
   /**
