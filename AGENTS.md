@@ -67,3 +67,7 @@ Conventional Commits: `feat:`, `fix:`, `refactor:`, `chore:`, `docs:`, `style:`,
 
 - UI 작업 시 프로젝트 루트의 `DESIGN.md`를 반드시 참고한다.
 - 새로운 색상이나 컴포넌트를 추가할 때는 `DESIGN.md` 토큰을 먼저 업데이트하고, `globals.css`의 CSS 변수와 일치시킨다.
+
+## 테스트 작성 규칙
+
+- 서버 jest spec 작성 시에는 [`.agents/skills/write-server-spec/SKILL.md`](./.agents/skills/write-server-spec/SKILL.md)를 참고

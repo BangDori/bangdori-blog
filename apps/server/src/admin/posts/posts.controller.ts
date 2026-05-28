@@ -10,12 +10,15 @@ import {
   Patch,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAccessGuard } from '@admin/auth/jwt-access.guard';
 import { CreatePostDto } from '@admin/posts/dto/create-post.dto';
 import { ListPostsQueryDto } from '@admin/posts/dto/list-posts-query.dto';
 import { UpdatePostDto } from '@admin/posts/dto/update-post.dto';
 import { PostsService } from '@admin/posts/posts.service';
 
+@UseGuards(JwtAccessGuard)
 @Controller('admin/posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}

@@ -42,6 +42,15 @@ erDiagram
         timestamptz created_at
         timestamptz updated_at
     }
+
+    USERS {
+        uuid id PK
+        varchar email UK
+        varchar password_hash
+        varchar role "기본 'admin'"
+        timestamptz created_at
+        timestamptz updated_at
+    }
 ```
 
 ## 테이블 설명
@@ -51,4 +60,4 @@ erDiagram
 | `posts` | 내부 CMS에서 직접 작성하고 관리하는 글이다. MDX 본문, 공개 상태, 발행 시각, 글별 누적 조회수를 가진다. |
 | `external_posts` | Medium, GitHub, Velog 등 외부 플랫폼에 내가 직접 발행한 글을 내 블로그 목록에서 함께 보여주기 위한 테이블이다. `posts`와 FK 관계를 두지 않고 독립 콘텐츠로 다룬다. `posts`와 라이프사이클이 분리되어 있으며, 블로그 목록에서는 후속 PR에서 `posts + external_posts`를 `published_at` 기준으로 합쳐 제공할 예정이다. |
 | `site_daily_stats` | 사이트 전체 조회수를 KST 날짜 단위로 저장한다. `stat_date`는 한국 날짜 기준이다. |
-
+| `users` | admin/CMS 로그인 계정. 운영 정책상 본인 1인만 admin. 계정은 운영자가 hash-password 스크립으로 argon2 hash 를 만들어 직접 INSERT 한다 (자세히: `docs/auth-strategy.md`). |
