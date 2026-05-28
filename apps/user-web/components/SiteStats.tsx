@@ -18,7 +18,6 @@ export function SiteStats() {
         const data = await response.json();
         setStats(data);
       } catch {
-        // 실패해도 무시
       } finally {
         setLoading(false);
       }

@@ -20,7 +20,6 @@ import { TableOfContentsLink } from './_components/TableOfContentsLink';
 import { VideoOrLink } from './_components/VideoOrLink';
 import { ViewCounter } from './_components/ViewCounter';
 
-// 동적 메타데이터 생성
 export async function generateMetadata({
   params,
 }: {
@@ -59,7 +58,6 @@ export async function generateMetadata({
   };
 }
 
-// 모든 포스트를 미리 생성하여 정적 렌더링 처리
 export async function generateStaticParams() {
   const posts = await getPublishedPosts();
   // External 링크는 정적 생성에서 제외 (외부 URL이므로)
@@ -83,7 +81,6 @@ export default async function BlogPost({ params }: BlogPostProps) {
       <GALogger.OnScroll event={['post_content', { thresholds: [25, 50, 75, 90], slug }]}>
         <article className="container flex flex-col gap-8">
           <section className="flex flex-col gap-8">
-            {/* 블로그 헤더 */}
             <div className="space-y-2 sm:space-y-4 md:space-y-6">
               <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">{post.title}</h1>
               <div className="space-y-1.5">
@@ -129,7 +126,6 @@ export default async function BlogPost({ params }: BlogPostProps) {
               </div>
             </aside>
 
-            {/* 블로그 본문 */}
             <div className="prose prose-neutral prose-sm dark:prose-invert prose-headings:scroll-mt-[var(--header-height)] xl:prose-base w-full max-w-full flex-1">
               <MDXRemote
                 source={markdown}

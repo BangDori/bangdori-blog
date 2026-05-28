@@ -1,8 +1,5 @@
 import { z } from 'zod';
 
-/**
- * 다양성이 커지면 DB 메서·도메인 설정으로 이동
- */
 export const AUTHOR_OPTIONS = ['강병준', 'AI'] as const;
 export const CATEGORY_OPTIONS = ['tech', '회고'] as const;
 

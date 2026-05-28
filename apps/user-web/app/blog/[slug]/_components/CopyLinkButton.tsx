@@ -11,8 +11,7 @@ export default function CopyLinkButton() {
     try {
       await navigator.clipboard.writeText(window.location.href);
     } catch {
-      // clipboard를 지원하지 않는 경우
-      // 임시 입력창을 생성한 후, 입력값을 복사
+      // clipboard 미지원 환경 — textarea + execCommand fallback
       const textArea = document.createElement('textarea');
 
       textArea.value = window.location.href;
