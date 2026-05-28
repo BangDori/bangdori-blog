@@ -1,17 +1,19 @@
 import { Route, Routes } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { ROUTES } from '@shared/lib/routes';
-import { Layout } from './components/layout';
+import { LoginPage } from './pages/auth/login';
 import { DashboardPage } from './pages/dashboard';
 import { PostsCreatePage } from './pages/posts/create';
 import { PostsEditPage } from './pages/posts/edit';
 import { PostsListPage } from './pages/posts/list';
+import { ProtectedRoute } from './pages/protected';
 
 export function App() {
   return (
     <>
       <Routes>
-        <Route element={<Layout />}>
+        <Route path={ROUTES.login} element={<LoginPage />} />
+        <Route element={<ProtectedRoute />}>
           <Route index element={<DashboardPage />} />
           <Route path={ROUTES.posts} element={<PostsListPage />} />
           <Route path={ROUTES.postsNew} element={<PostsCreatePage />} />

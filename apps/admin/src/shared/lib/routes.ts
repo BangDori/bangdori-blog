@@ -5,6 +5,7 @@
  * - 경로 변경 시 이 파일만 갱신하면 사용처 전체 반영된다.
  */
 export const ROUTES = {
+  login: '/login',
   dashboard: '/',
   posts: '/posts',
   postsNew: '/posts/new',

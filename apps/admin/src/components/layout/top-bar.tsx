@@ -1,6 +1,7 @@
 import { Icon } from '@shared/icons';
 import { Display } from '@shared/ui/display';
 import { ThemeToggle } from '@shared/ui/theme-toggle';
+import { useLayoutAuth } from './auth-context';
 
 interface TopBarProps {
   desktopOpen: boolean;
@@ -9,6 +10,8 @@ interface TopBarProps {
 }
 
 export function TopBar({ desktopOpen, onToggleDesktop, onOpenMobile }: TopBarProps) {
+  const { email } = useLayoutAuth();
+
   return (
     <header className="h-12 border-b border-border flex items-center gap-2 px-4">
       <Display tablet desktop>
@@ -36,7 +39,10 @@ export function TopBar({ desktopOpen, onToggleDesktop, onOpenMobile }: TopBarPro
         </button>
         <span className="text-sm font-semibold tracking-tight">bangdori.kr admin</span>
       </Display>
-      <div className="ml-auto flex items-center gap-1">
+      <div className="ml-auto flex items-center gap-2">
+        <span className="hidden sm:inline text-xs text-muted-foreground" title={email}>
+          {email}
+        </span>
         <ThemeToggle />
       </div>
     </header>
