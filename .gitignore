@@ -43,3 +43,6 @@ next-env.d.ts
 
 # Infisical
 
+# playwright-cli (snapshot/console artifacts)
+.playwright-cli/
+
