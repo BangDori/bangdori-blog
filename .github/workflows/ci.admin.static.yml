@@ -37,6 +37,9 @@ jobs:
       - name: Lint (ESLint architecture)
         run: pnpm lint:admin:ci
 
+      - name: Unused exports (Knip)
+        run: pnpm knip:admin:ci
+
       - name: Type Check
         run: pnpm --filter admin exec tsc -b
 

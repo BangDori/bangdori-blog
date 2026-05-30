@@ -1,0 +1,6 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["index.html", "src/globals.css"],
+  "project": ["src/**/*.{ts,tsx}", "eslint/**/*.mjs"],
+  "ignoreExportsUsedInFile": true
+}

@@ -7,5 +7,7 @@ pre-push:
       run: pnpm check:admin:ci
     admin-eslint:
       run: pnpm lint:admin:ci
+    admin-knip:
+      run: pnpm knip:admin:ci
     server-biome:
       run: pnpm check:server:ci
