@@ -7,6 +7,7 @@ import { UsersModule } from '@admin/users/users.module';
 import { DatabaseModule } from '@database/database.module';
 import { HealthController } from '@/health.controller';
 import { LoggerModule } from '@/logger/logger.module';
+import { UserPostsModule } from '@/user/posts/user-posts.module';
 
 const env = process.env.NODE_ENV || 'development';
 
@@ -22,6 +23,7 @@ const env = process.env.NODE_ENV || 'development';
     AuthModule,
     AdminPostsModule,
     ExternalPostsModule,
+    UserPostsModule,
   ],
   controllers: [HealthController],
 })
