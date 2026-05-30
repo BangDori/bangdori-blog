@@ -64,7 +64,7 @@ DTO        → Repository 의존
 
 ## 기능 모듈 폴더 규칙
 
-기능 모듈은 기본적으로 권한/노출면과 도메인을 함께 드러내는 `{surface}/{domain}` 구조로 나눈다. 여기서 `{surface}`는 `admin`, `public` 같은 API 노출면이고, `{domain}`은 `posts`, `analytics` 같은 기능 이름이다.
+기능 모듈은 기본적으로 권한/노출면과 도메인을 함께 드러내는 `{surface}/{domain}` 구조로 나눈다. 여기서 `{surface}`는 `admin`(CMS), `user`(공개 블로그) 같은 클라이언트 노출면이고, `{domain}`은 `posts`, `analytics` 같은 기능 이름이다. 클라이언트 앱 `apps/admin` · `apps/user-web` 과 surface 이름을 맞춘다.
 
 ```text
 apps/server/src/{surface}/{domain}/
@@ -81,9 +81,9 @@ apps/server/src/{surface}/{domain}/
     └── {resource}-response.dto.ts        # 선택
 ```
 
-예를 들어 admin posts API는 `apps/server/src/admin/posts/` 아래에 둔다. 나중에 public posts API가 필요하면 `apps/server/src/public/posts/` 아래에 별도 controller/service를 둔다.
+예를 들어 admin posts API는 `apps/server/src/admin/posts/` 아래에 둔다. 사용자(공개 블로그)용 posts read API는 `apps/server/src/user/posts/` 아래에 admin과 분리된 controller/service/repository로 둔다. 같은 `Post` entity를 공유하되 repository는 surface별로 자기 책임만 갖는다(admin은 전체 상태/CRUD, user는 발행·미삭제 read-only). user surface는 가드를 적용하지 않는 공개 endpoint다.
 
-파일명은 이미 `{surface}/{domain}` 경로로 구분되므로 `posts.controller.ts`, `posts.service.ts`처럼 도메인 이름만 쓴다. 단, 외부 module에서 import되는 class 이름은 충돌을 피하기 위해 `AdminPostsModule`, `PublicPostsModule`처럼 surface를 포함할 수 있다.
+파일명은 이미 `{surface}/{domain}` 경로로 구분되므로 `posts.controller.ts`, `posts.service.ts`처럼 도메인 이름만 쓴다. 단, 외부 module에서 import되는 class 이름은 충돌을 피하기 위해 `AdminPostsModule`, `UserPostsModule`처럼 surface를 포함할 수 있다.
 
 작은 기능이라도 DB 접근이 있으면 `Repository` 파일을 둔다. 처음에는 얇은 래퍼여도 괜찮다. 나중에 query 조건, pagination, transaction, lock, bulk update가 들어와도 Service가 비대해지지 않게 하기 위함이다.
 
