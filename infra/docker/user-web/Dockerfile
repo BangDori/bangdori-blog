@@ -14,8 +14,10 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY --from=deps /app/apps/user-web/node_modules ./apps/user-web/node_modules
 COPY . .
-ARG NEXT_PUBLIC_NOTION_SITE_URL
 ARG NEXT_PUBLIC_SITE_URL
+ARG NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 RUN pnpm --filter user-web build
 
 # --- runner: production image ---

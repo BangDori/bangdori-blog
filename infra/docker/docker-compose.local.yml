@@ -4,12 +4,14 @@ services:
       context: ../../
       dockerfile: infra/docker/user-web/Dockerfile
       args:
-        NEXT_PUBLIC_NOTION_SITE_URL: https://bangdori.notion.site
-        NEXT_PUBLIC_SITE_URL: https://bangdori.kr
+        NEXT_PUBLIC_SITE_URL: http://localhost:3000
+        NEXT_PUBLIC_API_URL: http://server:4000
     ports:
       - "3000:3000"
     env_file:
       - ../../apps/user-web/.env.development
+    depends_on:
+      - server
     restart: unless-stopped
 
   admin:
