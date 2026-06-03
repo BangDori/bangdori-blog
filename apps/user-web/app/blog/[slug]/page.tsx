@@ -36,9 +36,11 @@ export async function generateMetadata({
     };
   }
 
+  const description = post.description || `${post.title} - 강병준 블로그`;
+
   return {
     title: post.title,
-    description: post.description || `${post.title} - 강병준 블로그`,
+    description,
     authors: [{ name: post.author }],
     publisher: post.author,
     alternates: {
@@ -46,7 +48,7 @@ export async function generateMetadata({
     },
     openGraph: {
       title: post.title,
-      description: post.description ?? undefined,
+      description,
       url: `/blog/${slug}`,
       type: 'article',
       publishedTime: post.publishedAt ?? undefined,
