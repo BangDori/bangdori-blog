@@ -1,11 +1,12 @@
 import { ImageResponse } from 'next/og';
-import { getPostBySlug } from '@/domains/post/api/notion';
+import { getPostBySlug } from '@/domains/post/api/posts';
+import { formatDate } from '@/lib/date';
 
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default async function OgImage({ params }: { params: { slug: string } }) {
-  const { post } = await getPostBySlug(params.slug);
+  const post = await getPostBySlug(params.slug);
 
   if (!post) {
     return new ImageResponse(
@@ -94,8 +95,8 @@ export default async function OgImage({ params }: { params: { slug: string } }) 
           color: '#aaaaaa',
         }}
       >
-        <div>{post.createdAt}</div>
-        <div>{post.tag}</div>
+        <div>{formatDate(post.createdAt)}</div>
+        <div>{post.category}</div>
       </div>
     </div>,
     { ...size },

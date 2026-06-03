@@ -1,5 +1,5 @@
 import { GALogger } from '@/components/ga-logger';
-import { getPublishedPosts } from '@/domains/post/api/notion';
+import { getPublishedPosts } from '@/domains/post/api/posts';
 import { PostList } from '@/domains/post/components';
 
 export default async function Home() {

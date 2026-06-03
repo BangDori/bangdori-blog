@@ -1,6 +1,6 @@
 import RSS from 'rss';
-import { getPublishedPosts } from '@/domains/post/api/notion';
-import type { Post } from '@/domains/post/types';
+import { getPublishedPosts } from '@/domains/post/api/posts';
+import type { PostListItem } from '@/domains/post/types';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
@@ -13,18 +13,17 @@ export async function GET() {
     language: 'ko',
   });
 
-  const posts: Post[] = await getPublishedPosts();
+  const posts: PostListItem[] = await getPublishedPosts();
 
   posts.forEach((post) => {
-    // External 포스트는 slug가 외부 URL이므로 그대로 사용
-    const postUrl = post.status === 'External' ? post.slug : `${SITE_URL}/blog/${post.slug}`;
+    const postUrl = `${SITE_URL}/blog/${post.slug}`;
 
     feed.item({
       title: post.title,
       description: post.description || '',
       url: postUrl,
       guid: postUrl,
-      date: post.createdAt,
+      date: post.publishedAt ?? '',
       author: '강병준',
     });
   });
