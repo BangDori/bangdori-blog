@@ -38,7 +38,7 @@ jobs:
         run: pnpm lint:admin:ci
 
       - name: Unused exports (Knip)
-        run: pnpm knip:admin:ci
+        run: pnpm --filter admin knip:ci
 
       - name: Type Check
         run: pnpm --filter admin exec tsc -b

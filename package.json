@@ -19,8 +19,6 @@
     "check:admin:ci": "pnpm --filter admin check:ci",
     "lint:admin": "pnpm --filter admin lint",
     "lint:admin:ci": "pnpm --filter admin lint:ci",
-    "knip:admin": "pnpm --filter admin knip",
-    "knip:admin:ci": "pnpm --filter admin knip:ci",
     "docker:build": "docker compose -f infra/docker/docker-compose.local.yml build",
     "docker:up": "docker compose -f infra/docker/docker-compose.local.yml up --build -d",
     "docker:down": "docker compose -f infra/docker/docker-compose.local.yml down",
