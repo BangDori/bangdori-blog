@@ -23,7 +23,7 @@ export async function GET() {
       description: post.description || '',
       url: postUrl,
       guid: postUrl,
-      date: post.publishedAt ?? '',
+      date: post.publishedAt ? new Date(post.publishedAt) : new Date(),
       author: '강병준',
     });
   });

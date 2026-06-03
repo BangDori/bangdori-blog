@@ -2,6 +2,12 @@ import type { PostDetail, PostListItem } from '../types';
 
 const BASE = process.env.NEXT_PUBLIC_API_URL;
 
+if (!BASE) {
+  throw new Error(
+    'NEXT_PUBLIC_API_URL is not set. Set it in apps/user-web/.env(.development) or build args.',
+  );
+}
+
 export async function getPublishedPosts(): Promise<PostListItem[]> {
   const res = await fetch(`${BASE}/user/posts`, { next: { revalidate: 60 } });
 

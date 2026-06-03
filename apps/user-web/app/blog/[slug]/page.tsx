@@ -52,14 +52,18 @@ export async function generateMetadata({
       publishedTime: post.publishedAt ?? undefined,
       modifiedTime: post.updatedAt,
       authors: [post.author],
-      images: [{ url: post.thumbnailUrl ?? '', width: 1200, height: 630 }],
+      // og:image는 ./opengraph-image.tsx 가 자동으로 inject (Next 15 convention)
     },
   };
 }
 
 export async function generateStaticParams() {
-  const posts = await getPublishedPosts();
-  return posts.map((post) => ({ slug: post.slug }));
+  try {
+    const posts = await getPublishedPosts();
+    return posts.map((post) => ({ slug: post.slug }));
+  } catch {
+    return [];
+  }
 }
 
 interface BlogPostProps {
