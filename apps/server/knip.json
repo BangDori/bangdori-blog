@@ -1,0 +1,15 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["src/main.ts", "src/**/*.spec.ts", "test/**/*.ts", "jest.*.config.js"],
+  "project": ["src/**/*.ts", "test/**/*.ts"],
+  "ignore": ["src/database/migration/**"],
+  "ignoreDependencies": [
+    "pino-pretty",
+    "@nestjs/schematics",
+    "tsconfig-paths",
+    "supertest",
+    "@types/supertest",
+    "testcontainers"
+  ],
+  "ignoreExportsUsedInFile": true
+}

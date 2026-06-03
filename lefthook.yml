@@ -8,6 +8,16 @@ pre-push:
     admin-eslint:
       run: pnpm lint:admin:ci
     admin-knip:
-      run: pnpm knip:admin:ci
+      run: pnpm --filter admin knip:ci
+    user-web-knip:
+      run: pnpm --filter user-web knip:ci
+    server-knip:
+      run: pnpm --filter server knip:ci
+    admin-circular:
+      run: pnpm --filter admin circular:ci
+    user-web-circular:
+      run: pnpm --filter user-web circular:ci
+    server-circular:
+      run: pnpm --filter server circular:ci
     server-biome:
       run: pnpm check:server:ci

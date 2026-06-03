@@ -1,0 +1,19 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["app/**/{layout,page,loading,error,not-found,global-error}.tsx"],
+  "project": [
+    "app/**/*.{ts,tsx}",
+    "components/**/*.{ts,tsx}",
+    "domains/**/*.{ts,tsx}",
+    "hooks/**/*.{ts,tsx}",
+    "lib/**/*.{ts,tsx}"
+  ],
+  "ignoreDependencies": [
+    "@bangdori/ui",
+    "tailwindcss",
+    "@tailwindcss/typography",
+    "tw-animate-css"
+  ],
+  "ignore": ["components/ui/**"],
+  "ignoreExportsUsedInFile": true
+}
