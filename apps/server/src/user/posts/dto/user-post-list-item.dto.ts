@@ -6,4 +6,5 @@ export interface UserPostListItemDto {
   category: string;
   thumbnailUrl: string | null;
   publishedAt: string | null;
+  updatedAt: string;
 }
