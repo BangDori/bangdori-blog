@@ -4,7 +4,7 @@ Next.js 15 (App Router) 기반 개인 블로그 — [bangdori.kr](https://bangdo
 
 ## 데이터 흐름
 
-- **글**: Notion DB → `notion-to-md` 마크다운 변환 → `next-mdx-remote` 렌더링
+- **글**: apps/server `/user/posts` 공개 read API(= admin CMS에서 발행된 DB 글) → `next-mdx-remote` 렌더링 — 홈 목록·`/blog/[slug]`, `domains/post`
 - **조회수**: Redis (`post:{slug}:views`) — `/api/views/[slug]`
 - **댓글**: Giscus (GitHub Discussions) — `/api/comments`로 카운트 조회
 - **방문자**: Redis (`site:visitors`, `site:pageviews`) — `/api/stats`

@@ -19,6 +19,7 @@ export class UserPostsService {
       category: post.category,
       thumbnailUrl: post.thumbnailUrl,
       publishedAt: post.publishedAt ? post.publishedAt.toISOString() : null,
+      updatedAt: post.updatedAt.toISOString(),
     }));
   }
 

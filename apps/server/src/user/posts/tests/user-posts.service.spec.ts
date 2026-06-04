@@ -130,6 +130,7 @@ describe('UserPostsService', () => {
         category: first.category,
         thumbnailUrl: first.thumbnailUrl,
         publishedAt: '2026-03-01T00:00:00.000Z',
+        updatedAt: '2026-02-02T00:00:00.000Z',
       });
     });
   });

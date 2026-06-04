@@ -1,11 +1,16 @@
-export interface Post {
+export interface PostListItem {
   id: string;
-  title: string;
-  description: string;
-  coverImage?: string;
-  tag: string;
-  createdAt: string;
-  updatedAt?: string;
   slug: string;
-  status?: string;
+  title: string;
+  description: string | null;
+  category: string;
+  thumbnailUrl: string | null;
+  publishedAt: string | null;
+  updatedAt: string;
+}
+
+export interface PostDetail extends PostListItem {
+  contentMdx: string;
+  author: string;
+  createdAt: string;
 }

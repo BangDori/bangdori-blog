@@ -3,13 +3,14 @@ import withToc from '@stefanprobst/rehype-extract-toc';
 import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { rehypePrettyCode } from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import { GALogger } from '@/components/ga-logger';
 import { Button } from '@/components/ui/button';
-import { getPostBySlug, getPublishedPosts } from '@/domains/post/api/notion';
+import { getPostBySlug, getPublishedPosts } from '@/domains/post/api/posts';
 import { formatDate } from '@/lib/date';
 import { Bookmark } from './_components/Bookmark';
 import { CodeBlock } from './_components/CodeBlock';
@@ -26,7 +27,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const { post } = await getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     return {
@@ -35,33 +36,36 @@ export async function generateMetadata({
     };
   }
 
+  const description = post.description || `${post.title} - 강병준 블로그`;
+
   return {
     title: post.title,
-    description: post.description || `${post.title} - 강병준 블로그`,
-    keywords: post.tag,
-    authors: [{ name: '강병준' }],
-    publisher: '강병준',
+    description,
+    authors: [{ name: post.author }],
+    publisher: post.author,
     alternates: {
-      canonical: `/blog/${post.slug}`,
+      canonical: `/blog/${slug}`,
     },
     openGraph: {
       title: post.title,
-      description: post.description,
-      url: `/blog/${post.slug}`,
+      description,
+      url: `/blog/${slug}`,
       type: 'article',
-      publishedTime: post.createdAt,
+      publishedTime: post.publishedAt ?? undefined,
       modifiedTime: post.updatedAt,
-      authors: '강병준',
-      tags: post.tag,
-      images: [{ url: post.coverImage || '', width: 1200, height: 630 }],
+      authors: [post.author],
+      // og:image는 ./opengraph-image.tsx 가 자동으로 inject (Next 15 convention)
     },
   };
 }
 
 export async function generateStaticParams() {
-  const posts = await getPublishedPosts();
-  // External 링크는 정적 생성에서 제외 (외부 URL이므로)
-  return posts.filter((post) => post.status !== 'External').map((post) => ({ slug: post.slug }));
+  try {
+    const posts = await getPublishedPosts();
+    return posts.map((post) => ({ slug: post.slug }));
+  } catch {
+    return [];
+  }
 }
 
 interface BlogPostProps {
@@ -70,9 +74,13 @@ interface BlogPostProps {
 
 export default async function BlogPost({ params }: BlogPostProps) {
   const { slug } = await params;
-  const { markdown, post } = await getPostBySlug(slug);
+  const post = await getPostBySlug(slug);
 
-  const { data } = await compile(markdown, {
+  if (!post) {
+    notFound();
+  }
+
+  const { data } = await compile(post.contentMdx, {
     rehypePlugins: [rehypeSlug, withToc, withTocExport],
   });
 
@@ -109,7 +117,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
                 </div>
                 <div>
                   <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-                    By <b className="font-normal text-black dark:text-white">강병준</b>
+                    By <b className="font-normal text-black dark:text-white">{post.author}</b>
                   </p>
                 </div>
               </div>
@@ -128,7 +136,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
 
             <div className="prose prose-neutral prose-sm dark:prose-invert prose-headings:scroll-mt-[var(--header-height)] xl:prose-base w-full max-w-full flex-1">
               <MDXRemote
-                source={markdown}
+                source={post.contentMdx}
                 components={{ pre: CodeBlock, a: VideoOrLink, img: MarkdownImage, Bookmark }}
                 options={{
                   mdxOptions: {

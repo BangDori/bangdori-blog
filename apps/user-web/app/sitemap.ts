@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { getPublishedPosts } from '@/domains/post/api/notion';
+import { getPublishedPosts } from '@/domains/post/api/posts';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = `${process.env.NEXT_PUBLIC_SITE_URL}`;
@@ -29,7 +29,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const blogPosts = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: post.updatedAt ? new Date(post.updatedAt) : new Date(),
+    lastModified: new Date(post.updatedAt),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
   }));

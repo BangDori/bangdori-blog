@@ -2,33 +2,30 @@
 
 import Link from 'next/link';
 import { trackClick } from '@/lib/gtag';
-import type { Post } from '../types';
+import type { PostListItem } from '../types';
 import { PostCard } from './PostCard';
 
 interface PostListProps {
-  posts: Post[];
+  posts: PostListItem[];
 }
 
 export function PostList({ posts }: PostListProps) {
+  if (posts.length === 0) {
+    return <p className="text-muted-foreground text-sm">아직 발행된 글이 없어요.</p>;
+  }
+
   return (
     <div className="grid gap-2">
-      {posts.map((post) => {
-        const isExternal = post.status === 'External';
-        const href = isExternal ? post.slug : `/blog/${post.slug}`;
-
-        return (
-          <Link
-            href={href}
-            key={post.id}
-            className="rounded-sm px-0.5 py-1 transition-colors duration-200 ease-in-out hover:bg-gray-100 dark:hover:bg-gray-800"
-            target={isExternal ? '_blank' : undefined}
-            rel={isExternal ? 'noopener noreferrer' : undefined}
-            onClick={() => trackClick('post_card', { slug: post.slug, text: post.title })}
-          >
-            <PostCard post={post} />
-          </Link>
-        );
-      })}
+      {posts.map((post) => (
+        <Link
+          href={`/blog/${post.slug}`}
+          key={post.id}
+          className="rounded-sm px-0.5 py-1 transition-colors duration-200 ease-in-out hover:bg-gray-100 dark:hover:bg-gray-800"
+          onClick={() => trackClick('post_card', { slug: post.slug, text: post.title })}
+        >
+          <PostCard post={post} />
+        </Link>
+      ))}
     </div>
   );
 }
