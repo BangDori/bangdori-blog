@@ -4,6 +4,9 @@ import type { PostListItem } from '@/domains/post/types';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
+// docker build 명종 방지: 빌드 시 API 서버가 없으므로 prerender 대신 런타임 생성
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   const feed = new RSS({
     title: '강병준의 개발 블로그',
