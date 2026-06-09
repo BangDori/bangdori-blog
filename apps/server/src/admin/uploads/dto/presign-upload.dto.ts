@@ -1,8 +1,8 @@
 import { IsIn, IsString, Matches, MaxLength, MinLength } from 'class-validator';
 import { UploadsError } from '@admin/uploads/uploads.error';
 import {
-  type AllowedUploadContentType,
   ALLOWED_UPLOAD_CONTENT_TYPES,
+  type AllowedUploadContentType,
 } from '@admin/uploads/uploads-policy';
 
 const FILENAME_EXTENSION_PATTERN = /\.(png|jpe?g|webp|gif)$/i;
