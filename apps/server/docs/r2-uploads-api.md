@@ -94,17 +94,6 @@ DTO 검증은 class-validator 로 처리한다. `whitelist + forbidNonWhiteliste
 
 응답에 R2 access key/secret 같은 시크릿은 포함하지 않는다. `uploadUrl` 자체는 임시 쓰기 권한이므로 로그에 남기지 않는다.
 
-## Admin UI 사용 흐름
-
-1. 파일 선택 또는 drag & drop
-2. `POST /admin/uploads/presign`
-3. 응답의 `uploadUrl` 로 `PUT`
-   - `Content-Type` 헤더는 presign 요청의 `contentType` 과 같아야 한다.
-4. PUT 성공 시점에만 `publicUrl` 을 사용
-   - 글 작성 이미지: 본문/preview 에 삽입
-   - 썸네일: form state 의 `thumbnailUrl` 로 저장
-5. PUT 실패 시 presign 응답의 `publicUrl` 은 폐기
-
 ## R2/S3 호환성 기준
 
 Cloudflare R2 는 S3 호환 API 를 제공하므로 AWS SDK v3 를 사용한다.
