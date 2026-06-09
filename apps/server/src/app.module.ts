@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from '@admin/auth/auth.module';
 import { ExternalPostsModule } from '@admin/external-posts/external-posts.module';
 import { AdminPostsModule } from '@admin/posts/posts.module';
+import { AdminUploadsModule } from '@admin/uploads/uploads.module';
 import { UsersModule } from '@admin/users/users.module';
 import { DatabaseModule } from '@database/database.module';
 import { HealthController } from '@/health.controller';
@@ -22,6 +23,7 @@ const env = process.env.NODE_ENV || 'development';
     UsersModule,
     AuthModule,
     AdminPostsModule,
+    AdminUploadsModule,
     ExternalPostsModule,
     UserPostsModule,
   ],
