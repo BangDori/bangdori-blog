@@ -23,11 +23,10 @@ interface BuildUploadObjectKeyInput {
   contentType: AllowedUploadContentType;
   // 현재는 post 이미지 업로드만 지원, 범위 확장 시 유니온 타입으로 활용
   prefix: 'posts';
-  now?: Date;
 }
 
 export function buildUploadObjectKey(input: BuildUploadObjectKeyInput): string {
-  const now = input.now ?? new Date();
+  const now = new Date();
   const yyyy = String(now.getUTCFullYear()).padStart(4, '0');
   const mm = String(now.getUTCMonth() + 1).padStart(2, '0');
   const prefix = input.prefix;
