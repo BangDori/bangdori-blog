@@ -20,6 +20,7 @@ export class UploadsService {
     const key = buildUploadObjectKey({
       originalFilename: dto.originalFilename,
       contentType: dto.contentType,
+      prefix: 'posts',
     });
     const expiresInSec = DEFAULT_PRESIGN_EXPIRES_SEC;
 

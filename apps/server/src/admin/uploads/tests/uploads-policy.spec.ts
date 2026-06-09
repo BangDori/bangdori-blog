@@ -10,6 +10,7 @@ describe('uploads policy', () => {
       const key = buildUploadObjectKey({
         originalFilename: '안녕하세요-Hello World.png',
         contentType: 'image/png',
+        prefix: 'posts',
         now,
       });
 
@@ -27,6 +28,7 @@ describe('uploads policy', () => {
       const key = buildUploadObjectKey({
         originalFilename: 'photo.jpeg',
         contentType: 'image/jpeg',
+        prefix: 'posts',
         now,
       });
 
@@ -43,6 +45,7 @@ describe('uploads policy', () => {
       const key = buildUploadObjectKey({
         originalFilename: '!!!.png',
         contentType: 'image/png',
+        prefix: 'posts',
         now,
       });
 
@@ -55,6 +58,7 @@ describe('uploads policy', () => {
       const input = {
         originalFilename: 'same.png',
         contentType: 'image/png' as const,
+        prefix: 'posts' as const,
         now: new Date(Date.UTC(2026, 0, 1)),
       };
 
@@ -74,6 +78,7 @@ describe('uploads policy', () => {
       const key = buildUploadObjectKey({
         originalFilename: 'a.png',
         contentType: 'image/png',
+        prefix: 'posts',
         now,
       });
 
@@ -90,6 +95,7 @@ describe('uploads policy', () => {
       const key = buildUploadObjectKey({
         originalFilename: `${longName}.png`,
         contentType: 'image/png',
+        prefix: 'posts',
         now,
       });
 
