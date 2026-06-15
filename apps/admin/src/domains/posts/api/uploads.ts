@@ -7,6 +7,8 @@ const ALLOWED_POST_IMAGE_CONTENT_TYPES = [
   'image/gif',
 ] as const;
 
+const UPLOAD_TIMEOUT_MS = 30_000;
+
 export const INVALID_POST_IMAGE_TYPE_MESSAGE =
   'PNG, JPEG, WebP, GIF 이미지만 업로드할 수 있습니다.';
 
@@ -49,6 +51,8 @@ export async function uploadPostImage(file: File): Promise<PresignUploadResponse
     throw new Error(`업로드 URL 발급에 실패했습니다. ${describeUploadError(err)}`);
   }
 
+  const controller = new AbortController();
+  const timeoutId = window.setTimeout(() => controller.abort(), UPLOAD_TIMEOUT_MS);
   let response: Response;
   try {
     response = await fetch(presigned.uploadUrl, {
@@ -56,9 +60,12 @@ export async function uploadPostImage(file: File): Promise<PresignUploadResponse
       headers: { 'Content-Type': file.type },
       body: file,
       credentials: 'omit',
+      signal: controller.signal,
     });
   } catch (err) {
     throw new Error(`이미지 업로드에 실패했습니다. ${describeUploadError(err)}`);
+  } finally {
+    window.clearTimeout(timeoutId);
   }
 
   if (!response.ok) {
@@ -69,6 +76,10 @@ export async function uploadPostImage(file: File): Promise<PresignUploadResponse
 }
 
 function describeUploadError(err: unknown): string {
+  if (err instanceof DOMException && err.name === 'AbortError') {
+    return '요청 시간이 초과되었습니다.';
+  }
+
   if (err instanceof Error) return formatError(err);
   return '알 수 없는 오류';
 }
