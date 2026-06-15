@@ -10,8 +10,9 @@ import {
 interface PostThumbnailPickerProps {
   url: string;
   disabled: boolean;
-  error?: string;
+  error: string | undefined;
   onUrlChange: (next: string) => void;
+  onUploadingChange: (uploading: boolean) => void;
 }
 
 export function PostThumbnailPicker({
@@ -19,8 +20,14 @@ export function PostThumbnailPicker({
   disabled,
   error,
   onUrlChange,
+  onUploadingChange,
 }: PostThumbnailPickerProps) {
   const [isUploading, setIsUploading] = useState(false);
+
+  const setUploading = (uploading: boolean) => {
+    setIsUploading(uploading);
+    onUploadingChange(uploading);
+  };
 
   async function handleFileSelect(file: File) {
     if (!isAllowedPostImageContentType(file.type)) {
@@ -28,14 +35,14 @@ export function PostThumbnailPicker({
       return;
     }
 
-    setIsUploading(true);
+    setUploading(true);
     try {
       const uploaded = await uploadPostImage(file);
       onUrlChange(uploaded.publicUrl);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : '썸네일 업로드에 실패했습니다.');
     } finally {
-      setIsUploading(false);
+      setUploading(false);
     }
   }
 
@@ -45,7 +52,6 @@ export function PostThumbnailPicker({
       disabled={disabled}
       error={error}
       uploading={isUploading}
-      emptyLabel="이미지를 클릭해 업로드"
       onFileSelect={(file) => void handleFileSelect(file)}
       onUrlChange={onUrlChange}
     />

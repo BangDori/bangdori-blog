@@ -11,11 +11,12 @@ import {
 interface PostBodyEditorProps {
   title: string;
   contentMdx: string;
-  disabled?: boolean;
-  titleError?: string;
-  contentError?: string;
+  disabled: boolean;
+  titleError: string | undefined;
+  contentError: string | undefined;
   onTitleChange: (value: string) => void;
   onContentChange: (value: string) => void;
+  onUploadingChange: (uploading: boolean) => void;
 }
 
 interface TextSelection {
@@ -26,17 +27,23 @@ interface TextSelection {
 export function PostBodyEditor({
   title,
   contentMdx,
-  disabled = false,
+  disabled,
   titleError,
   contentError,
   onTitleChange,
   onContentChange,
+  onUploadingChange,
 }: PostBodyEditorProps) {
   const previewRef = useRef<HTMLDivElement | null>(null);
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [isDragActive, setIsDragActive] = useState(false);
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const isContentDisabled = disabled || isUploadingImage;
+
+  const setUploadingImage = (uploading: boolean) => {
+    setIsUploadingImage(uploading);
+    onUploadingChange(uploading);
+  };
 
   function handleEditorScroll(e: UIEvent<HTMLTextAreaElement>) {
     const editor = e.currentTarget;
@@ -85,7 +92,7 @@ export function PostBodyEditor({
     }
 
     const selection = currentSelection(textareaRef.current, contentMdx.length);
-    setIsUploadingImage(true);
+    setUploadingImage(true);
 
     try {
       const uploaded = await uploadPostImage(file);
@@ -101,7 +108,7 @@ export function PostBodyEditor({
     } catch (err) {
       toast.error(err instanceof Error ? err.message : '본문 이미지 업로드에 실패했습니다.');
     } finally {
-      setIsUploadingImage(false);
+      setUploadingImage(false);
     }
   }
 
