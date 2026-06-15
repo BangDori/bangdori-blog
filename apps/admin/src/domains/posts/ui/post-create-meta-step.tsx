@@ -3,10 +3,10 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { Icon } from '@shared/icons';
 import { Button } from '@shared/ui/button';
 import { Field } from '@shared/ui/field';
-import { ImagePicker } from '@shared/ui/image-picker';
 import { Input } from '@shared/ui/input';
 import { NativeSelect } from '@shared/ui/native-select';
 import { AUTHOR_OPTIONS, CATEGORY_OPTIONS, type CreatePostInput } from '../model/schema';
+import { PostThumbnailPicker } from './post-thumbnail-picker';
 
 interface PostCreateMetaStepProps {
   disabled: boolean;
@@ -66,7 +66,7 @@ function MetaBody({ disabled }: MetaBodyProps) {
           미리보기
         </h2>
 
-        <ImagePicker
+        <PostThumbnailPicker
           url={thumbnailUrl}
           disabled={disabled}
           error={errors.thumbnailUrl?.message}

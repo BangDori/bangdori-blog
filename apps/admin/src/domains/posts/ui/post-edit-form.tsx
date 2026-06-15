@@ -3,7 +3,6 @@ import { type FormEvent, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@shared/ui/button';
 import { Field } from '@shared/ui/field';
-import { ImagePicker } from '@shared/ui/image-picker';
 import { Input } from '@shared/ui/input';
 import { NativeSelect } from '@shared/ui/native-select';
 import { describeUpdatePostError } from '../api/errors';
@@ -19,6 +18,7 @@ import {
 import type { Post } from '../model/types';
 import { PostActions } from './post-actions';
 import { PostBodyEditor } from './post-body-editor';
+import { PostThumbnailPicker } from './post-thumbnail-picker';
 
 interface PostEditFormProps {
   post: Post;
@@ -142,9 +142,10 @@ function PostEditSection({ state, errors, disabled, update }: PostEditSectionPro
   return (
     <section className="grid gap-8 md:grid-cols-2">
       <Field htmlFor="thumbnailUrl" label="thumbnailUrl" hint="선택" error={errors.thumbnailUrl}>
-        <ImagePicker
+        <PostThumbnailPicker
           url={state.thumbnailUrl}
           disabled={disabled}
+          error={errors.thumbnailUrl}
           onUrlChange={(next) => update('thumbnailUrl', next)}
         />
       </Field>
