@@ -22,10 +22,11 @@ function notFoundAction(err: Error, onClick: () => void) {
 
 interface PostActionsProps {
   post: Post;
-  saveSlot?: ReactNode;
+  saveSlot: ReactNode;
+  disabled: boolean;
 }
 
-export function PostActions({ post, saveSlot }: PostActionsProps) {
+export function PostActions({ post, saveSlot, disabled }: PostActionsProps) {
   const navigate = useNavigate();
   const publishMutation = usePublishPost(post.id);
   const archiveMutation = useArchivePost(post.id);
@@ -36,7 +37,7 @@ export function PostActions({ post, saveSlot }: PostActionsProps) {
   const isPublishing = publishMutation.isPending;
   const isArchiving = archiveMutation.isPending;
   const isDeleting = deleteMutation.isPending;
-  const isBusy = isPublishing || isArchiving || isDeleting;
+  const isBusy = disabled || isPublishing || isArchiving || isDeleting;
 
   const publishLabel = post.status === 'archived' ? '다시 발행' : '발행';
   const goToList = () => navigate(ROUTES.posts);
@@ -103,7 +104,7 @@ export function PostActions({ post, saveSlot }: PostActionsProps) {
         </Button>
       </div>
 
-      {saveSlot && <div className="flex flex-wrap items-center gap-3">{saveSlot}</div>}
+      <div className="flex flex-wrap items-center gap-3">{saveSlot}</div>
     </section>
   );
 }

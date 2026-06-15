@@ -1,12 +1,12 @@
-import type { FormEvent } from 'react';
+import { type FormEvent, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Icon } from '@shared/icons';
 import { Button } from '@shared/ui/button';
 import { Field } from '@shared/ui/field';
-import { ImagePicker } from '@shared/ui/image-picker';
 import { Input } from '@shared/ui/input';
 import { NativeSelect } from '@shared/ui/native-select';
 import { AUTHOR_OPTIONS, CATEGORY_OPTIONS, type CreatePostInput } from '../model/schema';
+import { PostThumbnailPicker } from './post-thumbnail-picker';
 
 interface PostCreateMetaStepProps {
   disabled: boolean;
@@ -15,6 +15,17 @@ interface PostCreateMetaStepProps {
 }
 
 export function PostCreateMetaStep({ disabled, onBack, onSubmit }: PostCreateMetaStepProps) {
+  const [isThumbnailUploading, setIsThumbnailUploading] = useState(false);
+  const isBlocked = disabled || isThumbnailUploading;
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    if (isBlocked) {
+      e.preventDefault();
+      return;
+    }
+    onSubmit(e);
+  };
+
   return (
     <div className="space-y-10">
       <div className="flex items-center justify-between gap-3">
@@ -24,7 +35,7 @@ export function PostCreateMetaStep({ disabled, onBack, onSubmit }: PostCreateMet
         <button
           type="button"
           onClick={onBack}
-          disabled={disabled}
+          disabled={isBlocked}
           aria-label="작성 화면으로 돌아가기"
           className="inline-flex size-8 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground disabled:opacity-50 disabled:pointer-events-none"
         >
@@ -32,8 +43,12 @@ export function PostCreateMetaStep({ disabled, onBack, onSubmit }: PostCreateMet
         </button>
       </div>
 
-      <form onSubmit={onSubmit} noValidate>
-        <MetaBody disabled={disabled} />
+      <form onSubmit={handleSubmit} noValidate>
+        <MetaBody
+          disabled={isBlocked}
+          isThumbnailUploading={isThumbnailUploading}
+          onThumbnailUploadingChange={setIsThumbnailUploading}
+        />
       </form>
     </div>
   );
@@ -41,9 +56,11 @@ export function PostCreateMetaStep({ disabled, onBack, onSubmit }: PostCreateMet
 
 interface MetaBodyProps {
   disabled: boolean;
+  isThumbnailUploading: boolean;
+  onThumbnailUploadingChange: (uploading: boolean) => void;
 }
 
-function MetaBody({ disabled }: MetaBodyProps) {
+function MetaBody({ disabled, isThumbnailUploading, onThumbnailUploadingChange }: MetaBodyProps) {
   const {
     register,
     control,
@@ -66,13 +83,14 @@ function MetaBody({ disabled }: MetaBodyProps) {
           미리보기
         </h2>
 
-        <ImagePicker
+        <PostThumbnailPicker
           url={thumbnailUrl}
           disabled={disabled}
           error={errors.thumbnailUrl?.message}
           onUrlChange={(next) =>
             setValue('thumbnailUrl', next, { shouldValidate: true, shouldDirty: true })
           }
+          onUploadingChange={onThumbnailUploadingChange}
         />
 
         <div className="space-y-2">
@@ -133,7 +151,7 @@ function MetaBody({ disabled }: MetaBodyProps) {
 
         <div className="pt-2">
           <Button type="submit" disabled={disabled || !canSubmit} className="w-full">
-            {disabled ? '발행 중…' : '발행하기'}
+            {isThumbnailUploading ? '이미지 업로드 중…' : disabled ? '발행 중…' : '발행하기'}
           </Button>
         </div>
       </div>

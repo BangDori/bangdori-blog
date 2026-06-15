@@ -3,7 +3,6 @@ import { type FormEvent, useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 import { Button } from '@shared/ui/button';
 import { Field } from '@shared/ui/field';
-import { ImagePicker } from '@shared/ui/image-picker';
 import { Input } from '@shared/ui/input';
 import { NativeSelect } from '@shared/ui/native-select';
 import { describeUpdatePostError } from '../api/errors';
@@ -19,6 +18,7 @@ import {
 import type { Post } from '../model/types';
 import { PostActions } from './post-actions';
 import { PostBodyEditor } from './post-body-editor';
+import { PostThumbnailPicker } from './post-thumbnail-picker';
 
 interface PostEditFormProps {
   post: Post;
@@ -51,6 +51,8 @@ export function PostEditForm({ post }: PostEditFormProps) {
   );
   const [state, setState] = useState<FormState>(initialState);
   const [errors, setErrors] = useState<FieldErrors>({});
+  const [isBodyUploading, setIsBodyUploading] = useState(false);
+  const [isThumbnailUploading, setIsThumbnailUploading] = useState(false);
 
   const mutation = useUpdatePost(post.id);
 
@@ -68,7 +70,8 @@ export function PostEditForm({ post }: PostEditFormProps) {
   const isPublishing = useIsMutating({ mutationKey: postsKeys.publishMutation(post.id) }) > 0;
   const isArchiving = useIsMutating({ mutationKey: postsKeys.archiveMutation(post.id) }) > 0;
   const isDeleting = useIsMutating({ mutationKey: postsKeys.deleteMutation(post.id) }) > 0;
-  const isBusy = isSubmitting || isPublishing || isArchiving || isDeleting;
+  const isUploading = isBodyUploading || isThumbnailUploading;
+  const isBusy = isSubmitting || isPublishing || isArchiving || isDeleting || isUploading;
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setState((prev) => ({ ...prev, [key]: value }));
@@ -77,7 +80,7 @@ export function PostEditForm({ post }: PostEditFormProps) {
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isSubmitting || !isDirty) return;
+    if (isBusy || !isDirty) return;
 
     // 변경된 필드만 zod 로 검증 → transform(emptyToNull) 까지 적용된 결과가 payload
     const partial = Object.fromEntries(dirty.map((k) => [k, state[k]])) as Partial<FormState>;
@@ -102,7 +105,13 @@ export function PostEditForm({ post }: PostEditFormProps) {
 
   return (
     <form onSubmit={onSubmit} noValidate className="space-y-10">
-      <PostEditSection state={state} errors={errors} disabled={isBusy} update={update} />
+      <PostEditSection
+        state={state}
+        errors={errors}
+        disabled={isBusy}
+        update={update}
+        onThumbnailUploadingChange={setIsThumbnailUploading}
+      />
 
       <PostBodyEditor
         title={state.title}
@@ -112,17 +121,19 @@ export function PostEditForm({ post }: PostEditFormProps) {
         contentError={errors.contentMdx}
         onTitleChange={(v) => update('title', v)}
         onContentChange={(v) => update('contentMdx', v)}
+        onUploadingChange={setIsBodyUploading}
       />
 
       <PostActions
         post={post}
+        disabled={isBusy}
         saveSlot={
           <>
             <span className="text-xs text-muted-foreground">
               {isDirty ? `변경된 필드: ${dirty.length}개` : '변경 사항 없음'}
             </span>
             <Button type="submit" disabled={isBusy || !isDirty}>
-              {isSubmitting ? '저장 중…' : '저장하기'}
+              {isSubmitting ? '저장 중…' : isUploading ? '이미지 업로드 중…' : '저장하기'}
             </Button>
           </>
         }
@@ -136,16 +147,25 @@ interface PostEditSectionProps {
   errors: FieldErrors;
   disabled: boolean;
   update: <K extends keyof FormState>(key: K, value: FormState[K]) => void;
+  onThumbnailUploadingChange: (uploading: boolean) => void;
 }
 
-function PostEditSection({ state, errors, disabled, update }: PostEditSectionProps) {
+function PostEditSection({
+  state,
+  errors,
+  disabled,
+  update,
+  onThumbnailUploadingChange,
+}: PostEditSectionProps) {
   return (
     <section className="grid gap-8 md:grid-cols-2">
       <Field htmlFor="thumbnailUrl" label="thumbnailUrl" hint="선택" error={errors.thumbnailUrl}>
-        <ImagePicker
+        <PostThumbnailPicker
           url={state.thumbnailUrl}
           disabled={disabled}
+          error={undefined}
           onUrlChange={(next) => update('thumbnailUrl', next)}
+          onUploadingChange={onThumbnailUploadingChange}
         />
       </Field>
 
