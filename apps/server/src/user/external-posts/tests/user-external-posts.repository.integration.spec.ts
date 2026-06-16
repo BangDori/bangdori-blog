@@ -44,6 +44,7 @@ describe('UserExternalPostsRepository (integration)', () => {
       title: 'External Title',
       url: `https://example.com/${Math.random().toString(36).slice(2, 10)}`,
       source: 'medium',
+      category: 'tech',
       publishedAt: null,
       ...overrides,
     });
@@ -82,6 +83,7 @@ describe('UserExternalPostsRepository (integration)', () => {
         title: 'Loaded External Post',
         url: 'https://example.com/loaded',
         source: 'Medium',
+        category: '회고',
         publishedAt: new Date('2026-05-01T00:00:00Z'),
         createdAt: new Date('2026-04-01T00:00:00Z'),
         updatedAt: new Date('2026-04-02T00:00:00Z'),
@@ -95,6 +97,7 @@ describe('UserExternalPostsRepository (integration)', () => {
         title: 'Loaded External Post',
         url: 'https://example.com/loaded',
         source: 'Medium',
+        category: '회고',
         publishedAt: new Date('2026-05-01T00:00:00.000Z'),
       });
       expect(result[0]?.id).toEqual(expect.any(String));

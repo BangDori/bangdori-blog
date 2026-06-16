@@ -16,6 +16,11 @@ export class UpdateExternalPostDto {
   source?: string;
 
   @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  category?: string;
+
+  @IsOptional()
   @IsISO8601()
   publishedAt?: string;
 }

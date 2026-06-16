@@ -20,6 +20,7 @@ function makeExternalPost(overrides: Partial<ExternalPost> = {}): ExternalPost {
     title: 'External Title',
     url: 'https://medium.com/@bangdori/post',
     source: 'medium',
+    category: 'tech',
     publishedAt: new Date('2026-03-01T12:00:00Z'),
     createdAt: new Date('2026-02-01T00:00:00Z'),
     updatedAt: new Date('2026-02-02T00:00:00Z'),
@@ -78,6 +79,7 @@ describe('UserExternalPostsService', () => {
         title: 'Published Elsewhere',
         url: 'https://example.com/published-elsewhere',
         source: 'medium',
+        category: 'tech',
         publishedAt: new Date('2026-03-01T12:00:00Z'),
         createdAt: new Date('2026-02-01T00:00:00Z'),
         updatedAt: new Date('2026-02-02T00:00:00Z'),
@@ -94,7 +96,7 @@ describe('UserExternalPostsService', () => {
           title: 'Published Elsewhere',
           url: 'https://example.com/published-elsewhere',
           source: 'medium',
-          category: null,
+          category: 'tech',
           publishedAt: '2026-03-01T12:00:00.000Z',
           createdAt: '2026-02-01T00:00:00.000Z',
           updatedAt: '2026-02-02T00:00:00.000Z',
@@ -114,15 +116,27 @@ describe('UserExternalPostsService', () => {
       expect(result[0]?.publishedAt).toBeNull();
     });
 
-    it('원본 값과 무관하게 category를 null로 응답한다', async () => {
-      // given: 저장소 결과에 공개 계약에 없는 분류 값이 섞인 상태
-      const post = { ...makeExternalPost(), category: 'dev' } as ExternalPost;
+    it('카테고리가 있으면 그대로 응답한다', async () => {
+      // given: 카테고리가 있는 외부 글 한 건
+      const post = makeExternalPost({ category: '회고' });
       repository.findAllForUser.mockResolvedValue([post]);
 
       // when: 공개 외부 글 목록 조회
       const result = await service.findAll();
 
-      // then: 외부 글 분류는 항상 null이다
+      // then: 외부 글 분류를 응답에 포함한다
+      expect(result[0]?.category).toBe('회고');
+    });
+
+    it('카테고리가 없으면 null로 응답한다', async () => {
+      // given: 카테고리가 없는 외부 글 한 건
+      const post = makeExternalPost({ category: null });
+      repository.findAllForUser.mockResolvedValue([post]);
+
+      // when: 공개 외부 글 목록 조회
+      const result = await service.findAll();
+
+      // then: 외부 글 분류는 null로 유지된다
       expect(result[0]?.category).toBeNull();
     });
 

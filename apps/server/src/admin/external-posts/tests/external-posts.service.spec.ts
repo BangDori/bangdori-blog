@@ -25,6 +25,7 @@ function makeExternalPost(overrides: Partial<ExternalPost> = {}): ExternalPost {
     title: 'External Title',
     url: 'https://medium.com/@bangdori/post',
     source: 'medium',
+    category: 'tech',
     publishedAt: null,
     createdAt: new Date('2026-01-01T00:00:00Z'),
     updatedAt: new Date('2026-01-01T00:00:00Z'),
@@ -61,7 +62,7 @@ describe('ExternalPostsService', () => {
   });
 
   describe('create', () => {
-    it('필수 필드만으로 저장하면 publishedAt은 null로 채워진다', async () => {
+    it('필수 필드로 저장하면 publishedAt은 null로 채워진다', async () => {
       const draft = makeExternalPost({ publishedAt: null });
       repository.create.mockReturnValue(draft);
       repository.save.mockResolvedValue(draft);
@@ -70,12 +71,14 @@ describe('ExternalPostsService', () => {
         title: draft.title,
         url: draft.url,
         source: draft.source,
+        category: draft.category ?? 'tech',
       });
 
       expect(repository.create).toHaveBeenCalledWith({
         title: draft.title,
         url: draft.url,
         source: draft.source,
+        category: draft.category,
         publishedAt: null,
       });
       expect(repository.save).toHaveBeenCalledWith(draft);
@@ -92,6 +95,7 @@ describe('ExternalPostsService', () => {
         title: draft.title,
         url: draft.url,
         source: draft.source,
+        category: draft.category ?? 'tech',
         publishedAt: isoString,
       });
 
@@ -105,7 +109,12 @@ describe('ExternalPostsService', () => {
       repository.save.mockRejectedValue(makePgUniqueError());
 
       await expect(
-        service.create({ title: draft.title, url: draft.url, source: draft.source }),
+        service.create({
+          title: draft.title,
+          url: draft.url,
+          source: draft.source,
+          category: draft.category ?? 'tech',
+        }),
       ).rejects.toThrow(
         new ConflictException(ExternalPostsError.externalPostUrlConflict(draft.url)),
       );
@@ -136,6 +145,16 @@ describe('ExternalPostsService', () => {
 
       expect(result.title).toBe('new');
       expect(repository.save).toHaveBeenCalled();
+    });
+
+    it('category를 수정하면 새 값이 반영된다', async () => {
+      const existing = makeExternalPost({ category: 'tech' });
+      repository.findById.mockResolvedValue(existing);
+      repository.save.mockImplementation(async (post) => post);
+
+      const result = await service.update(existing.id, { category: '회고' });
+
+      expect(result.category).toBe('회고');
     });
 
     it('publishedAt(ISO 문자열)이 Date로 변환되어 반영된다', async () => {

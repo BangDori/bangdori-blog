@@ -14,7 +14,7 @@ export class UserExternalPostsService {
       title: post.title,
       url: post.url,
       source: post.source,
-      category: null,
+      category: post.category,
       publishedAt: post.publishedAt ? post.publishedAt.toISOString() : null,
       createdAt: post.createdAt.toISOString(),
       updatedAt: post.updatedAt.toISOString(),

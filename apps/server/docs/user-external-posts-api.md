@@ -38,7 +38,7 @@
 | `title` | `string` | 외부 글 제목 |
 | `url` | `string` | 외부 글 원문 URL |
 | `source` | `string` | 외부 플랫폼 이름 |
-| `category` | `string \| null` | user-web feed 병합용 분류. 현재 DB 컬럼이 없어 `null` 로 응답한다. |
+| `category` | `string \| null` | user-web feed 병합용 분류. 기존 데이터에 값이 없으면 `null` |
 | `publishedAt` | `string \| null` | 외부 플랫폼 발행 시각. 값이 없으면 `null` |
 | `createdAt` | `string` | 서버 레코드 생성 시각 |
 | `updatedAt` | `string` | 서버 레코드 수정 시각 |
