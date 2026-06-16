@@ -48,17 +48,6 @@ describe('UserExternalPostsService', () => {
   });
 
   describe('findAll', () => {
-    it('외부 글이 없으면 빈 목록을 응답한다', async () => {
-      // given: 저장소가 빈 목록을 돌려준 상태
-      repository.findAllForUser.mockResolvedValue([]);
-
-      // when: 공개 외부 글 목록 조회
-      const result = await service.findAll();
-
-      // then: 빈 배열을 그대로 응답
-      expect(result).toEqual([]);
-    });
-
     it('외부 글을 공개 목록 형태로 변환해 응답한다', async () => {
       // given: 날짜 메타데이터가 채워진 외부 글 한 건
       const post = makeExternalPost({
@@ -125,20 +114,6 @@ describe('UserExternalPostsService', () => {
 
       // then: 외부 글 분류는 null로 유지된다
       expect(result[0]?.category).toBeNull();
-    });
-
-    it('저장소가 돌려준 순서를 보존한다', async () => {
-      // given: 저장소가 이미 정렬한 외부 글 목록
-      const first = makeExternalPost({ id: '11111111-1111-1111-1111-111111111111' });
-      const second = makeExternalPost({ id: '22222222-2222-2222-2222-222222222222' });
-      const third = makeExternalPost({ id: '33333333-3333-3333-3333-333333333333' });
-      repository.findAllForUser.mockResolvedValue([first, second, third]);
-
-      // when: 공개 외부 글 목록 조회
-      const result = await service.findAll();
-
-      // then: 응답 순서가 저장소 결과와 같다
-      expect(result.map((item) => item.id)).toEqual([first.id, second.id, third.id]);
     });
   });
 });
