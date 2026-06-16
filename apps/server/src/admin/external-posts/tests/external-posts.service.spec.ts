@@ -85,6 +85,30 @@ describe('ExternalPostsService', () => {
       expect(result).toBe(draft);
     });
 
+    it('category 없이 저장하면 category를 비워 둔다', async () => {
+      // given: 외부 글 분류를 아직 정하지 않은 상태
+      const draft = makeExternalPost({ category: null });
+      repository.create.mockReturnValue(draft);
+      repository.save.mockResolvedValue(draft);
+
+      // when
+      const result = await service.create({
+        title: draft.title,
+        url: draft.url,
+        source: draft.source,
+      });
+
+      // then
+      expect(repository.create).toHaveBeenCalledWith({
+        title: draft.title,
+        url: draft.url,
+        source: draft.source,
+        category: null,
+        publishedAt: null,
+      });
+      expect(result.category).toBeNull();
+    });
+
     it('publishedAt이 주어지면 Date로 변환해 저장한다', async () => {
       const isoString = '2026-04-01T00:00:00Z';
       const draft = makeExternalPost({ publishedAt: new Date(isoString) });

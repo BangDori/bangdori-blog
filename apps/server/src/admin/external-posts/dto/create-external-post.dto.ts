@@ -12,9 +12,10 @@ export class CreateExternalPostDto {
   @IsNotEmpty()
   source!: string;
 
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
-  category!: string;
+  category?: string | null;
 
   @IsOptional()
   @IsISO8601()

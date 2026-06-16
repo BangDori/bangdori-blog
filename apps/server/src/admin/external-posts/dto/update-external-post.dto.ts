@@ -18,9 +18,9 @@ export class UpdateExternalPostDto {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  category?: string;
+  category?: string | null;
 
   @IsOptional()
   @IsISO8601()
-  publishedAt?: string;
+  publishedAt?: string | null;
 }

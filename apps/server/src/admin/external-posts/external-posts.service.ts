@@ -37,7 +37,7 @@ export class ExternalPostsService {
       title: dto.title,
       url: dto.url,
       source: dto.source,
-      category: dto.category,
+      category: dto.category ?? null,
       publishedAt: dto.publishedAt ? new Date(dto.publishedAt) : null,
     });
 
