@@ -37,6 +37,7 @@ export class ExternalPostsService {
       title: dto.title,
       url: dto.url,
       source: dto.source,
+      category: dto.category,
       publishedAt: dto.publishedAt ? new Date(dto.publishedAt) : null,
     });
 
@@ -60,6 +61,7 @@ export class ExternalPostsService {
     if (dto.title !== undefined) post.title = dto.title;
     if (dto.url !== undefined) post.url = dto.url;
     if (dto.source !== undefined) post.source = dto.source;
+    if (dto.category !== undefined) post.category = dto.category;
     if (dto.publishedAt !== undefined) {
       post.publishedAt = dto.publishedAt ? new Date(dto.publishedAt) : null;
     }

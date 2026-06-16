@@ -44,6 +44,7 @@ describe('ExternalPostsRepository (integration)', () => {
       title: 'External Title',
       url: `https://example.com/${Math.random().toString(36).slice(2, 10)}`,
       source: 'medium',
+      category: 'tech',
       publishedAt: null,
       ...overrides,
     });
@@ -56,6 +57,7 @@ describe('ExternalPostsRepository (integration)', () => {
         title: 'Hello World on Medium',
         url: 'https://medium.com/@bangdori/hello-world',
         source: 'medium',
+        category: 'tech',
       };
 
       const saved = await rawRepository.save(rawRepository.create(input));
@@ -68,6 +70,7 @@ describe('ExternalPostsRepository (integration)', () => {
         title: 'Hello World on Medium',
         url: 'https://medium.com/@bangdori/hello-world',
         source: 'medium',
+        category: 'tech',
         publishedAt: null,
         createdAt: expect.any(Date),
         updatedAt: expect.any(Date),
