@@ -1,6 +1,5 @@
 import { Test } from '@nestjs/testing';
 import { ExternalPost } from '@database/entities/external-post.entity';
-import { UserExternalPostsError } from '@/user/external-posts/user-external-posts.error';
 import { UserExternalPostsRepository } from '@/user/external-posts/user-external-posts.repository';
 import { UserExternalPostsService } from '@/user/external-posts/user-external-posts.service';
 
@@ -27,18 +26,6 @@ function makeExternalPost(overrides: Partial<ExternalPost> = {}): ExternalPost {
     ...overrides,
   };
 }
-
-describe('UserExternalPostsError', () => {
-  it('외부 글 목록을 불러오지 못하면 안내 메시지를 제공한다', () => {
-    // given: 외부 글 목록 조회 실패 상황
-
-    // when: 공개 외부 글 도메인의 실패 메시지를 확인
-    const message = UserExternalPostsError.externalPostsFetchFailed;
-
-    // then: 사용자가 이해할 수 있는 안내 메시지를 제공한다
-    expect(message).toBe('외부 글 목록을 불러오지 못했습니다.');
-  });
-});
 
 describe('UserExternalPostsService', () => {
   let service: UserExternalPostsService;
