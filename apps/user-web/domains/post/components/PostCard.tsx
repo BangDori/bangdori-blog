@@ -2,21 +2,36 @@
 
 import { CommentCount } from '@/components/CommentCount';
 import { formatDate } from '@/lib/date';
-import type { PostListItem } from '../types';
+import type { FeedItem } from '../types';
 
 interface PostCardProps {
-  post: PostListItem;
+  item: FeedItem;
 }
 
-export function PostCard({ post }: PostCardProps) {
+function formatFeedDate(item: FeedItem) {
+  const date = item.publishedAt ?? item.updatedAt;
+  const time = new Date(date).getTime();
+
+  return Number.isNaN(time) ? '' : formatDate(date);
+}
+
+export function PostCard({ item }: PostCardProps) {
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex items-baseline gap-2">
-        <h2 className="max-w-[calc(100vw-200px)] truncate text-base font-medium">{post.title}</h2>
-        <span className="text-muted-foreground text-[10px]">{post.category}</span>
-        <CommentCount slug={post.slug} />
+    <div className="flex items-center justify-between gap-4">
+      <div className="flex min-w-0 items-baseline gap-2">
+        <h2 className="min-w-0 truncate text-base font-medium">{item.title}</h2>
+        {item.category && (
+          <span className="text-muted-foreground text-[10px]">{item.category}</span>
+        )}
+        {item.type === 'post' ? (
+          <CommentCount slug={item.slug} />
+        ) : (
+          <span className="rounded-sm bg-accent px-1 py-0.5 text-[10px] text-accent-foreground">
+            External · {item.source}
+          </span>
+        )}
       </div>
-      <p className="text-muted-foreground text-xs">{formatDate(post.publishedAt ?? '')}</p>
+      <p className="shrink-0 text-muted-foreground text-xs">{formatFeedDate(item)}</p>
     </div>
   );
 }

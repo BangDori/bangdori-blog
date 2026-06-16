@@ -16,6 +16,7 @@ export interface ImpressionOptions {
 
 export type ClickTarget =
   | 'post_card' // 글 카드 클릭
+  | 'external_post_card' // 외부 글 카드 클릭
   | 'outbound_link' // 외부 링크 클릭
   | 'code_copy' // 코드 블록 복사
   | 'toc' // 목차 항목 클릭
@@ -28,6 +29,7 @@ export type ClickTarget =
 export interface ClickOptions {
   target: ClickTarget;
   slug?: string; // 글 식별자
+  source?: string; // 외부 글 출처
   url?: string; // 대상 URL
   text?: string; // 사람이 읽을 수 있는 라벨
 }
