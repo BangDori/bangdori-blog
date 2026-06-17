@@ -157,7 +157,11 @@ export function ExternalPostEditForm({ post }: ExternalPostEditFormProps) {
 
   const handleDelete = () => {
     if (isBusy) return;
-    if (!window.confirm('이 외부 글을 삭제하시겠습니까?\n삭제된 항목은 목록에서 사라집니다.'))
+    if (
+      !window.confirm(
+        '이 외부 글을 삭제하시겠습니까?\n삭제하면 복구할 수 없습니다. 계속하시겠습니까?',
+      )
+    )
       return;
 
     deleteMutation.mutate(undefined, {
@@ -251,7 +255,12 @@ function ExternalPostFields({ state, errors, disabled, update }: ExternalPostFie
         />
       </Field>
 
-      <Field htmlFor="publishedAt" label="publishedAt" hint="선택" error={errors.publishedAt}>
+      <Field
+        htmlFor="publishedAt"
+        label="publishedAt"
+        hint="선택 · 브라우저 로컬 시간"
+        error={errors.publishedAt}
+      >
         <Input
           id="publishedAt"
           type="datetime-local"

@@ -15,11 +15,21 @@ export function ExternalPostsTable({ rows, onRowClick }: ExternalPostsTableProps
       <table className="w-full text-sm">
         <thead className="bg-secondary text-secondary-foreground">
           <tr className="text-left">
-            <th className="px-3 py-2 font-medium">title</th>
-            <th className="px-3 py-2 font-medium">source</th>
-            <th className="px-3 py-2 font-medium">category</th>
-            <th className="px-3 py-2 font-medium whitespace-nowrap">publishedAt</th>
-            <th className="px-3 py-2 font-medium whitespace-nowrap">updatedAt</th>
+            <th scope="col" className="px-3 py-2 font-medium">
+              title
+            </th>
+            <th scope="col" className="px-3 py-2 font-medium">
+              source
+            </th>
+            <th scope="col" className="px-3 py-2 font-medium">
+              category
+            </th>
+            <th scope="col" className="px-3 py-2 font-medium whitespace-nowrap">
+              publishedAt
+            </th>
+            <th scope="col" className="px-3 py-2 font-medium whitespace-nowrap">
+              updatedAt
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -37,7 +47,9 @@ export function ExternalPostsTable({ rows, onRowClick }: ExternalPostsTableProps
                 >
                   {post.title}
                 </Link>
-                <div className="max-w-xl truncate text-xs text-muted-foreground">{post.url}</div>
+                <div className="max-w-xl truncate text-xs text-muted-foreground" title={post.url}>
+                  {post.url}
+                </div>
               </td>
               <td className="px-3 py-2">
                 <ExternalPostSourceBadge source={post.source} />
