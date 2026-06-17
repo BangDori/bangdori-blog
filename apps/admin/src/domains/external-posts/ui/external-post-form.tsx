@@ -48,6 +48,20 @@ function collectFieldErrors(issues: { path: PropertyKey[]; message: string }[]):
   return next;
 }
 
+function ariaDescribedBy(...ids: Array<string | undefined>) {
+  const value = ids.filter((id): id is string => Boolean(id)).join(' ');
+
+  return value || undefined;
+}
+
+function fieldHintId(field: ExternalPostFormField) {
+  return `${field}-hint`;
+}
+
+function fieldErrorId(field: ExternalPostFormField, error?: string) {
+  return error ? `${field}-error` : undefined;
+}
+
 function notFoundAction(err: Error, onClick: () => void) {
   if (err instanceof ApiError && err.status === 404) {
     return { action: { label: '목록으로', onClick } };
@@ -208,10 +222,12 @@ function ExternalPostFields({ state, errors, disabled, update }: ExternalPostFie
             placeholder="외부 글 제목"
             maxLength={200}
             autoComplete="off"
+            required
+            aria-describedby={ariaDescribedBy('title-count', fieldErrorId('title', errors.title))}
             invalid={!!errors.title}
             disabled={disabled}
           />
-          <p className="text-[11px] tabular-nums text-muted-foreground/60">
+          <p id="title-count" className="text-[11px] tabular-nums text-muted-foreground/60">
             {state.title.length}/200
           </p>
         </div>
@@ -226,6 +242,8 @@ function ExternalPostFields({ state, errors, disabled, update }: ExternalPostFie
           placeholder="https://example.com/post"
           autoComplete="url"
           spellCheck={false}
+          required
+          aria-describedby={ariaDescribedBy(fieldErrorId('url', errors.url))}
           invalid={!!errors.url}
           disabled={disabled}
         />
@@ -238,6 +256,8 @@ function ExternalPostFields({ state, errors, disabled, update }: ExternalPostFie
           onChange={(e) => update('source', e.target.value)}
           placeholder="Medium, GitHub, Velog…"
           autoComplete="off"
+          required
+          aria-describedby={ariaDescribedBy(fieldErrorId('source', errors.source))}
           invalid={!!errors.source}
           disabled={disabled}
         />
@@ -250,6 +270,10 @@ function ExternalPostFields({ state, errors, disabled, update }: ExternalPostFie
           onChange={(e) => update('category', e.target.value)}
           placeholder="tech, 회고…"
           autoComplete="off"
+          aria-describedby={ariaDescribedBy(
+            fieldHintId('category'),
+            fieldErrorId('category', errors.category),
+          )}
           invalid={!!errors.category}
           disabled={disabled}
         />
@@ -266,6 +290,10 @@ function ExternalPostFields({ state, errors, disabled, update }: ExternalPostFie
           type="datetime-local"
           value={state.publishedAt}
           onChange={(e) => update('publishedAt', e.target.value)}
+          aria-describedby={ariaDescribedBy(
+            fieldHintId('publishedAt'),
+            fieldErrorId('publishedAt', errors.publishedAt),
+          )}
           invalid={!!errors.publishedAt}
           disabled={disabled}
         />

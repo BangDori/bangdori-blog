@@ -22,16 +22,27 @@ interface FieldProps {
  * - 에러 메시지는 `<p role="alert">` 로 렌더링되어 SR 에서 즉시 알려준다.
  */
 export function Field({ htmlFor, label, required, hint, error, className, children }: FieldProps) {
+  const hintId = `${htmlFor}-hint`;
+  const errorId = `${htmlFor}-error`;
+
   return (
     <div className={cn('space-y-1.5', className)}>
       <label htmlFor={htmlFor} className="block text-sm font-medium text-foreground">
         {label}
-        {required && <span className="ml-0.5 text-destructive">*</span>}
-        {!required && hint && <span className="ml-1.5 text-xs text-muted-foreground">{hint}</span>}
+        {required && (
+          <span aria-hidden="true" className="ml-0.5 text-destructive">
+            *
+          </span>
+        )}
+        {!required && hint && (
+          <span id={hintId} className="ml-1.5 text-xs text-muted-foreground">
+            {hint}
+          </span>
+        )}
       </label>
       {children}
       {error && (
-        <p role="alert" className="text-xs text-destructive">
+        <p id={errorId} role="alert" className="text-xs text-destructive">
           {error}
         </p>
       )}
