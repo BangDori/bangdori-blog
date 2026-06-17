@@ -21,17 +21,21 @@ export function PostCard({ item }: PostCardProps) {
       <div className="flex min-w-0 items-baseline gap-2">
         <h2 className="min-w-0 truncate text-base font-medium">{item.title}</h2>
         {item.category && (
-          <span className="text-muted-foreground text-[10px]">{item.category}</span>
+          <span className="shrink-0 whitespace-nowrap text-muted-foreground text-[10px]">
+            {item.category}
+          </span>
         )}
         {item.type === 'post' ? (
           <CommentCount slug={item.slug} />
         ) : (
-          <span className="rounded-sm bg-accent px-1 py-0.5 text-[10px] text-accent-foreground">
+          <span className="shrink-0 whitespace-nowrap rounded-sm bg-secondary px-1 py-0.5 text-[10px] text-muted-foreground">
             External · {item.source}
           </span>
         )}
       </div>
-      <p className="shrink-0 text-muted-foreground text-xs">{formatFeedDate(item)}</p>
+      <p className="shrink-0 whitespace-nowrap text-muted-foreground text-xs">
+        {formatFeedDate(item)}
+      </p>
     </div>
   );
 }

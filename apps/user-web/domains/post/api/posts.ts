@@ -102,7 +102,10 @@ export function mergeFeedItems(
 }
 
 export async function getFeedItems(): Promise<FeedItem[]> {
-  const [posts, externalPosts] = await Promise.all([getPublishedPosts(), getExternalPosts()]);
+  const [posts, externalPosts] = await Promise.all([
+    getPublishedPosts(),
+    getExternalPosts().catch((): ExternalPostListItem[] => []),
+  ]);
 
   return mergeFeedItems(posts, externalPosts);
 }
