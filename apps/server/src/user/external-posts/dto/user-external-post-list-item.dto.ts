@@ -3,7 +3,7 @@ export interface UserExternalPostListItemDto {
   title: string;
   url: string;
   source: string;
-  category: string | null;
+  category: string;
   publishedAt: string | null;
   createdAt: string;
   updatedAt: string;

@@ -77,6 +77,18 @@ describe('ExternalPostsRepository (integration)', () => {
       });
     });
 
+    it('category가 없으면 외부 글 저장을 거부한다', async () => {
+      // given: 외부 글 분류값이 빠진 입력
+      const input = rawRepository.create({
+        title: 'Missing Category',
+        url: 'https://medium.com/@bangdori/missing-category',
+        source: 'medium',
+      });
+
+      // when & then: 저장 단계에서 필수값 누락이 거부된다
+      await expect(rawRepository.save(input)).rejects.toThrow();
+    });
+
     it('updated_at은 행을 수정하면 갱신된다', async () => {
       const post = await seedExternalPost({ title: 'before' });
       const before = post.updatedAt;
