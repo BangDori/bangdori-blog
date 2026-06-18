@@ -11,4 +11,8 @@ export const ROUTES = {
   postsNew: '/posts/new',
   postsEdit: '/posts/:id/edit',
   postEdit: (id: string) => `/posts/${id}/edit`,
+  externalPosts: '/external-posts',
+  externalPostsNew: '/external-posts/new',
+  externalPostsEdit: '/external-posts/:id/edit',
+  externalPostEdit: (id: string) => `/external-posts/${id}/edit`,
 } as const;

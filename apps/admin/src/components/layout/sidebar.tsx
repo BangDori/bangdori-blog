@@ -15,6 +15,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { to: ROUTES.dashboard, label: 'Dashboard', icon: 'dashboard', end: true },
   { to: ROUTES.posts, label: 'Posts', icon: 'posts' },
+  { to: ROUTES.externalPosts, label: 'External Posts', icon: 'posts' },
 ];
 
 interface SidebarProps {
