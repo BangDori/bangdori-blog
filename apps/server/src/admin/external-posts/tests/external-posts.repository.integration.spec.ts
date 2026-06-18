@@ -3,7 +3,7 @@ import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { ExternalPostsRepository } from '@admin/external-posts/external-posts.repository';
 import { entities } from '@database/entities';
-import { ExternalPost } from '@database/entities/external-post.entity';
+import { ExternalPost, ExternalPostStatus } from '@database/entities/external-post.entity';
 
 describe('ExternalPostsRepository (integration)', () => {
   let dataSource: DataSource;
@@ -45,6 +45,7 @@ describe('ExternalPostsRepository (integration)', () => {
       url: `https://example.com/${Math.random().toString(36).slice(2, 10)}`,
       source: 'medium',
       category: 'tech',
+      status: ExternalPostStatus.DRAFT,
       publishedAt: null,
       ...overrides,
     });
@@ -71,6 +72,7 @@ describe('ExternalPostsRepository (integration)', () => {
         url: 'https://medium.com/@bangdori/hello-world',
         source: 'medium',
         category: 'tech',
+        status: ExternalPostStatus.DRAFT,
         publishedAt: null,
         createdAt: expect.any(Date),
         updatedAt: expect.any(Date),
@@ -83,6 +85,21 @@ describe('ExternalPostsRepository (integration)', () => {
         title: 'Missing Category',
         url: 'https://medium.com/@bangdori/missing-category',
         source: 'medium',
+      });
+
+      // when & then: 저장 단계에서 필수값 누락이 거부된다
+      await expect(rawRepository.save(input)).rejects.toThrow();
+    });
+
+    it('발행 상태인데 발행 시각이 없으면 외부 글 저장을 거부한다', async () => {
+      // given: 공개 상태지만 공개 시각이 빠진 입력
+      const input = rawRepository.create({
+        title: 'Missing Published At',
+        url: 'https://medium.com/@bangdori/missing-published-at',
+        source: 'medium',
+        category: 'tech',
+        status: ExternalPostStatus.PUBLISHED,
+        publishedAt: null,
       });
 
       // when & then: 저장 단계에서 필수값 누락이 거부된다
