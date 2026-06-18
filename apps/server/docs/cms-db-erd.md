@@ -30,7 +30,7 @@ erDiagram
         varchar title
         text url UK
         varchar source
-        varchar category "nullable"
+        varchar category
         timestamptz published_at "nullable"
         timestamptz created_at
         timestamptz updated_at
