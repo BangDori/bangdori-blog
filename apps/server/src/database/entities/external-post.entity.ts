@@ -29,8 +29,8 @@ export class ExternalPost {
   @Column({ type: 'varchar' })
   source!: string;
 
-  @Column({ type: 'varchar', nullable: true })
-  category!: string | null;
+  @Column({ type: 'varchar' })
+  category!: string;
 
   @Column({ name: 'published_at', type: 'timestamptz', nullable: true })
   publishedAt!: Date | null;
