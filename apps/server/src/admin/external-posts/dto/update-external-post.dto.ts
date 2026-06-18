@@ -1,4 +1,4 @@
-import { IsISO8601, IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class UpdateExternalPostDto {
   @IsOptional()
@@ -19,8 +19,4 @@ export class UpdateExternalPostDto {
   @IsString()
   @IsNotEmpty()
   category?: string;
-
-  @IsOptional()
-  @IsISO8601()
-  publishedAt?: string;
 }
