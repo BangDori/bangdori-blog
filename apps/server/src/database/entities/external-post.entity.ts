@@ -1,11 +1,19 @@
 import {
+  Check,
   Column,
   CreateDateColumn,
   Entity,
+  Index,
   PrimaryGeneratedColumn,
   Unique,
   UpdateDateColumn,
 } from 'typeorm';
+
+export enum ExternalPostStatus {
+  DRAFT = 'draft',
+  PUBLISHED = 'published',
+  ARCHIVED = 'archived',
+}
 
 /**
  * 외부 플랫폼(Medium / GitHub / Velog 등)에 발행한 글의 메타데이터
@@ -16,6 +24,11 @@ import {
  */
 @Entity({ name: 'external_posts' })
 @Unique('UQ_external_posts_url', ['url'])
+@Index('IDX_external_posts_status_published_at', ['status', 'publishedAt'])
+@Check(
+  'CHK_external_posts_published_requires_published_at',
+  `"status" <> 'published' OR "published_at" IS NOT NULL`,
+)
 export class ExternalPost {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
@@ -31,6 +44,14 @@ export class ExternalPost {
 
   @Column({ type: 'varchar' })
   category!: string;
+
+  @Column({
+    type: 'enum',
+    enum: ExternalPostStatus,
+    enumName: 'external_posts_status_enum',
+    default: ExternalPostStatus.DRAFT,
+  })
+  status!: ExternalPostStatus;
 
   @Column({ name: 'published_at', type: 'timestamptz', nullable: true })
   publishedAt!: Date | null;

@@ -41,6 +41,18 @@ export class ExternalPostsController {
     return this.externalPostsService.update(id, dto);
   }
 
+  @Post(':id/publish')
+  @HttpCode(HttpStatus.OK)
+  publish(@Param('id', ParseUUIDPipe) id: string) {
+    return this.externalPostsService.publish(id);
+  }
+
+  @Post(':id/archive')
+  @HttpCode(HttpStatus.OK)
+  archive(@Param('id', ParseUUIDPipe) id: string) {
+    return this.externalPostsService.archive(id);
+  }
+
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   delete(@Param('id', ParseUUIDPipe) id: string) {

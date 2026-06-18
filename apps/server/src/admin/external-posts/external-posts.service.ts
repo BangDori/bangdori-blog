@@ -8,7 +8,7 @@ import { CreateExternalPostDto } from '@admin/external-posts/dto/create-external
 import { UpdateExternalPostDto } from '@admin/external-posts/dto/update-external-post.dto';
 import { ExternalPostsError } from '@admin/external-posts/external-posts.error';
 import { ExternalPostsRepository } from '@admin/external-posts/external-posts.repository';
-import { ExternalPost } from '@database/entities/external-post.entity';
+import { ExternalPost, ExternalPostStatus } from '@database/entities/external-post.entity';
 
 const PG_UNIQUE_VIOLATION = '23505';
 
@@ -38,6 +38,7 @@ export class ExternalPostsService {
       url: dto.url,
       source: dto.source,
       category: dto.category,
+      status: ExternalPostStatus.DRAFT,
       publishedAt: dto.publishedAt ? new Date(dto.publishedAt) : null,
     });
 
@@ -62,9 +63,6 @@ export class ExternalPostsService {
     if (dto.url !== undefined) post.url = dto.url;
     if (dto.source !== undefined) post.source = dto.source;
     if (dto.category !== undefined) post.category = dto.category;
-    if (dto.publishedAt !== undefined) {
-      post.publishedAt = dto.publishedAt ? new Date(dto.publishedAt) : null;
-    }
 
     try {
       return await this.externalPostsRepository.save(post);
@@ -76,6 +74,31 @@ export class ExternalPostsService {
       }
       throw err;
     }
+  }
+
+  async publish(id: string): Promise<ExternalPost> {
+    const post = await this.findEntityById(id);
+
+    if (post.status === ExternalPostStatus.PUBLISHED) {
+      return post;
+    }
+
+    post.status = ExternalPostStatus.PUBLISHED;
+    post.publishedAt = new Date();
+
+    return this.externalPostsRepository.save(post);
+  }
+
+  async archive(id: string): Promise<ExternalPost> {
+    const post = await this.findEntityById(id);
+
+    if (post.status === ExternalPostStatus.ARCHIVED) {
+      return post;
+    }
+
+    post.status = ExternalPostStatus.ARCHIVED;
+
+    return this.externalPostsRepository.save(post);
   }
 
   async delete(id: string): Promise<void> {
