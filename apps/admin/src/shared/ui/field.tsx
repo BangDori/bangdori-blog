@@ -10,6 +10,7 @@ interface FieldProps {
   hint?: ReactNode;
   /** 빈 문자열이거나 undefined 면 에러 슬롯을 렌더링하지 않는다. */
   error?: string;
+  errorId?: string;
   className?: string;
   children: ReactNode;
 }
@@ -21,7 +22,16 @@ interface FieldProps {
  * - htmlFor 로 label 과 body 를 연결하므로, body element 의 id 와 동일하게 넘긴다.
  * - 에러 메시지는 `<p role="alert">` 로 렌더링되어 SR 에서 즉시 알려준다.
  */
-export function Field({ htmlFor, label, required, hint, error, className, children }: FieldProps) {
+export function Field({
+  htmlFor,
+  label,
+  required,
+  hint,
+  error,
+  errorId,
+  className,
+  children,
+}: FieldProps) {
   return (
     <div className={cn('space-y-1.5', className)}>
       <label htmlFor={htmlFor} className="block text-sm font-medium text-foreground">
@@ -31,7 +41,7 @@ export function Field({ htmlFor, label, required, hint, error, className, childr
       </label>
       {children}
       {error && (
-        <p role="alert" className="text-xs text-destructive">
+        <p id={errorId} role="alert" className="text-xs text-destructive">
           {error}
         </p>
       )}

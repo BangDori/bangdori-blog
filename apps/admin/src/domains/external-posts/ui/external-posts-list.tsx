@@ -5,11 +5,7 @@ import { QueryBoundary } from '@shared/ui/query-boundary';
 import { useListExternalPosts } from '../api/queries';
 import { ExternalPostsTable } from './external-posts-table';
 
-interface ExternalPostsListProps {
-  onRowClick: (id: string) => void;
-}
-
-export function ExternalPostsList({ onRowClick }: ExternalPostsListProps) {
+export function ExternalPostsList() {
   const query = useListExternalPosts();
 
   return (
@@ -21,7 +17,7 @@ export function ExternalPostsList({ onRowClick }: ExternalPostsListProps) {
       isEmpty={(data) => data.length === 0}
       empty={<Notice>외부 글이 없습니다.</Notice>}
     >
-      {(data) => <ExternalPostsTable rows={data} onRowClick={onRowClick} />}
+      {(data) => <ExternalPostsTable rows={data} />}
     </QueryBoundary>
   );
 }

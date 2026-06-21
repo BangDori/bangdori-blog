@@ -7,13 +7,13 @@ import { ExternalPostStatusBadge } from './external-post-status-badge';
 
 interface ExternalPostsTableProps {
   rows: ExternalPost[];
-  onRowClick: (id: string) => void;
 }
 
-export function ExternalPostsTable({ rows, onRowClick }: ExternalPostsTableProps) {
+export function ExternalPostsTable({ rows }: ExternalPostsTableProps) {
   return (
     <div className="overflow-x-auto rounded-md border border-border">
       <table className="w-full text-sm">
+        <caption className="sr-only">외부 글 목록</caption>
         <thead className="bg-secondary text-secondary-foreground">
           <tr className="text-left">
             <th scope="col" className="px-3 py-2 font-medium">
@@ -38,15 +38,10 @@ export function ExternalPostsTable({ rows, onRowClick }: ExternalPostsTableProps
         </thead>
         <tbody>
           {rows.map((post) => (
-            <tr
-              key={post.id}
-              className="border-t border-border hover:bg-secondary/60 cursor-pointer"
-              onClick={() => onRowClick(post.id)}
-            >
+            <tr key={post.id} className="border-t border-border hover:bg-secondary/60">
               <td className="px-3 py-2">
                 <Link
                   to={ROUTES.externalPostEdit(post.id)}
-                  onClick={(e) => e.stopPropagation()}
                   className="font-medium text-foreground hover:text-primary"
                 >
                   {post.title}
@@ -55,7 +50,7 @@ export function ExternalPostsTable({ rows, onRowClick }: ExternalPostsTableProps
                   href={post.url}
                   target="_blank"
                   rel="noreferrer"
-                  onClick={(e) => e.stopPropagation()}
+                  aria-label={`${post.title} 원문 새 탭에서 열기`}
                   className="block max-w-xl truncate text-xs text-muted-foreground hover:text-primary"
                 >
                   {post.url}
