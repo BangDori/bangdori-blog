@@ -5,7 +5,7 @@ interface QueryBoundaryProps<T> {
   query: UseQueryResult<T, Error>;
   loading?: ReactNode;
   error?: (err: Error) => ReactNode;
-  /** 에러 발생 시 1회성 부수 효과 (toast 등)을 넘기고 싶을 때 */
+  /** error UI와 별개로 toast 같은 부수 효과를 실행할 때 */
   onError?: (err: Error) => void;
   isEmpty?: (data: T) => boolean;
   empty?: ReactNode;
