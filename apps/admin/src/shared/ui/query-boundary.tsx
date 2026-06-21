@@ -1,11 +1,11 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import { type ReactNode, useEffect } from 'react';
+import { type ReactNode, useEffect, useRef } from 'react';
 
 interface QueryBoundaryProps<T> {
   query: UseQueryResult<T, Error>;
   loading?: ReactNode;
   error?: (err: Error) => ReactNode;
-  /** 에러 발생 시 1회성 부수 효과 (toast 등)을 넘기고 싶을 때 */
+  /** error UI와 별개로 toast 같은 부수 효과를 실행할 때 */
   onError?: (err: Error) => void;
   isEmpty?: (data: T) => boolean;
   empty?: ReactNode;
@@ -24,9 +24,15 @@ export function QueryBoundary<T>({
   empty = null,
   children,
 }: QueryBoundaryProps<T>) {
+  const onErrorRef = useRef(onError);
+
   useEffect(() => {
-    if (query.isError && onError) onError(query.error);
-  }, [query.isError, query.error, onError]);
+    onErrorRef.current = onError;
+  }, [onError]);
+
+  useEffect(() => {
+    if (query.isError) onErrorRef.current?.(query.error);
+  }, [query.isError, query.error]);
 
   if (query.isLoading) return loading;
   if (query.isError) return error ? error(query.error) : null;
