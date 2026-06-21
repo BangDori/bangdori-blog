@@ -1,5 +1,5 @@
 import type { UseQueryResult } from '@tanstack/react-query';
-import { type ReactNode, useEffect } from 'react';
+import { type ReactNode, useEffect, useRef } from 'react';
 
 interface QueryBoundaryProps<T> {
   query: UseQueryResult<T, Error>;
@@ -24,9 +24,15 @@ export function QueryBoundary<T>({
   empty = null,
   children,
 }: QueryBoundaryProps<T>) {
+  const onErrorRef = useRef(onError);
+
   useEffect(() => {
-    if (query.isError && onError) onError(query.error);
-  }, [query.isError, query.error, onError]);
+    onErrorRef.current = onError;
+  }, [onError]);
+
+  useEffect(() => {
+    if (query.isError) onErrorRef.current?.(query.error);
+  }, [query.isError, query.error]);
 
   if (query.isLoading) return loading;
   if (query.isError) return error ? error(query.error) : null;
