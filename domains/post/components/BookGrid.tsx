@@ -10,9 +10,9 @@ interface BookGridProps {
 }
 
 const BOOK_PLACEMENTS = [
-  'w-[72%] -rotate-[0.6deg]',
-  'w-[75%] rotate-[0.4deg]',
-  'w-[71%] -rotate-[0.2deg]',
+  'w-[82%] -rotate-[0.6deg] sm:w-[72%]',
+  'w-[85%] rotate-[0.4deg] sm:w-[75%]',
+  'w-[81%] -rotate-[0.2deg] sm:w-[71%]',
 ] as const;
 
 export function BookGrid({ books }: BookGridProps) {
@@ -25,7 +25,7 @@ export function BookGrid({ books }: BookGridProps) {
       {rows.map((row, rowIndex) => (
         <div
           key={row.map((book) => book.id).join('-')}
-          className="relative grid grid-cols-3 items-end gap-4 px-3 pb-[15px] sm:gap-8 sm:px-7"
+          className="relative grid grid-cols-3 items-end gap-2 px-2 pb-[15px] sm:gap-8 sm:px-7"
         >
           {row.map((book, columnIndex) => (
             <Link
@@ -61,7 +61,7 @@ export function BookGrid({ books }: BookGridProps) {
           ))}
 
           <span
-            className="absolute -right-3.5 bottom-0.5 -left-3.5 h-2.5 rounded-[2px] bg-white shadow-[0_5px_7px_rgba(115,140,164,0.16),0_16px_26px_rgba(150,174,197,0.34),inset_0_1px_0_rgba(255,255,255,0.9)] dark:bg-[#363e49] dark:shadow-[0_6px_9px_rgba(0,0,0,0.32),0_17px_28px_rgba(0,0,0,0.58),inset_0_1px_0_rgba(255,255,255,0.12)]"
+            className="absolute right-0 bottom-0.5 left-0 h-2.5 rounded-[2px] bg-white shadow-[0_5px_7px_rgba(115,140,164,0.16),0_16px_26px_rgba(150,174,197,0.34),inset_0_1px_0_rgba(255,255,255,0.9)] sm:-right-3.5 sm:-left-3.5 dark:bg-[#363e49] dark:shadow-[0_6px_9px_rgba(0,0,0,0.32),0_17px_28px_rgba(0,0,0,0.58),inset_0_1px_0_rgba(255,255,255,0.12)]"
             aria-hidden="true"
           />
         </div>

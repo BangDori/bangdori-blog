@@ -17,6 +17,9 @@ const nextConfig: NextConfig = {
       {
         hostname: 'www.notion.so',
       },
+      {
+        hostname: 'bangdori.notion.site',
+      },
     ],
   },
   pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'mdx', 'md'],
