@@ -1,43 +1,76 @@
 import Image from 'next/image';
-import { cn } from '@/lib/utils';
 
 export default function About() {
   return (
     <section className="container">
-      <div className="flex flex-col items-center">
-        <div className="mb-8">
-          <Image
-            src="/profile.jpg"
-            alt="프로필 사진"
-            width={160}
-            height={160}
-            className={cn(
-              'h-40 w-40 rounded-full object-cover',
-              'shadow-2xl dark:shadow-[8px_8px_24px_0_rgba(0,180,216,0.18),_-8px_-8px_24px_0_rgba(200,240,255,0.7)]'
-            )}
-            priority
-          />
-        </div>
-        <p className="text-muted-foreground mb-8 text-center text-base font-medium">
-          혼자보단 함께하는 게 더 즐거워요.
-          <br />
-          복잡한 문제도 함께라면 해결할 수 있기에,
-          <br />
-          서로를 이해하며 조화롭게 빛나는 서비스를 만들고 싶어요.
-        </p>
+      <div className="mx-auto max-w-2xl py-4 md:py-8">
+        <div className="relative isolate overflow-hidden py-8 sm:py-14">
+          <h1 className="sr-only">강병준</h1>
 
-        <p className="text-muted-foreground text-base font-medium">
-          저는 현재{' '}
-          <a
-            href="https://creatrip.com/en"
-            className="font-semibold underline"
-            target="_blank"
-            rel="noopener noreferrer"
+          <div
+            className="pointer-events-none absolute inset-y-0 right-0 z-0 w-full overflow-hidden sm:w-[72%]"
+            style={{
+              maskImage:
+                'radial-gradient(ellipse 66% 62% at 58% 50%, black 24%, rgba(0, 0, 0, 0.68) 50%, transparent 78%)',
+              WebkitMaskImage:
+                'radial-gradient(ellipse 66% 62% at 58% 50%, black 24%, rgba(0, 0, 0, 0.68) 50%, transparent 78%)',
+            }}
+            aria-hidden="true"
           >
-            Creatrip
-          </a>
-          에서 일하고 있어요.
-        </p>
+            <Image
+              src="/profile.jpg"
+              alt=""
+              fill
+              sizes="(min-width: 640px) 420px, 78vw"
+              className="scale-110 object-cover object-[54%_58%] opacity-[0.14] blur-[1.5px] saturate-75 sm:opacity-35 dark:opacity-[0.14] dark:brightness-75 dark:sm:opacity-25"
+              priority
+            />
+            <div className="from-background via-background/45 absolute inset-0 bg-linear-to-r to-transparent" />
+            <div className="from-background absolute inset-y-0 right-0 w-28 bg-linear-to-l to-transparent sm:w-32" />
+          </div>
+
+          <div className="relative z-10 space-y-10 sm:max-w-[75%]">
+            <section aria-labelledby="currently-working-on">
+              <h2
+                id="currently-working-on"
+                className="text-foreground text-sm font-semibold tracking-tight"
+              >
+                Currently working on
+              </h2>
+              <p className="text-muted-foreground mt-3 text-base">
+                Product Engineer{' '}
+                <a
+                  href="https://creatrip.com/en"
+                  className="text-foreground font-medium underline decoration-1 underline-offset-4 transition-opacity hover:opacity-60"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  @Creatrip
+                </a>
+              </p>
+            </section>
+
+            <section aria-labelledby="about-this-blog">
+              <h2
+                id="about-this-blog"
+                className="text-foreground text-sm font-semibold tracking-tight"
+              >
+                About this blog
+              </h2>
+              <div className="text-muted-foreground mt-3 space-y-4 text-base leading-7">
+                <p>
+                  기술을 설명하는 데서 멈추지 않고, 기술을 만나며 생긴 질문과 그 답을 찾아가는
+                  과정을 이야기처럼 기록합니다. 무엇을 만들었는지보다 왜 시작했는지, 어디서
+                  막혔는지, 시도와 실패를 거치며 생각이 어떻게 달라졌는지를 솔직하게 담고자 합니다.
+                </p>
+                <p>
+                  각 글이 하나의 정답을 제시하기보다, 비슷한 고민을 가진 누군가가 이야기를 함께
+                  따라가며 자신만의 답을 발견할 수 있는 기록이 되기를 바랍니다.
+                </p>
+              </div>
+            </section>
+          </div>
+        </div>
       </div>
     </section>
   );
