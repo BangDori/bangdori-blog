@@ -114,7 +114,6 @@ export function BookGrid({ books }: BookGridProps) {
           disabled={!canToggleLight}
           onClick={() => setIsLightOn((current) => !current)}
         />
-        <span className={styles.picturePlate} aria-hidden="true" />
         <span className={styles.pictureArmLeft} aria-hidden="true" />
         <span className={styles.pictureArmRight} aria-hidden="true" />
         <span className={styles.pictureBar} aria-hidden="true" />
@@ -123,7 +122,7 @@ export function BookGrid({ books }: BookGridProps) {
         <span className={styles.lightBeam} aria-hidden="true" />
       </div>
 
-      <div className="relative z-10 space-y-10 pt-28 sm:space-y-14 sm:pt-36">
+      <div className="relative z-10 space-y-10 pt-20 sm:space-y-14">
         {rows.map((row, rowIndex) => (
           <div
             key={row.map((book) => book.id).join('-')}

@@ -17,7 +17,7 @@
 
 .lightScene {
   position: absolute;
-  top: -8px;
+  top: -48px;
   right: 0;
   left: 0;
   z-index: 20;
@@ -27,7 +27,7 @@
 
 .lightToggle {
   position: absolute;
-  top: -5px;
+  top: 0;
   left: 50%;
   z-index: 10;
   width: 174px;
@@ -51,29 +51,14 @@
   cursor: default;
 }
 
-.picturePlate {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  z-index: 4;
-  width: 52px;
-  height: 9px;
-  border-radius: 3px;
-  background: linear-gradient(to bottom, #50545a, #17191c);
-  box-shadow:
-    0 3px 5px rgb(0 0 0 / 28%),
-    inset 0 1px 0 rgb(255 255 255 / 16%);
-  transform: translateX(-50%);
-}
-
 .pictureArmLeft,
 .pictureArmRight {
   position: absolute;
-  top: 7px;
+  top: 0;
   left: 50%;
   z-index: 3;
   width: 3px;
-  height: 18px;
+  height: 25px;
   border-radius: 2px;
   background: linear-gradient(to right, #17191b, #53575c, #17191b);
   box-shadow: 0 2px 3px rgb(0 0 0 / 24%);
@@ -162,10 +147,6 @@
   transition: opacity 260ms ease;
 }
 
-html[class~='dark'] .picturePlate {
-  background: linear-gradient(to bottom, #292c31, #090a0c);
-}
-
 html[class~='dark'] .pictureArmLeft,
 html[class~='dark'] .pictureArmRight {
   background: linear-gradient(to right, #070809, #303338, #070809);
@@ -224,19 +205,14 @@ html:not([class~='dark']) .lightBeam {
 
 @media (max-width: 639px) {
   .lightScene {
-    top: -6px;
+    top: -32px;
     height: 270px;
-  }
-
-  .picturePlate {
-    width: 44px;
-    height: 8px;
   }
 
   .pictureArmLeft,
   .pictureArmRight {
-    top: 6px;
-    height: 15px;
+    top: 0;
+    height: 20px;
   }
 
   .pictureArmLeft {
