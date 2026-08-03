@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import clsx from 'clsx';
+import { trackClick } from '@/lib/gtag';
 import { SiteStats } from '../SiteStats';
 import { ModeToggle } from '../theme/ThemeToggle';
 
@@ -24,6 +25,7 @@ export default function Header() {
                 key={label}
                 href={href}
                 className={clsx(pathname === href ? 'text-primary' : 'hover:text-primary')}
+                onClick={() => trackClick('nav', { text: label })}
               >
                 {label}
               </Link>

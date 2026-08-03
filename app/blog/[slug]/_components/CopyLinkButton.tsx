@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { trackClick } from '@/lib/gtag';
 
 export default function CopyLinkButton() {
   const [copied, setCopied] = useState(false);
@@ -23,6 +24,7 @@ export default function CopyLinkButton() {
       document.body.removeChild(textArea);
     } finally {
       setCopied(true);
+      trackClick('copy_link');
       setTimeout(() => setCopied(false), 1500);
     }
   };
