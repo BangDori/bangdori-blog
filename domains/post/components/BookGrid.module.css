@@ -158,25 +158,25 @@
   transition: opacity 260ms ease;
 }
 
-:global(.dark) .picturePlate {
+html[class~='dark'] .picturePlate {
   background: linear-gradient(to bottom, #292c31, #090a0c);
 }
 
-:global(.dark) .pictureArmLeft,
-:global(.dark) .pictureArmRight {
+html[class~='dark'] .pictureArmLeft,
+html[class~='dark'] .pictureArmRight {
   background: linear-gradient(to right, #070809, #303338, #070809);
 }
 
-:global(.dark) .pictureBar {
+html[class~='dark'] .pictureBar {
   background: linear-gradient(to bottom, #30343a 0%, #141619 52%, #060708 100%);
 }
 
-:global(.dark) .lightBeam {
+html[class~='dark'] .lightBeam {
   opacity: 0.44;
   mix-blend-mode: screen;
 }
 
-:global(.dark) .lightGlow {
+html[class~='dark'] .lightGlow {
   background: radial-gradient(
     ellipse,
     rgb(255 225 163 / 40%) 0%,

@@ -78,7 +78,7 @@ export function BookGrid({ books }: BookGridProps) {
       cancelAnimationFrame(animationFrame);
       resizeObserver.disconnect();
     };
-  }, [books.length]);
+  }, []);
 
   return (
     <div
