@@ -16,9 +16,8 @@ function ProfileBackground() {
         src="/profile.jpg"
         alt=""
         fill
-        sizes="(min-width: 640px) 420px, 78vw"
+        sizes="(min-width: 704px) 484px, (min-width: 640px) calc(72vw - 23px), 1px"
         className="object-cover object-[54%_58%] saturate-100 dark:brightness-75 dark:saturate-75"
-        priority
       />
       <div className="from-background via-background/85 absolute inset-0 bg-linear-to-r via-60% to-transparent dark:hidden" />
       <div className="from-background via-background/45 absolute inset-0 hidden bg-linear-to-r to-transparent dark:block" />
