@@ -22,11 +22,11 @@ export default function About() {
               alt=""
               fill
               sizes="(min-width: 640px) 420px, 78vw"
-              className="object-cover object-[54%_58%] saturate-75 dark:brightness-75"
+              className="object-cover object-[54%_58%] saturate-100 dark:brightness-75 dark:saturate-75"
               priority
             />
-            <div className="from-background via-background/45 absolute inset-0 bg-linear-to-r to-transparent" />
-            <div className="from-background absolute inset-y-0 right-0 w-28 bg-linear-to-l to-transparent sm:w-32" />
+            <div className="from-background/70 via-background/25 dark:from-background dark:via-background/45 absolute inset-0 bg-linear-to-r to-transparent" />
+            <div className="from-background/70 dark:from-background absolute inset-y-0 right-0 w-28 bg-linear-to-l to-transparent sm:w-32" />
           </div>
 
           <div className="relative z-10 space-y-10 sm:max-w-[75%]">
@@ -37,7 +37,7 @@ export default function About() {
               >
                 Currently working on
               </h2>
-              <p className="text-muted-foreground mt-3 text-base">
+              <p className="text-foreground dark:text-muted-foreground mt-3 text-base">
                 Product Engineer{' '}
                 <a
                   href="https://creatrip.com/en"
@@ -57,7 +57,7 @@ export default function About() {
               >
                 About this blog
               </h2>
-              <div className="text-muted-foreground mt-3 space-y-4 text-base leading-7">
+              <div className="text-foreground dark:text-muted-foreground mt-3 space-y-4 text-base leading-7">
                 <p>
                   기술을 설명하는 데서 멈추지 않고, 기술을 만나며 생긴 질문과 그 답을 찾아가는
                   과정을 이야기처럼 기록합니다. 무엇을 만들었는지보다 왜 시작했는지, 어디서
