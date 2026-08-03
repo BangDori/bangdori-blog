@@ -8,7 +8,7 @@ export default function About() {
           <h1 className="sr-only">강병준</h1>
 
           <div
-            className="pointer-events-none absolute inset-y-0 right-0 z-0 w-full overflow-hidden sm:w-[72%]"
+            className="pointer-events-none absolute inset-y-0 right-0 z-0 hidden w-full overflow-hidden sm:block sm:w-[72%]"
             style={{
               maskImage:
                 'radial-gradient(ellipse 66% 62% at 58% 50%, black 24%, rgba(0, 0, 0, 0.68) 50%, transparent 78%)',
@@ -22,7 +22,7 @@ export default function About() {
               alt=""
               fill
               sizes="(min-width: 640px) 420px, 78vw"
-              className="scale-110 object-cover object-[54%_58%] opacity-[0.14] blur-[1.5px] saturate-75 sm:opacity-35 dark:opacity-[0.14] dark:brightness-75 dark:sm:opacity-25"
+              className="object-cover object-[54%_58%] saturate-75 dark:brightness-75"
               priority
             />
             <div className="from-background via-background/45 absolute inset-0 bg-linear-to-r to-transparent" />
