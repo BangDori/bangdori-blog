@@ -1,3 +1,4 @@
+import { GALogger } from '@/components/ga-logger';
 import { getPublishedPosts } from '@/domains/post/api/notion';
 import { PostList } from '@/domains/post/components';
 
@@ -5,8 +6,10 @@ export default async function Home() {
   const posts = await getPublishedPosts();
 
   return (
-    <div className="container">
-      <PostList posts={posts} />
-    </div>
+    <GALogger.OnScroll event={['post_list', { thresholds: [25, 50, 75, 100] }]}>
+      <div className="container">
+        <PostList posts={posts} />
+      </div>
+    </GALogger.OnScroll>
   );
 }

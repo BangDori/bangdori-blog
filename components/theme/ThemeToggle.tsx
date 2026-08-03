@@ -10,6 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { trackClick } from '@/lib/gtag';
 
 export function ModeToggle() {
   const { setTheme } = useTheme();
@@ -24,13 +25,31 @@ export function ModeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme('light')}>
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => {
+            trackClick('theme_toggle', { text: 'light' });
+            setTheme('light');
+          }}
+        >
           Light
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme('dark')}>
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => {
+            trackClick('theme_toggle', { text: 'dark' });
+            setTheme('dark');
+          }}
+        >
           Dark
         </DropdownMenuItem>
-        <DropdownMenuItem className="cursor-pointer" onClick={() => setTheme('system')}>
+        <DropdownMenuItem
+          className="cursor-pointer"
+          onClick={() => {
+            trackClick('theme_toggle', { text: 'system' });
+            setTheme('system');
+          }}
+        >
           System
         </DropdownMenuItem>
       </DropdownMenuContent>

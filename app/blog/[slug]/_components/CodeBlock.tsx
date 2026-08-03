@@ -2,6 +2,7 @@
 
 import { Clipboard, Check } from 'lucide-react';
 import { useRef, useState } from 'react';
+import { trackClick } from '@/lib/gtag';
 
 export function CodeBlock({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) {
   const preRef = useRef<HTMLPreElement>(null);
@@ -13,6 +14,7 @@ export function CodeBlock({ children, ...props }: React.HTMLAttributes<HTMLPreEl
     try {
       await navigator.clipboard.writeText(code);
       setCopied(true);
+      trackClick('code_copy');
       setTimeout(() => setCopied(false), 1500);
     } catch {
       setCopied(false);
