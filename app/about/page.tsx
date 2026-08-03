@@ -1,31 +1,5 @@
-'use client';
-
 import Image from 'next/image';
-import { Github, Instagram, Linkedin, Mail } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { trackClick } from '@/lib/gtag';
 import { cn } from '@/lib/utils';
-
-const socialLinks = [
-  {
-    icon: Github,
-    href: 'https://github.com/bangdori',
-  },
-  {
-    icon: Linkedin,
-    href: 'https://www.linkedin.com/in/bangdori/',
-  },
-  {
-    icon: Instagram,
-    href: 'https://www.instagram.com/joooon2_/',
-  },
-  {
-    icon: Mail,
-    href: `mailto:bangdori@gmail.com?subject=제목을 입력해주세요&body=${encodeURIComponent(
-      '안녕하세요, 블로그를 보고 연락드립니다.\n\n문의 내용:\n'
-    )}`,
-  },
-];
 
 export default function About() {
   return (
@@ -64,20 +38,6 @@ export default function About() {
           </a>
           에서 일하고 있어요.
         </p>
-        <div className="mt-4 flex gap-2">
-          {socialLinks.map((item) => (
-            <Button key={item.href} variant="ghost" className="bg-primary/10" size="icon" asChild>
-              <a
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackClick('social', { url: item.href })}
-              >
-                <item.icon className="h-4 w-4" />
-              </a>
-            </Button>
-          ))}
-        </div>
       </div>
     </section>
   );
