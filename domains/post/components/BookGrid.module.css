@@ -47,6 +47,10 @@
   outline-offset: 4px;
 }
 
+.lightToggle:disabled {
+  cursor: default;
+}
+
 .picturePlate {
   position: absolute;
   top: 0;
@@ -185,23 +189,27 @@ html[class~='dark'] .lightGlow {
   );
 }
 
-.lightToggle:hover ~ .pictureBar {
+.lightToggle:not(:disabled):hover ~ .pictureBar {
   filter: brightness(1.08);
 }
 
-.lightOff .pictureBar {
+.lightOff .pictureBar,
+html:not([class~='dark']) .pictureBar {
   filter: brightness(0.72);
 }
 
-.lightOff .pictureLens {
+.lightOff .pictureLens,
+html:not([class~='dark']) .pictureLens {
   background: #272a2e;
   box-shadow:
     0 1px 2px rgb(0 0 0 / 42%),
     inset 0 1px 0 rgb(255 255 255 / 8%);
 }
 
-.lightOff .lightGlow,
-.lightOff .lightBeam {
+.bookshelf.lightOff .lightGlow,
+.bookshelf.lightOff .lightBeam,
+html:not([class~='dark']) .lightGlow,
+html:not([class~='dark']) .lightBeam {
   opacity: 0;
 }
 

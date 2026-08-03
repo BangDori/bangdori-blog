@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
 import { useEffect, useRef, useState } from 'react';
 import { trackClick } from '@/lib/gtag';
 import type { Post } from '../types';
@@ -19,13 +20,22 @@ const BOOK_PLACEMENTS = [
 ] as const;
 
 export function BookGrid({ books }: BookGridProps) {
-  const [isLightOn, setIsLightOn] = useState(true);
+  const { resolvedTheme } = useTheme();
+  const [isThemeReady, setIsThemeReady] = useState(false);
+  const [isLightOn, setIsLightOn] = useState(false);
   const bookshelfRef = useRef<HTMLDivElement>(null);
   const lightSourceRef = useRef<HTMLSpanElement>(null);
   const firstShelfRef = useRef<HTMLSpanElement>(null);
   const rows = Array.from({ length: Math.ceil(books.length / 3) }, (_, index) =>
     books.slice(index * 3, index * 3 + 3)
   );
+
+  useEffect(() => {
+    if (!resolvedTheme) return;
+
+    setIsThemeReady(true);
+    setIsLightOn(resolvedTheme === 'dark');
+  }, [resolvedTheme]);
 
   useEffect(() => {
     const bookshelf = bookshelfRef.current;
@@ -80,18 +90,28 @@ export function BookGrid({ books }: BookGridProps) {
     };
   }, []);
 
+  const canToggleLight = isThemeReady && resolvedTheme === 'dark';
+  const isLightActive = canToggleLight && isLightOn;
+
   return (
     <div
       ref={bookshelfRef}
-      className={`${styles.bookshelf} ${isLightOn ? styles.lightOn : styles.lightOff}`}
+      className={`${styles.bookshelf} ${isLightActive ? '' : styles.lightOff}`}
     >
       <div className={styles.lightScene}>
         <button
           type="button"
           className={styles.lightToggle}
-          aria-label={isLightOn ? '책장 조명 끄기' : '책장 조명 켜기'}
-          aria-pressed={isLightOn}
-          title={isLightOn ? '조명 끄기' : '조명 켜기'}
+          aria-label={
+            canToggleLight
+              ? isLightActive
+                ? '책장 조명 끄기'
+                : '책장 조명 켜기'
+              : '책장 조명은 다크 모드에서 사용할 수 있습니다'
+          }
+          aria-pressed={isLightActive}
+          title={canToggleLight ? (isLightActive ? '조명 끄기' : '조명 켜기') : undefined}
+          disabled={!canToggleLight}
           onClick={() => setIsLightOn((current) => !current)}
         />
         <span className={styles.picturePlate} aria-hidden="true" />
