@@ -1,7 +1,7 @@
 'use client';
 
-import { Github, Instagram, Linkedin, Mail } from 'lucide-react';
 import Image from 'next/image';
+import { Github, Instagram, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { trackClick } from '@/lib/gtag';
 import { cn } from '@/lib/utils';

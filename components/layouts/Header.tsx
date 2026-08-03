@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { trackClick } from '@/lib/gtag';
 import { SiteStats } from '../SiteStats';
 import { ModeToggle } from '../theme/ThemeToggle';
