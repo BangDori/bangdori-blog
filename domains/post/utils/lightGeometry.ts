@@ -14,16 +14,12 @@ interface Vector3 {
 
 export interface LightGeometry {
   range: number;
-  slantRange: number;
   targetLeft: number;
   targetWidth: number;
   sourceX: number;
-  spreadAngle: number;
   edgeIntensity: number;
   falloff: [number, number, number, number, number];
 }
-
-const RAD_TO_DEG = 180 / Math.PI;
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
@@ -39,17 +35,6 @@ function subtract(to: Vector3, from: Vector3): Vector3 {
 
 function magnitude(vector: Vector3) {
   return Math.hypot(vector.x, vector.y, vector.z);
-}
-
-function dot(left: Vector3, right: Vector3) {
-  return left.x * right.x + left.y * right.y + left.z * right.z;
-}
-
-function angleBetween(left: Vector3, right: Vector3) {
-  const denominator = magnitude(left) * magnitude(right);
-  if (denominator === 0) return 0;
-
-  return Math.acos(clamp(dot(left, right) / denominator, -1, 1));
 }
 
 function calculateFalloff(range: number, sourceRadius: number): LightGeometry['falloff'] {
@@ -84,8 +69,6 @@ export function calculateLightGeometry(
   const opticalAxis = subtract(shelfCenter, light);
   const leftRay = subtract(shelfLeft, light);
   const rightRay = subtract(shelfRight, light);
-  const leftAngle = angleBetween(opticalAxis, leftRay);
-  const rightAngle = angleBetween(opticalAxis, rightRay);
   const centerRange = magnitude(opticalAxis);
   const slantRange = Math.max(magnitude(leftRay), magnitude(rightRay));
   const incidenceCosine = clamp(range / slantRange, 0, 1);
@@ -93,11 +76,9 @@ export function calculateLightGeometry(
 
   return {
     range,
-    slantRange,
     targetLeft,
     targetWidth,
     sourceX: clamp(sourceXInContainer - targetLeft, 0, targetWidth),
-    spreadAngle: Number(((leftAngle + rightAngle) * RAD_TO_DEG).toFixed(2)),
     edgeIntensity: Number(clamp(incidenceCosine * inverseSquareAtEdge, 0.16, 1).toFixed(3)),
     falloff: calculateFalloff(centerRange, source.width / 2),
   };

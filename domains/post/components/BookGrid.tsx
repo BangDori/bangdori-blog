@@ -58,7 +58,6 @@ export function BookGrid({ books }: BookGridProps) {
       bookshelf.style.setProperty('--light-target-width', `${geometry.targetWidth}px`);
       bookshelf.style.setProperty('--light-source-x', `${geometry.sourceX}px`);
       bookshelf.style.setProperty('--light-range', `${geometry.range}px`);
-      bookshelf.style.setProperty('--light-edge-intensity', `${geometry.edgeIntensity}`);
       bookshelf.style.setProperty(
         '--light-edge-alpha',
         `${Number((alpha100 * geometry.edgeIntensity).toFixed(3))}`
@@ -68,9 +67,6 @@ export function BookGrid({ books }: BookGridProps) {
       bookshelf.style.setProperty('--light-alpha-50', `${alpha50}`);
       bookshelf.style.setProperty('--light-alpha-75', `${alpha75}`);
       bookshelf.style.setProperty('--light-alpha-100', `${alpha100}`);
-      bookshelf.dataset.lightSpreadAngle = `${geometry.spreadAngle}deg`;
-      bookshelf.dataset.lightRange = `${Math.round(geometry.range)}px`;
-      bookshelf.dataset.lightSlantRange = `${Math.round(geometry.slantRange)}px`;
     };
 
     const scheduleUpdate = () => {
@@ -134,7 +130,7 @@ export function BookGrid({ books }: BookGridProps) {
                 key={book.id}
                 aria-label={`${book.title} 독후감 보기`}
                 title={book.title}
-                className={`${BOOK_PLACEMENTS[(rowIndex + columnIndex) % BOOK_PLACEMENTS.length]} focus-visible:ring-primary relative z-10 mx-auto block origin-bottom rounded-sm focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:outline-none`}
+                className={`${BOOK_PLACEMENTS[(rowIndex + columnIndex) % BOOK_PLACEMENTS.length]} focus-visible:ring-primary focus-visible:ring-offset-background relative z-10 mx-auto block origin-bottom rounded-sm focus-visible:ring-2 focus-visible:ring-offset-4 focus-visible:outline-none`}
                 onClick={() => trackClick('book_card', { slug: book.slug, text: book.title })}
               >
                 <span
