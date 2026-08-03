@@ -25,7 +25,8 @@ export default function About() {
               className="object-cover object-[54%_58%] saturate-100 dark:brightness-75 dark:saturate-75"
               priority
             />
-            <div className="from-background/70 via-background/25 dark:from-background dark:via-background/45 absolute inset-0 bg-linear-to-r to-transparent" />
+            <div className="from-background via-background/85 absolute inset-0 bg-linear-to-r via-60% to-transparent dark:hidden" />
+            <div className="from-background via-background/45 absolute inset-0 hidden bg-linear-to-r to-transparent dark:block" />
             <div className="from-background/70 dark:from-background absolute inset-y-0 right-0 w-28 bg-linear-to-l to-transparent sm:w-32" />
           </div>
 
