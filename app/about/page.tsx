@@ -4,7 +4,7 @@ export default function About() {
   return (
     <section className="container">
       <div className="mx-auto max-w-2xl py-4 md:py-8">
-        <div className="relative isolate overflow-hidden py-8 sm:py-14">
+        <div className="relative isolate overflow-hidden">
           <h1 className="sr-only">강병준</h1>
 
           <div
