@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 const GITHUB_GRAPHQL_API = 'https://api.github.com/graphql';
 const REPO_OWNER = 'BangDori';
 const REPO_NAME = 'bangdori-blog';
-const token = process.env.GITHUB_TOKEN;
+const token = process.env.GH_TOKEN;
 
 const query = `
 query {
