@@ -3,7 +3,7 @@ import Image from 'next/image';
 function ProfileBackground() {
   return (
     <div
-      className="pointer-events-none relative z-0 hidden w-full overflow-hidden sm:col-start-1 sm:row-start-1 sm:row-end-3 sm:block sm:w-[72%] sm:justify-self-end"
+      className="pointer-events-none relative z-0 hidden w-full overflow-hidden sm:col-start-1 sm:row-start-1 sm:row-end-3 sm:block sm:w-[72%] sm:max-w-[30.25rem] sm:justify-self-end lg:min-h-96"
       style={{
         maskImage:
           'radial-gradient(ellipse 66% 62% at 58% 50%, black 24%, rgba(0, 0, 0, 0.68) 50%, transparent 78%)',
@@ -33,7 +33,7 @@ export default function About() {
         강병준 소개
       </h1>
 
-      <div className="isolate mx-auto grid max-w-2xl grid-cols-1 gap-y-10 overflow-hidden md:gap-y-16 md:py-8">
+      <div className="isolate grid grid-cols-1 gap-y-10 overflow-hidden md:gap-y-16 md:py-8">
         <ProfileBackground />
 
         <section
@@ -60,7 +60,7 @@ export default function About() {
         </section>
 
         <section
-          className="relative z-10 col-start-1 row-start-2 sm:max-w-[75%]"
+          className="relative z-10 col-start-1 row-start-2"
           aria-labelledby="about-this-blog"
         >
           <h2
