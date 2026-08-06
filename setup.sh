@@ -46,4 +46,8 @@ cp "$EXPORT_FILE" "$ENV_FILE"
 chmod 600 "$ENV_FILE"
 
 echo "✅ 생성: ${ENV_FILE}"
+
+echo "📦 패키지 의존성 설치"
+(cd "$REPO_ROOT" && pnpm install)
+
 echo "🎉 setup 완료"
