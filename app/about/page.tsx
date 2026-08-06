@@ -33,7 +33,7 @@ export default function About() {
         강병준 소개
       </h1>
 
-      <div className="isolate mx-auto grid max-w-2xl grid-cols-1 gap-y-10 overflow-hidden md:gap-y-16 md:py-8">
+      <div className="isolate grid max-w-2xl grid-cols-1 gap-y-10 overflow-hidden md:gap-y-16 md:py-8">
         <ProfileBackground />
 
         <section
