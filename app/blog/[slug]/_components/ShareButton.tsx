@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { trackClick } from '@/lib/gtag';
 
@@ -11,20 +11,36 @@ interface ShareButtonProps {
 
 export default function ShareButton({ title, text }: ShareButtonProps) {
   const [copied, setCopied] = useState(false);
+  const [isSharing, setIsSharing] = useState(false);
+  const isSharingRef = useRef(false);
 
   const copyLink = async () => {
+    let copySucceeded = false;
+
     try {
       await navigator.clipboard.writeText(window.location.href);
+      copySucceeded = true;
     } catch {
       // Clipboard API를 지원하지 않는 브라우저를 위한 fallback
       const textArea = document.createElement('textarea');
 
       textArea.value = window.location.href;
+      textArea.style.position = 'fixed';
+      textArea.style.opacity = '0';
       document.body.appendChild(textArea);
-      textArea.select();
-      document.execCommand('copy');
-      document.body.removeChild(textArea);
+
+      try {
+        textArea.focus();
+        textArea.select();
+        copySucceeded = document.execCommand('copy');
+      } catch {
+        copySucceeded = false;
+      } finally {
+        textArea.remove();
+      }
     }
+
+    if (!copySucceeded) return;
 
     setCopied(true);
     trackClick('copy_link', { source: 'share_fallback' });
@@ -32,14 +48,19 @@ export default function ShareButton({ title, text }: ShareButtonProps) {
   };
 
   const handleShare = async () => {
+    if (isSharingRef.current) return;
+
+    isSharingRef.current = true;
+    setIsSharing(true);
+
     const url = window.location.href;
 
-    if (typeof navigator.share !== 'function') {
-      await copyLink();
-      return;
-    }
-
     try {
+      if (typeof navigator.share !== 'function') {
+        await copyLink();
+        return;
+      }
+
       await navigator.share({ title, text, url });
       trackClick('social', { source: 'native_share', title, url });
     } catch (error) {
@@ -47,6 +68,9 @@ export default function ShareButton({ title, text }: ShareButtonProps) {
       if (error instanceof DOMException && error.name === 'AbortError') return;
 
       await copyLink();
+    } finally {
+      isSharingRef.current = false;
+      setIsSharing(false);
     }
   };
 
@@ -55,7 +79,7 @@ export default function ShareButton({ title, text }: ShareButtonProps) {
       type="button"
       className="text-muted-foreground cursor-pointer text-sm"
       onClick={handleShare}
-      aria-label="글 공유하기"
+      disabled={isSharing}
       variant="ghost"
     >
       {copied ? '✅ 링크 복사됨' : '공유하기'}
