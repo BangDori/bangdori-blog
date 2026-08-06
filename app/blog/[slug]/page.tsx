@@ -13,9 +13,9 @@ import { getPostBySlug, getPublishedPosts } from '@/domains/post/api/notion';
 import { formatDate } from '@/lib/date';
 import { Bookmark } from './_components/Bookmark';
 import { CodeBlock } from './_components/CodeBlock';
-import CopyLinkButton from './_components/CopyLinkButton';
 import GiscusComments from './_components/GiscusComments';
 import { MarkdownImage } from './_components/MarkdownImage';
+import ShareButton from './_components/ShareButton';
 import { TableOfContentsLink } from './_components/TableOfContentsLink';
 import { VideoOrLink } from './_components/VideoOrLink';
 import { ViewCounter } from './_components/ViewCounter';
@@ -149,7 +149,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
                 글 목록으로 돌아가기
               </Link>
             </Button>
-            <CopyLinkButton />
+            <ShareButton title={post.title} text={post.description} />
           </div>
           <GALogger.OnVisible event={['comment_area', { slug }]}>
             <section>
