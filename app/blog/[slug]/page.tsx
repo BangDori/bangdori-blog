@@ -11,6 +11,7 @@ import { GALogger } from '@/components/ga-logger';
 import { Button } from '@/components/ui/button';
 import { getPostBySlug, getPublishedPosts } from '@/domains/post/api/notion';
 import { formatDate } from '@/lib/date';
+import { calculateReadingTime } from '@/lib/utils/calculateReadingTime';
 import { Bookmark } from './_components/Bookmark';
 import { CodeBlock } from './_components/CodeBlock';
 import GiscusComments from './_components/GiscusComments';
@@ -73,6 +74,7 @@ interface BlogPostProps {
 export default async function BlogPost({ params }: BlogPostProps) {
   const { slug } = await params;
   const { markdown, post } = await getPostBySlug(slug);
+  const readingMinutes = calculateReadingTime(markdown);
 
   const { data } = await compile(markdown, {
     rehypePlugins: [rehypeSlug, withToc, withTocExport],
@@ -107,6 +109,11 @@ export default async function BlogPost({ params }: BlogPostProps) {
                       </p>
                     </>
                   )}
+                  <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
+                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
+                    <b className="font-normal text-black dark:text-white">{readingMinutes}</b> min
+                    read
+                  </p>
                   <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
                   <ViewCounter slug={slug} />
                 </div>
