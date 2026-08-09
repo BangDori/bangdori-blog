@@ -7,7 +7,36 @@ export const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
-const n2m = new NotionToMarkdown({ notionClient: notion });
+class CjkCompatibleNotionToMarkdown extends NotionToMarkdown {
+  override annotatePlainText(
+    text: string,
+    annotations: Parameters<NotionToMarkdown['annotatePlainText']>[1]
+  ) {
+    const markdown = super.annotatePlainText(text, annotations);
+
+    if (!annotations.italic || /^\s*$/.test(text)) return markdown;
+
+    // `_기울임_을`은 CommonMark에서 한 단어로 인식되어 그대로 노출된다.
+    // notion-to-md가 추가한 구분자만 명시적 요소로 바꿔 굵기·한글 조사와 함께 파싱되게 한다.
+    const leadingSpace = text.match(/^\s*/)?.[0] ?? '';
+    const trailingSpace = text.match(/\s*$/)?.[0] ?? '';
+    const outerPrefix = `${leadingSpace}${annotations.underline ? '<u>' : ''}${annotations.strikethrough ? '~~' : ''}`;
+    const outerSuffix = `${annotations.strikethrough ? '~~' : ''}${annotations.underline ? '</u>' : ''}${trailingSpace}`;
+    const openingDelimiterIndex = outerPrefix.length;
+    const closingDelimiterIndex = markdown.length - outerSuffix.length - 1;
+
+    if (markdown[openingDelimiterIndex] !== '_' || markdown[closingDelimiterIndex] !== '_') {
+      return markdown;
+    }
+
+    return `${markdown.slice(0, openingDelimiterIndex)}<em>${markdown.slice(
+      openingDelimiterIndex + 1,
+      closingDelimiterIndex
+    )}</em>${markdown.slice(closingDelimiterIndex + 1)}`;
+  }
+}
+
+const n2m = new CjkCompatibleNotionToMarkdown({ notionClient: notion });
 
 // Bookmark 블록을 커스텀 컴포넌트로 변환
 n2m.setCustomTransformer('bookmark', async (block) => {
