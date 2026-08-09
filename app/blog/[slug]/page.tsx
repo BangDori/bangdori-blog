@@ -11,6 +11,7 @@ import { GALogger } from '@/components/ga-logger';
 import { Button } from '@/components/ui/button';
 import { getPostBySlug, getPublishedPosts } from '@/domains/post/api/notion';
 import { formatDate } from '@/lib/date';
+import { calculateReadingTime } from '@/lib/utils/calculateReadingTime';
 import { Bookmark } from './_components/Bookmark';
 import { CodeBlock } from './_components/CodeBlock';
 import GiscusComments from './_components/GiscusComments';
@@ -73,6 +74,7 @@ interface BlogPostProps {
 export default async function BlogPost({ params }: BlogPostProps) {
   const { slug } = await params;
   const { markdown, post } = await getPostBySlug(slug);
+  const readingMinutes = calculateReadingTime(markdown);
 
   const { data } = await compile(markdown, {
     rehypePlugins: [rehypeSlug, withToc, withTocExport],
@@ -87,6 +89,18 @@ export default async function BlogPost({ params }: BlogPostProps) {
             <div className="space-y-2 sm:space-y-4 md:space-y-6">
               <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">{post.title}</h1>
               <div className="space-y-1.5">
+                <div className="flex flex-wrap items-center gap-1">
+                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
+                    <b className="font-normal text-black dark:text-white">{readingMinutes}</b> min
+                    read
+                  </p>
+                  <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
+                  <ViewCounter slug={slug} />
+                  <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
+                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
+                    By <b className="font-normal text-black dark:text-white">강병준</b>
+                  </p>
+                </div>
                 <div className="flex flex-wrap items-center gap-1">
                   <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
                     Created at{' '}
@@ -107,13 +121,6 @@ export default async function BlogPost({ params }: BlogPostProps) {
                       </p>
                     </>
                   )}
-                  <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
-                  <ViewCounter slug={slug} />
-                </div>
-                <div>
-                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-                    By <b className="font-normal text-black dark:text-white">강병준</b>
-                  </p>
                 </div>
               </div>
             </div>
