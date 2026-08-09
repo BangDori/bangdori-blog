@@ -91,6 +91,18 @@ export default async function BlogPost({ params }: BlogPostProps) {
               <div className="space-y-1.5">
                 <div className="flex flex-wrap items-center gap-1">
                   <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
+                    <b className="font-normal text-black dark:text-white">{readingMinutes}</b> min
+                    read
+                  </p>
+                  <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
+                  <ViewCounter slug={slug} />
+                  <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
+                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
+                    By <b className="font-normal text-black dark:text-white">강병준</b>
+                  </p>
+                </div>
+                <div className="flex flex-wrap items-center gap-1">
+                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
                     Created at{' '}
                     <b className="font-normal text-black dark:text-white">
                       {formatDate(post.createdAt)}
@@ -109,18 +121,6 @@ export default async function BlogPost({ params }: BlogPostProps) {
                       </p>
                     </>
                   )}
-                  <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
-                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-                    <b className="font-normal text-black dark:text-white">{readingMinutes}</b> min
-                    read
-                  </p>
-                  <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
-                  <ViewCounter slug={slug} />
-                </div>
-                <div>
-                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-                    By <b className="font-normal text-black dark:text-white">강병준</b>
-                  </p>
                 </div>
               </div>
             </div>
