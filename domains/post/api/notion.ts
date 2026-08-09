@@ -53,6 +53,8 @@ function getPostMetadata(page: PageObjectResponse): Post {
     }
   };
 
+  const coverImage = getCoverImage(page.cover);
+
   return {
     id: page.id,
     title: properties.Title.type === 'title' ? (properties.Title.title[0]?.plain_text ?? '') : '',
@@ -60,7 +62,7 @@ function getPostMetadata(page: PageObjectResponse): Post {
       properties.Description.type === 'rich_text'
         ? (properties.Description.rich_text[0]?.plain_text ?? '')
         : '',
-    coverImage: convertToPublicImageUrl(getCoverImage(page.cover), page.id),
+    coverImage: coverImage ? convertToPublicImageUrl(coverImage, page.id) : '',
     createdAt: properties.CreatedAt.type === 'date' ? (properties.CreatedAt.date?.start ?? '') : '',
     updatedAt: properties.UpdatedAt.type === 'date' ? (properties.UpdatedAt.date?.start ?? '') : '',
     tag: properties.Tag.type === 'select' ? (properties.Tag.select?.name ?? '') : '',
@@ -158,4 +160,10 @@ export async function getPublishedPosts(): Promise<Post[]> {
     .map(getPostMetadata); // 포스트 메타데이터 추출
 
   return posts;
+}
+
+export async function getBookPosts(): Promise<Post[]> {
+  const posts = await getPublishedPosts();
+
+  return posts.filter((post) => post.status === 'Published' && post.tag === 'book');
 }

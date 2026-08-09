@@ -1,46 +1,31 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BangDori Blog
 
-## Getting Started
+개발 과정에서 배운 것과 고민한 내용을 기록하는 개인 블로그입니다.
 
-First, run the development server:
+단순히 해결 방법만 나열하기보다 문제를 바라본 과정, 기술적 판단의 근거, 시행착오에서 얻은 교훈을 오래 남길 수 있는 글로 정리합니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+[블로그 방문하기](https://bangdori.kr)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 주요 기능
 
-## Environment Variables
+- **Notion 기반 콘텐츠 관리** — Notion에서 작성한 글을 블로그 포스트로 발행합니다.
+- **개발 기록과 회고** — 기술 학습, 도구 활용, 문제 해결 과정과 회고를 다룹니다.
+- **Books** — 읽은 책의 실제 표지를 모아보고, 책이 펼쳐지는 인터랙션을 통해 독후감으로 이동할 수 있습니다.
+- **댓글과 반응** — Giscus 댓글과 조회 통계를 통해 독자의 반응을 확인합니다.
+- **읽기 경험** — 반응형 레이아웃, 다크 모드, 목차와 코드 하이라이팅을 지원합니다.
+- **콘텐츠 탐색** — RSS, 사이트맵과 Open Graph 메타데이터를 제공합니다.
+- **사용 흐름 분석** — GA4와 Vercel Analytics를 통해 주요 콘텐츠 이용 흐름을 관찰합니다.
 
-Create `.env.local` and set the GA4 measurement ID when analytics should be enabled:
+## 기술 구성
 
-```bash
-NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
-```
+- Next.js · React · TypeScript
+- Tailwind CSS
+- Notion API · MDX
+- Redis
+- Vercel Analytics · Google Analytics
 
-If the variable is missing or is not a `G-` measurement ID, Google Analytics is not loaded. The same variable must be configured in the deployment environment.
+## 지향하는 방향
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+기술을 설명하는 데서 멈추지 않고, 기술을 만나며 생긴 질문과 그 답을 찾아가는 과정을 이야기처럼 기록합니다. 무엇을 만들었는지보다 왜 시작했는지, 어디서 막혔는지, 시도와 실패를 거치며 생각이 어떻게 달라졌는지를 솔직하게 담고자 합니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+각 글이 하나의 정답을 제시하기보다, 비슷한 고민을 가진 누군가가 이야기를 함께 따라가며 자신만의 답을 발견할 수 있는 기록이 되기를 바랍니다.

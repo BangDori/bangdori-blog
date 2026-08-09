@@ -1,0 +1,245 @@
+.bookshelf {
+  --light-target-left: 0px;
+  --light-target-width: 100%;
+  --light-source-x: 50%;
+  --light-range: 285px;
+  --light-edge-alpha: 0.048;
+  --light-alpha-0: 0.3;
+  --light-alpha-25: 0.22;
+  --light-alpha-50: 0.17;
+  --light-alpha-75: 0.14;
+  --light-alpha-100: 0.12;
+
+  position: relative;
+  isolation: isolate;
+}
+
+.lightScene {
+  position: absolute;
+  top: -48px;
+  right: 0;
+  left: 0;
+  z-index: 20;
+  height: 330px;
+  pointer-events: none;
+}
+
+.lightToggle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 10;
+  width: 174px;
+  height: 45px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translateX(-50%);
+}
+
+.lightToggle:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 4px;
+}
+
+.lightToggle:disabled {
+  cursor: default;
+}
+
+.pictureArmLeft,
+.pictureArmRight {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 3;
+  width: 3px;
+  height: 25px;
+  border-radius: 2px;
+  background: linear-gradient(to right, #17191b, #53575c, #17191b);
+  box-shadow: 0 2px 3px rgb(0 0 0 / 24%);
+  transform-origin: top center;
+}
+
+.pictureArmLeft {
+  transform: translateX(-42px) rotate(13deg);
+}
+
+.pictureArmRight {
+  transform: translateX(39px) rotate(-13deg);
+}
+
+.pictureBar {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  z-index: 4;
+  width: 142px;
+  height: 13px;
+  border-radius: 7px 7px 4px 4px;
+  background: linear-gradient(to bottom, #555960 0%, #24272b 52%, #0c0d0f 100%);
+  box-shadow:
+    0 5px 9px rgb(0 0 0 / 34%),
+    inset 0 1px 1px rgb(255 255 255 / 18%);
+  transform: translateX(-50%);
+  transition: filter 220ms ease;
+}
+
+.pictureLens {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  z-index: 5;
+  width: 126px;
+  height: 4px;
+  border-radius: 50%;
+  background: #ffe1a0;
+  box-shadow:
+    0 0 6px 2px rgb(255 219 140 / 64%),
+    0 0 20px 7px rgb(255 204 103 / 18%);
+  transform: translateX(-50%);
+  transition:
+    background-color 220ms ease,
+    box-shadow 220ms ease;
+}
+
+.lightGlow {
+  position: absolute;
+  top: 17px;
+  left: 50%;
+  z-index: 1;
+  width: 220px;
+  height: 68px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse,
+    rgb(255 225 163 / 31%) 0%,
+    rgb(255 209 118 / 11%) 48%,
+    transparent 76%
+  );
+  filter: blur(9px);
+  transform: translateX(-50%);
+  transition: opacity 240ms ease;
+}
+
+.lightBeam {
+  position: absolute;
+  top: 34px;
+  left: var(--light-target-left);
+  z-index: 0;
+  width: var(--light-target-width);
+  height: var(--light-range);
+  background: radial-gradient(
+    ellipse at var(--light-source-x) 0%,
+    rgb(255 226 164 / var(--light-alpha-0)) 0%,
+    rgb(255 222 151 / var(--light-alpha-25)) 24%,
+    rgb(255 217 137 / var(--light-alpha-50)) 44%,
+    rgb(255 212 124 / var(--light-alpha-75)) 61%,
+    rgb(255 207 112 / var(--light-edge-alpha)) 72%,
+    transparent 88%
+  );
+  filter: blur(18px);
+  opacity: 0.3;
+  transition: opacity 260ms ease;
+}
+
+html[class~='dark'] .pictureArmLeft,
+html[class~='dark'] .pictureArmRight {
+  background: linear-gradient(to right, #070809, #303338, #070809);
+}
+
+html[class~='dark'] .pictureBar {
+  background: linear-gradient(to bottom, #30343a 0%, #141619 52%, #060708 100%);
+}
+
+html[class~='dark'] .lightBeam {
+  opacity: 0.44;
+  mix-blend-mode: screen;
+}
+
+html[class~='dark'] .lightGlow {
+  background: radial-gradient(
+    ellipse,
+    rgb(255 225 163 / 40%) 0%,
+    rgb(255 208 113 / 15%) 47%,
+    transparent 76%
+  );
+}
+
+.lightToggle:not(:disabled):hover ~ .pictureBar {
+  filter: brightness(1.08);
+}
+
+.lightOff .pictureBar,
+html:not([class~='dark']) .pictureBar {
+  filter: brightness(0.72);
+}
+
+.lightOff .pictureLens,
+html:not([class~='dark']) .pictureLens {
+  background: #272a2e;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 42%),
+    inset 0 1px 0 rgb(255 255 255 / 8%);
+}
+
+.bookshelf.lightOff .lightGlow,
+.bookshelf.lightOff .lightBeam,
+html:not([class~='dark']) .lightGlow,
+html:not([class~='dark']) .lightBeam {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pictureBar,
+  .pictureLens,
+  .lightGlow,
+  .lightBeam {
+    transition: none;
+  }
+}
+
+@media (max-width: 639px) {
+  .lightScene {
+    top: -32px;
+    height: 270px;
+  }
+
+  .pictureArmLeft,
+  .pictureArmRight {
+    top: 0;
+    height: 20px;
+  }
+
+  .pictureArmLeft {
+    transform: translateX(-33px) rotate(13deg);
+  }
+
+  .pictureArmRight {
+    transform: translateX(30px) rotate(-13deg);
+  }
+
+  .pictureBar {
+    top: 17px;
+    width: 110px;
+    height: 12px;
+  }
+
+  .pictureLens {
+    top: 27px;
+    width: 96px;
+  }
+
+  .lightGlow {
+    top: 14px;
+    width: 170px;
+    height: 58px;
+  }
+
+  .lightBeam {
+    top: 31px;
+  }
+}

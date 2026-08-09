@@ -22,7 +22,8 @@ type ClickTarget =
   | 'social'
   | 'nav'
   | 'theme_toggle'
-  | 'image';
+  | 'image'
+  | 'book_card';
 
 export interface ClickOptions {
   target: ClickTarget;
@@ -33,7 +34,7 @@ export interface ClickOptions {
   source?: string;
 }
 
-type ScrollTarget = 'post_content' | 'post_list';
+type ScrollTarget = 'post_content' | 'post_list' | 'book_list';
 
 export interface ScrollOptions {
   target: ScrollTarget;
