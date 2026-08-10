@@ -38,7 +38,7 @@ export default async function BooksPage() {
     <GALogger.OnScroll event={['book_list', { thresholds: [25, 50, 75, 100] }]}>
       <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:py-12">
         <h1 className="sr-only">내가 읽은 책</h1>
-        {books.length > 0 && <BookGrid books={books} />}
+        <BookGrid books={books} />
       </div>
     </GALogger.OnScroll>
   );
