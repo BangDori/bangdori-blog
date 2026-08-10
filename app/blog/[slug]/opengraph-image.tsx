@@ -1,3 +1,4 @@
+import { notFound } from 'next/navigation';
 import { ImageResponse } from 'next/og';
 import { getPostBySlug } from '@/domains/post/api/notion';
 
@@ -5,29 +6,13 @@ export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
 export default async function OgImage({ params }: { params: { slug: string } }) {
-  const { post } = await getPostBySlug(params.slug);
+  const postData = await getPostBySlug(params.slug);
 
-  if (!post) {
-    return new ImageResponse(
-      (
-        <div
-          style={{
-            fontSize: 64,
-            background: 'linear-gradient(to bottom, #000000, #333333)',
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'white',
-          }}
-        >
-          게시물을 찾을 수 없어요
-        </div>
-      ),
-      { ...size }
-    );
+  if (!postData) {
+    notFound();
   }
+
+  const { post } = postData;
 
   return new ImageResponse(
     (

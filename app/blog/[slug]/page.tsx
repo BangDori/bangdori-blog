@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { compile } from '@mdx-js/mdx';
 import withToc from '@stefanprobst/rehype-extract-toc';
 import withTocExport from '@stefanprobst/rehype-extract-toc/mdx';
@@ -28,14 +29,13 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const { post } = await getPostBySlug(slug);
+  const postData = await getPostBySlug(slug);
 
-  if (!post) {
-    return {
-      title: '포스트를 찾을 수 없습니다',
-      description: '요청하신 블로그 포스트를 찾을 수 없습니다.',
-    };
+  if (!postData) {
+    notFound();
   }
+
+  const { post } = postData;
 
   return {
     title: post.title,
@@ -73,7 +73,13 @@ interface BlogPostProps {
 
 export default async function BlogPost({ params }: BlogPostProps) {
   const { slug } = await params;
-  const { markdown, post } = await getPostBySlug(slug);
+  const postData = await getPostBySlug(slug);
+
+  if (!postData) {
+    notFound();
+  }
+
+  const { markdown, post } = postData;
   const readingMinutes = calculateReadingTime(markdown);
 
   const { data } = await compile(markdown, {
