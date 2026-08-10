@@ -2,11 +2,13 @@ import { notFound } from 'next/navigation';
 import { ImageResponse } from 'next/og';
 import { getPostBySlug } from '@/domains/post/api/notion';
 
+export const alt = '강병준 블로그 글 대표 이미지';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-export default async function OgImage({ params }: { params: { slug: string } }) {
-  const postData = await getPostBySlug(params.slug);
+export default async function OgImage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const postData = await getPostBySlug(slug);
 
   if (!postData) {
     notFound();
