@@ -3,6 +3,16 @@ import createMDX from '@next/mdx';
 
 const nextConfig: NextConfig = {
   transpilePackages: ['next-mdx-remote'],
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'bangdori.kr' }],
+        destination: 'https://www.bangdori.kr/:path*',
+        permanent: true,
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {

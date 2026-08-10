@@ -1,12 +1,13 @@
-import type { Metadata } from 'next';
-import localFont from 'next/font/local';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import type { Metadata } from 'next';
+import localFont from 'next/font/local';
 import { GoogleAnalytics } from '@/components/GoogleAnalytics';
 import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
 import { VisitorTracker } from '@/components/VisitorTracker';
+import { SITE_URL } from '@/lib/site';
 import './globals.css';
 
 const pretendard = localFont({
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
     locale: 'ko_KR',
     title: '강병준 블로그',
     description: '프론트엔드 개발자 강병준의 개발 블로그입니다.',
-    url: process.env.NEXT_PUBLIC_SITE_URL,
+    url: SITE_URL,
     siteName: '강병준 블로그',
     images: [
       {
@@ -48,7 +49,7 @@ export const metadata: Metadata = {
   verification: {
     google: '1MOKYvT_GGBdafHzhizlVbSkJm2MCMq3ochRPEByTmQ',
   },
-  metadataBase: new URL(`${process.env.NEXT_PUBLIC_SITE_URL}`),
+  metadataBase: new URL(SITE_URL),
 };
 
 export default function RootLayout({

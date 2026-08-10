@@ -3,7 +3,7 @@ import { NotionToMarkdown } from 'notion-to-md';
 import type { Post } from '../types';
 import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
-export const notion = new Client({
+const notion = new Client({
   auth: process.env.NOTION_TOKEN,
 });
 
@@ -103,12 +103,15 @@ function getPostMetadata(page: PageObjectResponse): Post {
   };
 }
 
-export async function getPostBySlug(slug: string): Promise<{
-  markdown: string;
-  post: Post;
-}> {
+export async function getPostBySlug(slug: string): Promise<
+  | {
+      markdown: string;
+      post: Post;
+    }
+  | undefined
+> {
   const response = await notion.databases.query({
-    database_id: process.env.NOTION_DATABASE_ID!,
+    database_id: process.env.NOTION_DATABASE_ID as string,
     filter: {
       and: [
         {
@@ -118,26 +121,21 @@ export async function getPostBySlug(slug: string): Promise<{
           },
         },
         {
-          or: [
-            {
-              property: 'Status',
-              select: {
-                equals: 'Published',
-              },
-            },
-            {
-              property: 'Status',
-              select: {
-                equals: 'Protected',
-              },
-            },
-          ],
+          property: 'Status',
+          select: {
+            equals: 'Published',
+          },
         },
       ],
     },
   });
 
-  const mdBlocks = await n2m.pageToMarkdown(response.results[0].id);
+  const page = response.results.find(
+    (result): result is PageObjectResponse => 'properties' in result
+  );
+  if (!page) return undefined;
+
+  const mdBlocks = await n2m.pageToMarkdown(page.id);
   const transformedBlocks = mdBlocks.map((mdBlock) => {
     return mdBlock.type !== 'image'
       ? mdBlock
@@ -153,13 +151,13 @@ export async function getPostBySlug(slug: string): Promise<{
 
   return {
     markdown: parent,
-    post: getPostMetadata(response.results[0] as PageObjectResponse),
+    post: getPostMetadata(page),
   };
 }
 
 export async function getPublishedPosts(): Promise<Post[]> {
   const response = await notion.databases.query({
-    database_id: process.env.NOTION_DATABASE_ID!,
+    database_id: process.env.NOTION_DATABASE_ID as string,
     filter: {
       or: [
         {

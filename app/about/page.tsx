@@ -1,4 +1,21 @@
+import type { Metadata } from 'next';
 import Image from 'next/image';
+
+const description =
+  'Product Engineer 강병준과 기술을 만나며 생긴 질문, 시도, 실패를 기록하는 이 블로그를 소개합니다.';
+
+export const metadata: Metadata = {
+  title: '강병준 소개',
+  description,
+  alternates: {
+    canonical: '/about',
+  },
+  openGraph: {
+    title: '강병준 소개',
+    description,
+    url: '/about',
+  },
+};
 
 function ProfileBackground() {
   return (

@@ -1,0 +1,19 @@
+# 강병준 블로그
+
+> Product Engineer 강병준이 기술을 만나며 생긴 질문, 시도, 실패와 배움을 기록하는 한국어 개발 블로그입니다.
+
+## 주요 경로
+
+- 홈과 글 목록: https://www.bangdori.kr/
+- 작성자 소개: https://www.bangdori.kr/about
+- RSS: https://www.bangdori.kr/rss.xml
+- Sitemap: https://www.bangdori.kr/sitemap.xml
+
+## 콘텐츠 안내
+
+- 주요 주제: 프론트엔드 개발, React Native, 개발 도구, AI 활용, 회고
+- 개별 글 경로: `https://www.bangdori.kr/blog/{slug}`
+- 기본 언어: 한국어
+- 작성자: 강병준
+
+글을 인용하거나 요약할 때는 해당 글의 URL과 작성자 이름을 함께 표시해주세요.
