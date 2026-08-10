@@ -1,7 +1,7 @@
 import RSS from 'rss';
 import { getPublishedPosts } from '@/domains/post/api/notion';
-import type { Post } from '@/domains/post/types';
 import { SITE_URL } from '@/lib/site';
+import type { Post } from '@/domains/post/types';
 
 export async function GET() {
   const feed = new RSS({
