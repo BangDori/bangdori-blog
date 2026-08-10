@@ -27,9 +27,6 @@ export const metadata: Metadata = {
   publisher: SITE.author.name,
   alternates: {
     canonical: '/',
-    types: {
-      'application/rss+xml': '/rss.xml',
-    },
   },
   keywords: [
     '강병준',
@@ -78,6 +75,12 @@ export default function RootLayout({
     <html lang="ko" className={`${pretendard.variable} scroll-smooth`} suppressHydrationWarning>
       <head>
         <meta name="naver-site-verification" content="0e5d02ef9840430d455d81b33e561586d724c09f" />
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title={SITE.name}
+          href={`${SITE.url}/rss.xml`}
+        />
       </head>
       <body className="font-pretendard antialiased">
         <div className="flex min-h-screen flex-col">
