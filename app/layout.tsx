@@ -7,7 +7,7 @@ import Footer from '@/components/layouts/Footer';
 import Header from '@/components/layouts/Header';
 import { ThemeProvider } from '@/components/theme/ThemeProvider';
 import { VisitorTracker } from '@/components/VisitorTracker';
-import { SITE_URL } from '@/lib/site';
+import { SITE } from '@/lib/site';
 import './globals.css';
 
 const pretendard = localFont({
@@ -16,10 +16,20 @@ const pretendard = localFont({
 });
 
 export const metadata: Metadata = {
-  title: '강병준 블로그',
-  description: '프론트엔드 개발자 강병준의 개발 블로그입니다.',
+  metadataBase: new URL(SITE.url),
+  title: {
+    default: SITE.name,
+    template: `%s | ${SITE.name}`,
+  },
+  description: SITE.description,
+  authors: [{ name: SITE.author.name, url: '/about' }],
+  creator: SITE.author.name,
+  publisher: SITE.author.name,
   alternates: {
     canonical: '/',
+    types: {
+      'application/rss+xml': '/rss.xml',
+    },
   },
   keywords: [
     '강병준',
@@ -33,23 +43,30 @@ export const metadata: Metadata = {
     'JavaScript',
   ],
   openGraph: {
-    locale: 'ko_KR',
-    title: '강병준 블로그',
-    description: '프론트엔드 개발자 강병준의 개발 블로그입니다.',
-    url: SITE_URL,
-    siteName: '강병준 블로그',
+    type: 'website',
+    locale: SITE.locale,
+    title: SITE.name,
+    description: SITE.description,
+    url: '/',
+    siteName: SITE.name,
     images: [
       {
-        url: '/profile.jpg',
+        url: '/opengraph-image',
         width: 1200,
         height: 630,
+        alt: SITE.name,
       },
     ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SITE.name,
+    description: SITE.description,
+    images: ['/opengraph-image'],
   },
   verification: {
     google: '1MOKYvT_GGBdafHzhizlVbSkJm2MCMq3ochRPEByTmQ',
   },
-  metadataBase: new URL(SITE_URL),
 };
 
 export default function RootLayout({

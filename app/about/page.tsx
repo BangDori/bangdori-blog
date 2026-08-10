@@ -1,19 +1,32 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import { JsonLd } from '@/components/JsonLd';
+import { SITE } from '@/lib/site';
+import { createPersonJsonLd } from '@/lib/structured-data';
 
 const description =
   'Product Engineer 강병준과 기술을 만나며 생긴 질문, 시도, 실패를 기록하는 이 블로그를 소개합니다.';
 
 export const metadata: Metadata = {
-  title: '강병준 소개',
+  title: '소개',
   description,
   alternates: {
     canonical: '/about',
   },
   openGraph: {
+    type: 'profile',
+    locale: SITE.locale,
+    siteName: SITE.name,
     title: '강병준 소개',
     description,
     url: '/about',
+    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: SITE.name }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '강병준 소개',
+    description,
+    images: ['/opengraph-image'],
   },
 };
 
@@ -46,6 +59,7 @@ function ProfileBackground() {
 export default function About() {
   return (
     <article className="container" aria-labelledby="about-page-title">
+      <JsonLd data={createPersonJsonLd()} />
       <h1 id="about-page-title" className="sr-only">
         강병준 소개
       </h1>

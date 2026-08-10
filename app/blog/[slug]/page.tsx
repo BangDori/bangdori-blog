@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { compile } from '@mdx-js/mdx';
@@ -9,9 +9,12 @@ import { rehypePrettyCode } from 'rehype-pretty-code';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 import { GALogger } from '@/components/ga-logger';
+import { JsonLd } from '@/components/JsonLd';
 import { Button } from '@/components/ui/button';
 import { getPostBySlug, getPublishedPosts } from '@/domains/post/api/notion';
 import { formatDate } from '@/lib/date';
+import { SITE } from '@/lib/site';
+import { createBlogPostingJsonLd, createPostBreadcrumbJsonLd } from '@/lib/structured-data';
 import { calculateReadingTime } from '@/lib/utils/calculateReadingTime';
 import { Bookmark } from './_components/Bookmark';
 import { CodeBlock } from './_components/CodeBlock';
@@ -36,26 +39,37 @@ export async function generateMetadata({
   }
 
   const { post } = postData;
+  const path = `/blog/${encodeURIComponent(post.slug)}`;
+  const description = post.description || `${post.title} - 강병준 블로그`;
+  const ogImage = `${path}/opengraph-image`;
 
   return {
     title: post.title,
-    description: post.description || `${post.title} - 강병준 블로그`,
+    description,
     keywords: post.tag,
-    authors: [{ name: '강병준' }],
-    publisher: '강병준',
+    authors: [{ name: SITE.author.name, url: '/about' }],
+    publisher: SITE.author.name,
     alternates: {
-      canonical: `/blog/${post.slug}`,
+      canonical: path,
     },
     openGraph: {
-      title: post.title,
-      description: post.description,
-      url: `/blog/${post.slug}`,
       type: 'article',
+      locale: SITE.locale,
+      siteName: SITE.name,
+      title: post.title,
+      description,
+      url: path,
       publishedTime: post.createdAt,
-      modifiedTime: post.updatedAt,
-      authors: '강병준',
-      tags: post.tag,
-      images: [{ url: post.coverImage || '', width: 1200, height: 630 }],
+      modifiedTime: post.updatedAt || post.createdAt,
+      authors: [SITE.author.name],
+      tags: post.tag ? [post.tag] : undefined,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description,
+      images: [{ url: ogImage, alt: post.title }],
     },
   };
 }
@@ -89,11 +103,14 @@ export default async function BlogPost({ params }: BlogPostProps) {
   return (
     <GALogger.OnVisible event={['post', { slug }]}>
       <GALogger.OnScroll event={['post_content', { thresholds: [25, 50, 75, 90], slug }]}>
-        <article className="container flex flex-col gap-8">
+        <article className="container flex flex-col gap-8" aria-labelledby="post-title">
+          <JsonLd data={[createBlogPostingJsonLd(post), createPostBreadcrumbJsonLd(post)]} />
           <section className="flex flex-col gap-8">
             {/* 블로그 헤더 */}
-            <div className="space-y-2 sm:space-y-4 md:space-y-6">
-              <h1 className="text-2xl font-bold sm:text-3xl md:text-4xl">{post.title}</h1>
+            <header className="space-y-2 sm:space-y-4 md:space-y-6">
+              <h1 id="post-title" className="text-2xl font-bold sm:text-3xl md:text-4xl">
+                {post.title}
+              </h1>
               <div className="space-y-1.5">
                 <div className="flex flex-wrap items-center gap-1">
                   <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
@@ -110,9 +127,12 @@ export default async function BlogPost({ params }: BlogPostProps) {
                 <div className="flex flex-wrap items-center gap-1">
                   <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
                     Created at{' '}
-                    <b className="font-normal text-black dark:text-white">
+                    <time
+                      dateTime={post.createdAt}
+                      className="font-normal text-black dark:text-white"
+                    >
                       {formatDate(post.createdAt)}
-                    </b>
+                    </time>
                   </p>
                   {post.updatedAt && (
                     <>
@@ -121,20 +141,25 @@ export default async function BlogPost({ params }: BlogPostProps) {
                       </span>
                       <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
                         Updated at{' '}
-                        <b className="font-normal text-black dark:text-white">
+                        <time
+                          dateTime={post.updatedAt}
+                          className="font-normal text-black dark:text-white"
+                        >
                           {formatDate(post.updatedAt)}
-                        </b>
+                        </time>
                       </p>
                     </>
                   )}
                 </div>
               </div>
-            </div>
+            </header>
 
-            <aside className="w-full">
+            <aside className="w-full" aria-labelledby="table-of-contents-title">
               <div className="bg-muted/60 space-y-4 rounded-lg p-6 backdrop-blur-sm">
-                <h3 className="text-lg font-semibold">📚 목차</h3>
-                <nav className="space-y-3 text-sm">
+                <h2 id="table-of-contents-title" className="text-lg font-semibold">
+                  📚 목차
+                </h2>
+                <nav aria-label="글 목차" className="space-y-3 text-sm">
                   {data?.toc?.map((item) => (
                     <TableOfContentsLink key={item.id} item={item} />
                   ))}
@@ -165,7 +190,10 @@ export default async function BlogPost({ params }: BlogPostProps) {
             <ShareButton title={post.title} text={post.description} />
           </div>
           <GALogger.OnVisible event={['comment_area', { slug }]}>
-            <section>
+            <section aria-labelledby="comments-title">
+              <h2 id="comments-title" className="sr-only">
+                댓글
+              </h2>
               <GiscusComments />
             </section>
           </GALogger.OnVisible>
