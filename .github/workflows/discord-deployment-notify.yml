@@ -1,27 +1,27 @@
 name: Discord Production Deployment Notification
 
 on:
-  deployment_status:
+  repository_dispatch:
+    types:
+      - 'vercel.deployment.success'
+      - 'vercel.deployment.error'
+      - 'vercel.deployment.failed'
 
 permissions:
   contents: read
 
 jobs:
   notify:
-    if: >-
-      github.event.deployment.environment == 'Production' &&
-      github.event.deployment.creator.login == 'vercel[bot]' &&
-      contains(fromJSON('["success", "failure", "error"]'), github.event.deployment_status.state)
+    if: github.event.client_payload.environment == 'production'
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
       - name: Send deployment result to Discord
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          DEPLOYMENT_STATE: ${{ github.event.deployment_status.state }}
-          DEPLOYMENT_URL: ${{ github.event.deployment_status.environment_url }}
-          DETAILS_URL: ${{ github.event.deployment_status.log_url }}
-          COMMIT_SHA: ${{ github.event.deployment.sha }}
+          DEPLOYMENT_STATE: ${{ github.event.client_payload.state.type }}
+          DEPLOYMENT_URL: ${{ github.event.client_payload.url }}
+          COMMIT_SHA: ${{ github.event.client_payload.git.sha }}
           REPOSITORY: ${{ github.repository }}
         run: |
           if [ "$DEPLOYMENT_STATE" = "success" ]; then
@@ -33,7 +33,7 @@ jobs:
           fi
 
           commit_url="https://github.com/$REPOSITORY/commit/$COMMIT_SHA"
-          detail_url="${DETAILS_URL:-$DEPLOYMENT_URL}"
+          detail_url="$DEPLOYMENT_URL"
 
           jq -n \
             --arg title "$title" \
