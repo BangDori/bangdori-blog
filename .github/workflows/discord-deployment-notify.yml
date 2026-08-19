@@ -1,0 +1,56 @@
+name: Discord Production Deployment Notification
+
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    if: >-
+      github.event.deployment.environment == 'Production' &&
+      github.event.deployment.creator.login == 'vercel[bot]' &&
+      contains(fromJSON('["success", "failure", "error"]'), github.event.deployment_status.state)
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Send deployment result to Discord
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DEPLOYMENT_STATE: ${{ github.event.deployment_status.state }}
+          DEPLOYMENT_URL: ${{ github.event.deployment_status.environment_url }}
+          DETAILS_URL: ${{ github.event.deployment_status.log_url }}
+          COMMIT_SHA: ${{ github.event.deployment.sha }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          if [ "$DEPLOYMENT_STATE" = "success" ]; then
+            title="🚀 블로그 배포 완료"
+            color=5763719
+          else
+            title="❌ 블로그 배포 실패"
+            color=15548997
+          fi
+
+          commit_url="https://github.com/$REPOSITORY/commit/$COMMIT_SHA"
+          detail_url="${DETAILS_URL:-$DEPLOYMENT_URL}"
+
+          jq -n \
+            --arg title "$title" \
+            --arg commit "[${COMMIT_SHA:0:7}]($commit_url)" \
+            --arg deployment_url "$DEPLOYMENT_URL" \
+            --arg detail_url "$detail_url" \
+            --argjson color "$color" \
+            '{embeds: [({
+              title: $title,
+              color: $color,
+              fields: ([
+                {name: "커밋", value: $commit, inline: true}
+              ] + (if $deployment_url != "" then
+                [{name: "배포 URL", value: $deployment_url}]
+              else [] end))
+            } + (if $detail_url != "" then {url: $detail_url} else {} end))]}' |
+            curl --fail-with-body --retry 3 \
+              -H 'Content-Type: application/json' \
+              --data-binary @- \
+              "$DISCORD_WEBHOOK_URL"
