@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 function ProfileBackground() {
   return (
     <div
-      className="pointer-events-none relative z-0 hidden w-full overflow-hidden sm:col-start-1 sm:row-start-1 sm:row-end-3 sm:block sm:w-[72%] sm:max-w-[30.25rem] sm:justify-self-end lg:min-h-96"
+      className="pointer-events-none relative z-0 hidden w-full overflow-hidden sm:col-start-1 sm:row-start-1 sm:row-end-3 sm:block sm:w-[72%] sm:max-w-[30.25rem] sm:justify-self-end lg:absolute lg:top-8 lg:right-0 lg:col-auto lg:row-auto lg:h-96 lg:justify-self-auto"
       style={{
         maskImage:
           'radial-gradient(ellipse 66% 62% at 58% 50%, black 24%, rgba(0, 0, 0, 0.68) 50%, transparent 78%)',
@@ -64,7 +64,7 @@ export default function About() {
         강병준 소개
       </h1>
 
-      <div className="isolate grid grid-cols-1 gap-y-10 overflow-hidden md:gap-y-16 md:py-8">
+      <div className="relative isolate grid grid-cols-1 gap-y-10 overflow-hidden md:gap-y-16 md:py-8">
         <ProfileBackground />
 
         <section
@@ -103,30 +103,38 @@ export default function About() {
           <div className="text-foreground dark:text-muted-foreground mt-3 space-y-4 text-base leading-7">
             <p>
               기술을 설명하는 데서 멈추지 않고, 기술을 만나며 생긴 질문과 그 답을 찾아가는 과정을
-              이야기처럼 기록합니다. 무엇을 만들었는지보다 왜 시작했는지, 어디서 막혔는지, 시도와
-              실패를 거치며 생각이 어떻게 달라졌는지를 솔직하게 담고자 합니다.
+              기록합니다.
             </p>
             <p>
-              각 글이 하나의 정답을 제시하기보다, 비슷한 고민을 가진 누군가가 이야기를 함께 따라가며
-              자신만의 답을 발견할 수 있는 기록이 되기를 바랍니다.
+              무엇을 만들었는지보다 왜 시작했는지, 어디에서 막혔는지, 어떤 선택을 했고 시도와 실패를
+              거쳐 어떻게 생각이 변했는지를 솔직하게 담고자 합니다. 각각의 글이 하나의 정답을
+              제시하기보다, 비슷한 고민을 가진 누군가가 이야기를 함께 따라가며 자신만의 답을 발견할
+              수 있는 기록이 되기를 바랍니다.
             </p>
           </div>
         </section>
 
-        <section className="col-start-1 row-start-3" aria-labelledby="lately">
-          <h2 id="lately" className="text-foreground text-base font-semibold tracking-tight italic">
-            Lately
+        <section className="relative z-10 col-start-1 row-start-3" aria-labelledby="where-im-going">
+          <h2
+            id="where-im-going"
+            className="text-foreground text-base font-semibold tracking-tight italic"
+          >
+            Where I&apos;m going
           </h2>
           <div className="text-foreground dark:text-muted-foreground mt-3 space-y-4 text-base leading-7">
             <p>
-              AI가 코드를 더 빠르고 더 잘 만들어낼수록, 개발자에게는 기본기와 자기 판단, 그리고
-              사람과 함께 문제를 풀어가는 능력이 더욱 중요해진다고 생각합니다. 그래서 최근에는 AI가
-              제시한 답을 그대로 받아들이기보다 코드의 구조와 데이터로 검증하고, 정답이 없는
-              문제에서는 스스로의 판단 기준을 세우려고 합니다.
+              저는 제 전문성을 하나의 기술에 한정하고 싶지 않습니다. 지금은 AI를 다루고 있지만,
+              다음에는 Robotics나 아직 이름조차 붙지 않은 분야를 마주할 수도 있습니다.
             </p>
             <p>
-              다만 충분히 정리된 답을 준비한 뒤에야 생각을 공유하려는 경향이 있어 요즘은 불완전한
-              고민도 더 일찍 꺼내놓고, 동료들과 함께 답을 만들어가는 연습을 하고 있습니다.
+              기술이 바뀌어도 제가 좋아하는 일은 같습니다. 함께 일하는 사람들의 어려움을 듣고,
+              설명하기 힘들었던 불편을 풀어야 할 문제로 바꾸는 일입니다. 정답이 없을 때 함께 머리를
+              맞대고, 작은 시도를 반복하며 어제보다 나은 방식을 찾는 과정도 좋아합니다.
+            </p>
+            <p>
+              제가 바라는 효율은 사람을 줄이는 데 있지 않습니다. 반복적인 부담은 기술에 맡기고,
+              사람은 자신의 판단과 강점을 더 잘 발휘할 수 있게 하는 것. 저는 기술로 그런 환경을 만들
+              수 있는 사람이 되고 싶습니다.
             </p>
           </div>
         </section>
