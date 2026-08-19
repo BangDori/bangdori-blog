@@ -33,7 +33,7 @@ export const metadata: Metadata = {
 function ProfileBackground() {
   return (
     <div
-      className="pointer-events-none relative z-0 hidden w-full overflow-hidden sm:col-start-1 sm:row-start-1 sm:row-end-3 sm:block sm:w-[72%] sm:max-w-[30.25rem] sm:justify-self-end lg:min-h-96"
+      className="pointer-events-none relative z-0 hidden w-full overflow-hidden sm:col-start-1 sm:row-start-1 sm:row-end-3 sm:block sm:w-[72%] sm:max-w-[30.25rem] sm:justify-self-end lg:absolute lg:top-8 lg:right-0 lg:col-auto lg:row-auto lg:h-96 lg:justify-self-auto"
       style={{
         maskImage:
           'radial-gradient(ellipse 66% 62% at 58% 50%, black 24%, rgba(0, 0, 0, 0.68) 50%, transparent 78%)',
@@ -64,7 +64,7 @@ export default function About() {
         강병준 소개
       </h1>
 
-      <div className="isolate grid grid-cols-1 gap-y-10 overflow-hidden md:gap-y-16 md:py-8">
+      <div className="relative isolate grid grid-cols-1 gap-y-10 overflow-hidden md:gap-y-16 md:py-8">
         <ProfileBackground />
 
         <section
@@ -114,7 +114,7 @@ export default function About() {
           </div>
         </section>
 
-        <section className="col-start-1 row-start-3" aria-labelledby="lately">
+        <section className="relative z-10 col-start-1 row-start-3" aria-labelledby="lately">
           <h2 id="lately" className="text-foreground text-base font-semibold tracking-tight italic">
             Lately
           </h2>
