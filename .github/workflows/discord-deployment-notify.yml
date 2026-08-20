@@ -20,7 +20,7 @@ jobs:
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
           DEPLOYMENT_STATE: ${{ github.event.client_payload.state.type }}
-          DEPLOYMENT_URL: ${{ github.event.client_payload.url }}
+          DEPLOYMENT_URL: https://bangdori.kr
           COMMIT_SHA: ${{ github.event.client_payload.git.sha }}
           REPOSITORY: ${{ github.repository }}
         run: |
