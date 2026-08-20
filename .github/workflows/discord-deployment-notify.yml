@@ -12,7 +12,9 @@ permissions:
 
 jobs:
   notify:
-    if: github.event.client_payload.environment == 'production'
+    if: >-
+      github.event.client_payload.environment == 'production' &&
+      github.event.client_payload.state.detail != 'deployment_deleted'
     runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
