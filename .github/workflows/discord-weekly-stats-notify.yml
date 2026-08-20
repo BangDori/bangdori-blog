@@ -1,0 +1,53 @@
+name: Discord Weekly GA4 Stats Notification
+
+on:
+  schedule:
+    # 매주 월요일 11:00 KST (월요일 02:00 UTC)
+    - cron: '0 2 * * 1'
+  workflow_dispatch:
+    inputs:
+      report_start_date:
+        description: '조회 시작일 (YYYY-MM-DD, 비워두면 지난주 월요일)'
+        required: false
+        type: string
+      report_end_date:
+        description: '조회 종료일 (YYYY-MM-DD, 비워두면 지난주 일요일)'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install GA4 client
+        run: |
+          npm install \
+            --prefix "$RUNNER_TEMP/ga4-client" \
+            --no-save \
+            --no-audit \
+            --no-fund \
+            --ignore-scripts \
+            @google-analytics/data@7.0.0
+
+      - name: Send weekly GA4 stats to Discord
+        env:
+          GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+          GA4_SERVICE_ACCOUNT_JSON: ${{ secrets.GA4_SERVICE_ACCOUNT_JSON }}
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          SITE_URL: ${{ secrets.NEXT_PUBLIC_SITE_URL }}
+          REPORT_START_DATE: ${{ inputs.report_start_date }}
+          REPORT_END_DATE: ${{ inputs.report_end_date }}
+          NODE_PATH: ${{ runner.temp }}/ga4-client/node_modules
+        run: node .github/scripts/notify-ga4-weekly.cjs
