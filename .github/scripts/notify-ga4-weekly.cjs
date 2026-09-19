@@ -69,15 +69,43 @@ async function main() {
     ? { startDate: customStartDate, endDate: customEndDate }
     : getPreviousWeekRange();
   const analyticsDataClient = new BetaAnalyticsDataClient({ credentials });
-  const [report] = await analyticsDataClient.runReport({
-    property: `properties/${propertyId}`,
-    dateRanges: [{ startDate, endDate }],
-    metrics: [{ name: 'screenPageViews' }, { name: 'activeUsers' }],
-  });
+  const property = `properties/${propertyId}`;
+  const dateRanges = [{ startDate, endDate }];
+  const [[report], [resumeReport]] = await Promise.all([
+    analyticsDataClient.runReport({
+      property,
+      dateRanges,
+      metrics: [{ name: 'screenPageViews' }, { name: 'activeUsers' }],
+    }),
+    analyticsDataClient.runReport({
+      property,
+      dateRanges,
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: {
+        andGroup: {
+          expressions: [
+            {
+              filter: {
+                fieldName: 'eventName',
+                stringFilter: { matchType: 'EXACT', value: 'file_download' },
+              },
+            },
+            {
+              filter: {
+                fieldName: 'fileName',
+                stringFilter: { matchType: 'EXACT', value: '/resume.pdf' },
+              },
+            },
+          ],
+        },
+      },
+    }),
+  ]);
 
   const row = report.rows?.[0];
   const pageViews = parseCount(row?.metricValues?.[0]?.value);
   const activeUsers = parseCount(row?.metricValues?.[1]?.value);
+  const resumeOpens = parseCount(resumeReport.rows?.[0]?.metricValues?.[0]?.value);
   const timeZone = report.metadata?.timeZone || 'GA4 속성 시간대';
 
   const response = await fetch(discordWebhookUrl, {
@@ -104,6 +132,11 @@ async function main() {
               inline: true,
             },
             {
+              name: '이력서 열기',
+              value: `${resumeOpens.toLocaleString('ko-KR')}회`,
+              inline: true,
+            },
+            {
               name: '기준 시간대',
               value: timeZone,
               inline: false,
@@ -120,7 +153,7 @@ async function main() {
   }
 
   console.log(
-    `Sent GA4 weekly stats: period=${startDate}..${endDate}, pageViews=${pageViews}, activeUsers=${activeUsers}`
+    `Sent GA4 weekly stats: period=${startDate}..${endDate}, pageViews=${pageViews}, activeUsers=${activeUsers}, resumeOpens=${resumeOpens}`
   );
 }
 
