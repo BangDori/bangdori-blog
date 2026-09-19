@@ -90,8 +90,27 @@ export default function About() {
           </p>
         </section>
 
+        <section className="relative z-10 col-start-1 row-start-2" aria-labelledby="profile">
+          <h2
+            id="profile"
+            className="text-foreground text-base font-semibold tracking-tight italic"
+          >
+            Profile
+          </h2>
+          <div className="mt-3 flex flex-col items-start gap-1">
+            <a
+              href="/resume.pdf"
+              className="text-foreground dark:text-muted-foreground text-base font-medium underline decoration-1 underline-offset-4 transition-opacity hover:opacity-60"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Resume (PDF)
+            </a>
+          </div>
+        </section>
+
         <section
-          className="relative z-10 col-start-1 row-start-2"
+          className="relative z-10 col-start-1 row-start-3"
           aria-labelledby="about-this-blog"
         >
           <h2
@@ -114,7 +133,7 @@ export default function About() {
           </div>
         </section>
 
-        <section className="relative z-10 col-start-1 row-start-3" aria-labelledby="where-im-going">
+        <section className="relative z-10 col-start-1 row-start-4" aria-labelledby="where-im-going">
           <h2
             id="where-im-going"
             className="text-foreground text-base font-semibold tracking-tight italic"
