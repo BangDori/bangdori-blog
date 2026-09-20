@@ -155,9 +155,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
               </div>
             </header>
 
-            {(JSON.parse(process.env.BLOG_AUDIO_SLUGS ?? '[]') as string[]).includes(slug) && (
-              <PostAudio key={slug} slug={slug} />
-            )}
+            {post.audioUrl && <PostAudio key={slug} slug={slug} src={post.audioUrl} />}
 
             <aside className="w-full" aria-labelledby="table-of-contents-title">
               <div className="bg-muted/60 space-y-4 rounded-lg p-6 backdrop-blur-sm">

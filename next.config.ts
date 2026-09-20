@@ -1,18 +1,8 @@
-import { existsSync, readdirSync } from 'node:fs';
 import type { NextConfig } from 'next';
 import createMDX from '@next/mdx';
 
 const nextConfig: NextConfig = {
   transpilePackages: ['next-mdx-remote'],
-  env: {
-    BLOG_AUDIO_SLUGS: JSON.stringify(
-      existsSync(`${process.cwd()}/public/audio`)
-        ? readdirSync(`${process.cwd()}/public/audio`, { withFileTypes: true })
-            .filter((file) => file.isFile() && file.name.endsWith('.mp3'))
-            .map((file) => file.name.slice(0, -4))
-        : []
-    ),
-  },
   async redirects() {
     return [
       {

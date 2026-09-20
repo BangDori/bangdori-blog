@@ -20,6 +20,9 @@
 # production
 /build
 
+# Audio is served from R2; keep local samples out of Git.
+/public/audio/
+
 # misc
 .DS_Store
 *.pem

@@ -7,5 +7,6 @@ export interface Post {
   createdAt: string;
   updatedAt?: string;
   slug: string;
+  audioUrl?: string;
   status?: string;
 }

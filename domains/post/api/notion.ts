@@ -1,5 +1,6 @@
 import { NotionToMarkdown } from 'notion-to-md';
 import { cache } from 'react';
+import { getPostAudioUrl } from '../utils/getPostAudioUrl';
 import { RetryingNotionClient } from './notion-client';
 import type { Post } from '../types';
 import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
@@ -84,6 +85,10 @@ function getPostMetadata(page: PageObjectResponse): Post {
   };
 
   const coverImage = getCoverImage(page.cover);
+  const slug =
+    properties.Slug.type === 'rich_text'
+      ? (properties.Slug.rich_text[0]?.plain_text ?? page.id)
+      : page.id;
 
   return {
     id: page.id,
@@ -96,10 +101,8 @@ function getPostMetadata(page: PageObjectResponse): Post {
     createdAt: properties.CreatedAt.type === 'date' ? (properties.CreatedAt.date?.start ?? '') : '',
     updatedAt: properties.UpdatedAt.type === 'date' ? (properties.UpdatedAt.date?.start ?? '') : '',
     tag: properties.Tag.type === 'select' ? (properties.Tag.select?.name ?? '') : '',
-    slug:
-      properties.Slug.type === 'rich_text'
-        ? (properties.Slug.rich_text[0]?.plain_text ?? page.id)
-        : page.id,
+    slug,
+    audioUrl: getPostAudioUrl(slug, process.env.AUDIO_BASE_URL),
     status: properties.Status.type === 'select' ? (properties.Status.select?.name ?? '') : '',
   };
 }

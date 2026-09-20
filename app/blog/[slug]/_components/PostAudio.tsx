@@ -9,6 +9,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { audioExists } from '@/domains/post/utils/getPostAudioUrl';
 import { observeAudio } from '@/lib/audio-analytics';
 import { trackAudio } from '@/lib/gtag';
 
@@ -17,7 +18,27 @@ function formatTime(seconds: number) {
   return `${Math.floor(value / 60)}:${String(value % 60).padStart(2, '0')}`;
 }
 
-export function PostAudio({ slug }: { slug: string }) {
+export function PostAudio({ slug, src }: { slug: string; src: string }) {
+  const [availableSrc, setAvailableSrc] = useState<string>();
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10_000);
+    audioExists(src, controller.signal)
+      .then((exists) => {
+        if (!controller.signal.aborted) setAvailableSrc(exists ? src : undefined);
+      })
+      .finally(() => clearTimeout(timeout));
+    return () => {
+      controller.abort();
+      clearTimeout(timeout);
+    };
+  }, [src]);
+
+  return availableSrc === src ? <AudioPlayer key={src} slug={slug} src={src} /> : null;
+}
+
+function AudioPlayer({ slug, src }: { slug: string; src: string }) {
   const ref = useRef<HTMLAudioElement>(null);
   const playbackId = useRef<string | null>(null);
   const [failed, setFailed] = useState(false);
@@ -145,7 +166,7 @@ export function PostAudio({ slug }: { slug: string }) {
       <audio
         ref={ref}
         preload="metadata"
-        src={`/audio/${encodeURIComponent(slug)}.mp3`}
+        src={src}
         onLoadedMetadata={(event) => {
           const value = event.currentTarget.duration;
           setDuration(Number.isFinite(value) ? value : 0);
