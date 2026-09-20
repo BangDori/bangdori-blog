@@ -1,4 +1,5 @@
 import { NotionToMarkdown } from 'notion-to-md';
+import { cache } from 'react';
 import { RetryingNotionClient } from './notion-client';
 import type { Post } from '../types';
 import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
@@ -103,57 +104,62 @@ function getPostMetadata(page: PageObjectResponse): Post {
   };
 }
 
-export async function getPostBySlug(slug: string): Promise<
-  | {
-      markdown: string;
-      post: Post;
-    }
-  | undefined
-> {
-  const response = await notion.databases.query({
-    database_id: process.env.NOTION_DATABASE_ID as string,
-    filter: {
-      and: [
-        {
-          property: 'Slug',
-          rich_text: {
-            equals: slug,
+// Share metadata/body reads within one server render, without a persistent stale cache.
+export const getPostBySlug = cache(
+  async (
+    slug: string
+  ): Promise<
+    | {
+        markdown: string;
+        post: Post;
+      }
+    | undefined
+  > => {
+    const response = await notion.databases.query({
+      database_id: process.env.NOTION_DATABASE_ID as string,
+      filter: {
+        and: [
+          {
+            property: 'Slug',
+            rich_text: {
+              equals: slug,
+            },
           },
-        },
-        {
-          property: 'Status',
-          select: {
-            equals: 'Published',
+          {
+            property: 'Status',
+            select: {
+              equals: 'Published',
+            },
           },
-        },
-      ],
-    },
-  });
+        ],
+      },
+    });
 
-  const page = response.results.find(
-    (result): result is PageObjectResponse => 'properties' in result
-  );
-  if (!page) return undefined;
+    const page = response.results.find(
+      (result): result is PageObjectResponse => 'properties' in result
+    );
+    if (!page) return undefined;
 
-  const mdBlocks = await n2m.pageToMarkdown(page.id);
-  const transformedBlocks = mdBlocks.map((mdBlock) => {
-    return mdBlock.type !== 'image'
-      ? mdBlock
-      : {
-          ...mdBlock,
-          parent: mdBlock.parent.replace(
-            NOTION_S3_IMAGE_URL_PATTERN,
-            (url) => `${convertToPublicImageUrl(url, mdBlock.blockId)}`
-          ),
-        };
-  });
-  const { parent } = n2m.toMarkdownString(transformedBlocks);
+    const mdBlocks = await n2m.pageToMarkdown(page.id);
+    const transformedBlocks = mdBlocks.map((mdBlock) => {
+      return mdBlock.type !== 'image'
+        ? mdBlock
+        : {
+            ...mdBlock,
+            parent: mdBlock.parent.replace(
+              NOTION_S3_IMAGE_URL_PATTERN,
+              (url) => `${convertToPublicImageUrl(url, mdBlock.blockId)}`
+            ),
+          };
+    });
+    const { parent } = n2m.toMarkdownString(transformedBlocks);
 
-  return {
-    markdown: parent,
-    post: getPostMetadata(page),
-  };
-}
+    return {
+      markdown: parent,
+      post: getPostMetadata(page),
+    };
+  }
+);
 
 export async function getPublishedPosts(): Promise<Post[]> {
   const response = await notion.databases.query({
