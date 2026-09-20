@@ -1,3 +1,4 @@
+import type { AudioEvent } from './audio-analytics';
 import type { ClickOptions, ImpressionOptions, ScrollOptions } from './ga-events.type';
 
 declare global {
@@ -12,6 +13,15 @@ function trackEvent(action: string, params?: Record<string, unknown>) {
   if (typeof window !== 'undefined' && window.gtag) {
     window.gtag('event', action, params);
   }
+}
+
+export function trackAudio(event: AudioEvent, slug: string, playbackId: string, seconds?: number) {
+  trackEvent(event, {
+    slug,
+    playback_id: playbackId,
+    ...(seconds !== undefined ? { listen_seconds: seconds } : {}),
+    transport_type: 'beacon',
+  });
 }
 
 function sanitizeUrl(raw?: string) {

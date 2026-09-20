@@ -20,6 +20,7 @@ import { Bookmark } from './_components/Bookmark';
 import { CodeBlock } from './_components/CodeBlock';
 import GiscusComments from './_components/GiscusComments';
 import { MarkdownImage } from './_components/MarkdownImage';
+import { PostAudio } from './_components/PostAudio';
 import ShareButton from './_components/ShareButton';
 import { TableOfContentsLink } from './_components/TableOfContentsLink';
 import { VideoOrLink } from './_components/VideoOrLink';
@@ -153,6 +154,8 @@ export default async function BlogPost({ params }: BlogPostProps) {
                 </div>
               </div>
             </header>
+
+            {post.audioUrl && <PostAudio key={slug} slug={slug} src={post.audioUrl} />}
 
             <aside className="w-full" aria-labelledby="table-of-contents-title">
               <div className="bg-muted/60 space-y-4 rounded-lg p-6 backdrop-blur-sm">
