@@ -1,9 +1,9 @@
-import { Client } from '@notionhq/client';
 import { NotionToMarkdown } from 'notion-to-md';
+import { RetryingNotionClient } from './notion-client';
 import type { Post } from '../types';
 import type { PageObjectResponse } from '@notionhq/client/build/src/api-endpoints';
 
-const notion = new Client({
+const notion = new RetryingNotionClient({
   auth: process.env.NOTION_TOKEN,
 });
 
