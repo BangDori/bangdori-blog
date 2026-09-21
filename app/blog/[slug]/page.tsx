@@ -12,6 +12,7 @@ import { GALogger } from '@/components/ga-logger';
 import { JsonLd } from '@/components/JsonLd';
 import { Button } from '@/components/ui/button';
 import { getPostBySlug, getPublishedPosts } from '@/domains/post/api/notion';
+import { getAvailablePostAudioUrl } from '@/domains/post/utils/getPostAudioUrl';
 import { formatDate } from '@/lib/date';
 import { SITE } from '@/lib/site';
 import { createBlogPostingJsonLd, createPostBreadcrumbJsonLd } from '@/lib/structured-data';
@@ -97,9 +98,12 @@ export default async function BlogPost({ params }: BlogPostProps) {
   const { markdown, post } = postData;
   const readingMinutes = calculateReadingTime(markdown);
 
-  const { data } = await compile(markdown, {
-    rehypePlugins: [rehypeSlug, withToc, withTocExport],
-  });
+  const [{ data }, availableAudioUrl] = await Promise.all([
+    compile(markdown, {
+      rehypePlugins: [rehypeSlug, withToc, withTocExport],
+    }),
+    getAvailablePostAudioUrl(post.audioUrl),
+  ]);
 
   return (
     <GALogger.OnVisible event={['post', { slug }]}>
@@ -155,6 +159,14 @@ export default async function BlogPost({ params }: BlogPostProps) {
               </div>
             </header>
 
+            {availableAudioUrl && (
+              <p className="text-muted-foreground text-sm">
+                이 글에는 음성 파일이 포함되어 있습니다.{' '}
+                <a href={availableAudioUrl} className="underline underline-offset-4">
+                  음성 파일 듣기
+                </a>
+              </p>
+            )}
             {post.audioUrl && <PostAudio key={slug} slug={slug} src={post.audioUrl} />}
 
             <aside className="w-full" aria-labelledby="table-of-contents-title">

@@ -1,7 +1,26 @@
 /* global globalThis */
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { audioExists, getPostAudioUrl } from './getPostAudioUrl.ts';
+import { audioExists, getAvailablePostAudioUrl, getPostAudioUrl } from './getPostAudioUrl.ts';
+
+test('server audio links require a successful bounded HEAD check and skip missing URLs', async (t) => {
+  const src = 'https://audio.example.com/unit-testing.mp3';
+  for (const status of [200, 404, 403, 500, 'timeout']) {
+    const fetch = t.mock.method(globalThis, 'fetch', async (url, options) => {
+      assert.equal(url, src);
+      assert.equal(options.method, 'HEAD');
+      assert.equal(options.next.revalidate, 3600);
+      assert.ok(options.signal instanceof AbortSignal);
+      if (status === 'timeout') throw new DOMException('timed out', 'TimeoutError');
+      return new Response(null, { status });
+    });
+    assert.equal(await getAvailablePostAudioUrl(), undefined);
+    assert.equal(fetch.mock.callCount(), 0);
+    assert.equal(await getAvailablePostAudioUrl(src), status === 200 ? src : undefined);
+    assert.equal(fetch.mock.callCount(), 1);
+    fetch.mock.restore();
+  }
+});
 
 test('only successful HEAD responses enable audio; 404 and server failures stay hidden', async (t) => {
   const signal = new AbortController().signal;
