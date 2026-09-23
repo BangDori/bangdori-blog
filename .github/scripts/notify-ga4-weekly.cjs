@@ -71,7 +71,7 @@ async function main() {
   const analyticsDataClient = new BetaAnalyticsDataClient({ credentials });
   const property = `properties/${propertyId}`;
   const dateRanges = [{ startDate, endDate }];
-  const [[report], [resumeReport]] = await Promise.all([
+  const [[report], [resumeReport], [audioReport]] = await Promise.all([
     analyticsDataClient.runReport({
       property,
       dateRanges,
@@ -100,12 +100,24 @@ async function main() {
         },
       },
     }),
+    analyticsDataClient.runReport({
+      property,
+      dateRanges,
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: {
+        filter: {
+          fieldName: 'eventName',
+          stringFilter: { matchType: 'EXACT', value: 'audio_start' },
+        },
+      },
+    }),
   ]);
 
   const row = report.rows?.[0];
   const pageViews = parseCount(row?.metricValues?.[0]?.value);
   const activeUsers = parseCount(row?.metricValues?.[1]?.value);
   const resumeOpens = parseCount(resumeReport.rows?.[0]?.metricValues?.[0]?.value);
+  const audioStarts = parseCount(audioReport.rows?.[0]?.metricValues?.[0]?.value);
   const timeZone = report.metadata?.timeZone || 'GA4 속성 시간대';
 
   const response = await fetch(discordWebhookUrl, {
@@ -137,6 +149,11 @@ async function main() {
               inline: true,
             },
             {
+              name: '음성 첫 재생',
+              value: `${audioStarts.toLocaleString('ko-KR')}회`,
+              inline: true,
+            },
+            {
               name: '기준 시간대',
               value: timeZone,
               inline: false,
@@ -153,7 +170,7 @@ async function main() {
   }
 
   console.log(
-    `Sent GA4 weekly stats: period=${startDate}..${endDate}, pageViews=${pageViews}, activeUsers=${activeUsers}, resumeOpens=${resumeOpens}`
+    `Sent GA4 weekly stats: period=${startDate}..${endDate}, pageViews=${pageViews}, activeUsers=${activeUsers}, resumeOpens=${resumeOpens}, audioStarts=${audioStarts}`
   );
 }
 
