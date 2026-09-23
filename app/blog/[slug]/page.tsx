@@ -119,7 +119,6 @@ export default async function BlogPost({ params }: BlogPostProps) {
                 <time dateTime={displayDate} className="font-normal text-black dark:text-white">
                   {formatDate(displayDate)}
                 </time>
-                <span>•</span>
                 <ViewCounter slug={slug} />
               </div>
             </header>
