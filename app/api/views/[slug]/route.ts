@@ -7,6 +7,10 @@ export async function POST(
   request: NextRequest,
   segmentData: { params: Params },
 ) {
+  if (process.env.VERCEL_ENV !== 'production') {
+    return NextResponse.json({ error: 'View tracking is disabled outside production' }, { status: 403 });
+  }
+
   try {
     const { slug } = await segmentData.params;
 

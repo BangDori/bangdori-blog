@@ -2,6 +2,10 @@ import { NextResponse } from 'next/server';
 import { getRedisClient } from '@/lib/redis';
 
 export async function POST() {
+  if (process.env.VERCEL_ENV !== 'production') {
+    return NextResponse.json({ error: 'Visit tracking is disabled outside production' }, { status: 403 });
+  }
+
   try {
     const redis = await getRedisClient();
 
