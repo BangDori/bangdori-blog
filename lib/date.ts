@@ -4,5 +4,5 @@ import { ko } from 'date-fns/locale';
 export function formatDate(date: string | Date | undefined) {
   if (!date) return '';
 
-  return format(new Date(date), 'yyyy년 MM월 dd일', { locale: ko });
+  return format(new Date(date), 'yyyy년 M월 d일', { locale: ko });
 }

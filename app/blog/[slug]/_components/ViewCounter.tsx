@@ -37,8 +37,11 @@ export function ViewCounter({ slug }: ViewCounterProps) {
   }
 
   return (
-    <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-      Views <b className="font-normal text-black dark:text-white">{views.toLocaleString()}</b>
-    </span>
+    <>
+      <span aria-hidden="true">•</span>
+      <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
+        조회수 <b className="font-normal text-black dark:text-white">{views.toLocaleString()}</b>회
+      </span>
+    </>
   );
 }
