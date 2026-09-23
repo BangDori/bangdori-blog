@@ -16,7 +16,6 @@ import { getAvailablePostAudioUrl } from '@/domains/post/utils/getPostAudioUrl';
 import { formatDate } from '@/lib/date';
 import { SITE } from '@/lib/site';
 import { createBlogPostingJsonLd, createPostBreadcrumbJsonLd } from '@/lib/structured-data';
-import { calculateReadingTime } from '@/lib/utils/calculateReadingTime';
 import { Bookmark } from './_components/Bookmark';
 import { CodeBlock } from './_components/CodeBlock';
 import GiscusComments from './_components/GiscusComments';
@@ -96,7 +95,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
   }
 
   const { markdown, post } = postData;
-  const readingMinutes = calculateReadingTime(markdown);
+  const displayDate = post.updatedAt || post.createdAt;
 
   const [{ data }, availableAudioUrl] = await Promise.all([
     compile(markdown, {
@@ -116,46 +115,12 @@ export default async function BlogPost({ params }: BlogPostProps) {
               <h1 id="post-title" className="text-2xl font-bold sm:text-3xl md:text-4xl">
                 {post.title}
               </h1>
-              <div className="space-y-1.5">
-                <div className="flex flex-wrap items-center gap-1">
-                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-                    <b className="font-normal text-black dark:text-white">{readingMinutes}</b> min
-                    read
-                  </p>
-                  <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
-                  <ViewCounter slug={slug} />
-                  <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">•</span>
-                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-                    By <b className="font-normal text-black dark:text-white">강병준</b>
-                  </p>
-                </div>
-                <div className="flex flex-wrap items-center gap-1">
-                  <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-                    Created at{' '}
-                    <time
-                      dateTime={post.createdAt}
-                      className="font-normal text-black dark:text-white"
-                    >
-                      {formatDate(post.createdAt)}
-                    </time>
-                  </p>
-                  {post.updatedAt && (
-                    <>
-                      <span className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-                        •
-                      </span>
-                      <p className="text-muted-foreground text-[10px] sm:text-xs md:text-sm">
-                        Updated at{' '}
-                        <time
-                          dateTime={post.updatedAt}
-                          className="font-normal text-black dark:text-white"
-                        >
-                          {formatDate(post.updatedAt)}
-                        </time>
-                      </p>
-                    </>
-                  )}
-                </div>
+              <div className="text-muted-foreground flex items-center gap-1 text-[10px] whitespace-nowrap sm:text-xs md:text-sm">
+                <time dateTime={displayDate} className="font-normal text-black dark:text-white">
+                  {formatDate(displayDate)}
+                </time>
+                <span>•</span>
+                <ViewCounter slug={slug} />
               </div>
             </header>
 
