@@ -71,6 +71,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const isProduction = process.env.VERCEL_ENV === 'production';
+
   return (
     <html lang="ko" className={`${pretendard.variable} scroll-smooth`} suppressHydrationWarning>
       <head>
@@ -90,15 +92,15 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            <VisitorTracker />
+            {isProduction && <VisitorTracker />}
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
           </ThemeProvider>
         </div>
-        <GoogleAnalytics />
-        <Analytics />
-        <SpeedInsights />
+        {isProduction && <GoogleAnalytics />}
+        {isProduction && <Analytics />}
+        {isProduction && <SpeedInsights />}
       </body>
     </html>
   );
