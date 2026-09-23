@@ -111,7 +111,7 @@ export default async function BlogPost({ params }: BlogPostProps) {
           <JsonLd data={[createBlogPostingJsonLd(post), createPostBreadcrumbJsonLd(post)]} />
           <section className="flex flex-col gap-8">
             {/* 블로그 헤더 */}
-            <header className="space-y-2 sm:space-y-4 md:space-y-6">
+            <header className="space-y-2 sm:space-y-4 md:space-y-3">
               <h1 id="post-title" className="text-2xl font-bold sm:text-3xl md:text-4xl">
                 {post.title}
               </h1>
