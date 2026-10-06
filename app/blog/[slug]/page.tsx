@@ -13,8 +13,9 @@ import { JsonLd } from '@/components/JsonLd';
 import { Button } from '@/components/ui/button';
 import { getPostBySlug, getPublishedPosts } from '@/domains/post/api/notion';
 import { getAvailablePostAudioUrl } from '@/domains/post/utils/getPostAudioUrl';
+import { getPostShareImage } from '@/domains/post/utils/getPostShareImage';
 import { formatDate } from '@/lib/date';
-import { SITE } from '@/lib/site';
+import { absoluteUrl, SITE } from '@/lib/site';
 import { createBlogPostingJsonLd, createPostBreadcrumbJsonLd } from '@/lib/structured-data';
 import { Bookmark } from './_components/Bookmark';
 import { CodeBlock } from './_components/CodeBlock';
@@ -42,7 +43,7 @@ export async function generateMetadata({
   const { post } = postData;
   const path = `/blog/${encodeURIComponent(post.slug)}`;
   const description = post.description || `${post.title} - 강병준 블로그`;
-  const ogImage = `${path}/opengraph-image`;
+  const ogImage = getPostShareImage(post);
 
   return {
     title: post.title,
@@ -62,15 +63,15 @@ export async function generateMetadata({
       url: path,
       publishedTime: post.createdAt,
       modifiedTime: post.updatedAt || post.createdAt,
-      authors: [SITE.author.name],
+      authors: [absoluteUrl('/about')],
       tags: post.tag ? [post.tag] : undefined,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
+      images: [ogImage],
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description,
-      images: [{ url: ogImage, alt: post.title }],
+      images: [ogImage],
     },
   };
 }
@@ -150,7 +151,13 @@ export default async function BlogPost({ params }: BlogPostProps) {
             <div className="prose prose-neutral prose-sm dark:prose-invert prose-headings:scroll-mt-[var(--header-height)] xl:prose-base w-full max-w-full flex-1">
               <MDXRemote
                 source={markdown}
-                components={{ pre: CodeBlock, a: VideoOrLink, img: MarkdownImage, Bookmark }}
+                components={{
+                  h1: (props) => <h2 {...props} />,
+                  pre: CodeBlock,
+                  a: VideoOrLink,
+                  img: MarkdownImage,
+                  Bookmark,
+                }}
                 options={{
                   mdxOptions: {
                     remarkPlugins: [remarkGfm],

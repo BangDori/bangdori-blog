@@ -1,3 +1,4 @@
+import { getPostShareImage } from '@/domains/post/utils/getPostShareImage';
 import { absoluteUrl, SITE } from '@/lib/site';
 import type { Post } from '@/domains/post/types';
 
@@ -42,7 +43,7 @@ export function createBlogPostingJsonLd(post: Post) {
     '@id': `${url}#article`,
     headline: post.title,
     description: post.description,
-    image: [absoluteUrl(`${path}/opengraph-image`)],
+    image: [absoluteUrl(getPostShareImage(post).url)],
     author: {
       '@type': 'Person',
       '@id': personId,

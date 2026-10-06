@@ -97,9 +97,13 @@ function getPostMetadata(page: PageObjectResponse): Post {
       properties.Description.type === 'rich_text'
         ? (properties.Description.rich_text[0]?.plain_text ?? '')
         : '',
-    coverImage: coverImage ? convertToPublicImageUrl(coverImage, page.id) : '',
+    coverImage:
+      page.cover?.type === 'file' && coverImage
+        ? convertToPublicImageUrl(coverImage, page.id)
+        : coverImage,
     createdAt: properties.CreatedAt.type === 'date' ? (properties.CreatedAt.date?.start ?? '') : '',
     updatedAt: properties.UpdatedAt.type === 'date' ? (properties.UpdatedAt.date?.start ?? '') : '',
+    lastEditedAt: page.last_edited_time,
     tag: properties.Tag.type === 'select' ? (properties.Tag.select?.name ?? '') : '',
     slug,
     audioUrl: getPostAudioUrl(slug, process.env.AUDIO_BASE_URL),
