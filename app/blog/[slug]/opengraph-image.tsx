@@ -5,6 +5,7 @@ import { getPostBySlug } from '@/domains/post/api/notion';
 export const alt = '강병준 블로그 글 대표 이미지';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
+export const revalidate = 3600;
 
 export default async function OgImage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -51,29 +52,15 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
           </div>
           <div
             style={{
-              fontSize: 64,
+              fontSize: post.title.length > 60 ? 48 : 64,
               fontWeight: 'bold',
               marginBottom: 30,
-              maxWidth: '80%',
+              maxWidth: '100%',
               lineHeight: 1.2,
             }}
           >
             {post.title}
           </div>
-          {post.description && (
-            <div
-              style={{
-                fontSize: 32,
-                color: '#cccccc',
-                maxWidth: '70%',
-                marginBottom: 30,
-              }}
-            >
-              {post.description.length > 100
-                ? `${post.description.substring(0, 100)}...`
-                : post.description}
-            </div>
-          )}
         </div>
         <div
           style={{
@@ -89,6 +76,6 @@ export default async function OgImage({ params }: { params: Promise<{ slug: stri
         </div>
       </div>
     ),
-    { ...size }
+    { ...size, headers: { 'Cache-Control': 'public, max-age=3600, must-revalidate' } }
   );
 }
