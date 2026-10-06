@@ -5,9 +5,9 @@ import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { useEffect, useRef, useState } from 'react';
 import { trackClick } from '@/lib/gtag';
-import type { Post } from '../types';
 import { calculateLightGeometry } from '../utils/lightGeometry';
 import styles from './BookGrid.module.css';
+import type { Post } from '../types';
 
 interface BookGridProps {
   books: Post[];
@@ -141,6 +141,7 @@ export function BookGrid({ books }: BookGridProps) {
                   {book.coverImage ? (
                     <Image
                       src={book.coverImage}
+                      unoptimized
                       alt={`${book.title} 표지`}
                       fill
                       sizes="(max-width: 639px) 30vw, 180px"

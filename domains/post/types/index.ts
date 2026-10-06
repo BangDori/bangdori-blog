@@ -6,6 +6,7 @@ export interface Post {
   tag: string;
   createdAt: string;
   updatedAt?: string;
+  lastEditedAt?: string;
   slug: string;
   audioUrl?: string;
   status?: string;
