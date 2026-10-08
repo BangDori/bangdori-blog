@@ -96,7 +96,6 @@ export default async function BlogPost({ params }: BlogPostProps) {
   }
 
   const { markdown, post } = postData;
-  const displayDate = post.updatedAt || post.createdAt;
 
   const [{ data }, availableAudioUrl] = await Promise.all([
     compile(markdown, {
@@ -116,9 +115,9 @@ export default async function BlogPost({ params }: BlogPostProps) {
               <h1 id="post-title" className="text-2xl font-bold sm:text-3xl md:text-4xl">
                 {post.title}
               </h1>
-              <div className="text-muted-foreground flex items-center gap-1 text-[10px] whitespace-nowrap sm:text-xs md:text-sm">
-                <time dateTime={displayDate} className="font-normal text-black dark:text-white">
-                  {formatDate(displayDate)}
+              <div className="text-muted-foreground flex flex-wrap items-center gap-1 text-[10px] sm:text-xs md:text-sm">
+                <time dateTime={post.createdAt} className="font-normal">
+                  작성일 {formatDate(post.createdAt)}
                 </time>
                 <ViewCounter slug={slug} />
               </div>
