@@ -17,10 +17,7 @@ const pretendard = localFont({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
-  title: {
-    default: SITE.name,
-    template: `%s | ${SITE.name}`,
-  },
+  title: SITE.name,
   description: SITE.description,
   authors: [{ name: SITE.author.name, url: '/about' }],
   creator: SITE.author.name,

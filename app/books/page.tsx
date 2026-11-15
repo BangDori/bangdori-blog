@@ -9,7 +9,7 @@ export const revalidate = 3600;
 const description = '읽고 오래 남은 책과 독후감을 모아둔 책장입니다.';
 
 export const metadata: Metadata = {
-  title: '내가 읽은 책',
+  title: '강병준 책장',
   description,
   alternates: {
     canonical: '/books',
@@ -18,14 +18,14 @@ export const metadata: Metadata = {
     type: 'website',
     locale: SITE.locale,
     siteName: SITE.name,
-    title: '내가 읽은 책',
+    title: '강병준 책장',
     description,
     url: '/books',
     images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: SITE.name }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: '내가 읽은 책',
+    title: '강병준 책장',
     description,
     images: ['/opengraph-image'],
   },

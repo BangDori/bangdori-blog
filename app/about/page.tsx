@@ -14,7 +14,7 @@ const profileImage = {
 };
 
 export const metadata: Metadata = {
-  title: '소개',
+  title: '강병준',
   description,
   alternates: {
     canonical: '/about',
@@ -23,14 +23,14 @@ export const metadata: Metadata = {
     type: 'profile',
     locale: SITE.locale,
     siteName: SITE.name,
-    title: '강병준 소개',
+    title: '강병준',
     description,
     url: '/about',
     images: [profileImage],
   },
   twitter: {
     card: 'summary',
-    title: '강병준 소개',
+    title: '강병준',
     description,
     images: [profileImage.url],
   },
