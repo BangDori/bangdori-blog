@@ -1,6 +1,7 @@
 export const SITE = {
   name: '강병준 블로그',
-  description: '강병준의 개발 블로그입니다.',
+  description:
+    'Product Engineer 강병준이 기술을 만나며 생긴 질문과 시도, 실패에서 배운 것을 기록하는 블로그입니다.',
   url: 'https://www.bangdori.kr',
   language: 'ko',
   locale: 'ko_KR',

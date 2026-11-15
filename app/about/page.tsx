@@ -4,8 +4,14 @@ import { JsonLd } from '@/components/JsonLd';
 import { SITE } from '@/lib/site';
 import { createPersonJsonLd } from '@/lib/structured-data';
 
-const description =
-  'Product Engineer 강병준과 기술을 만나며 생긴 질문, 시도, 실패를 기록하는 이 블로그를 소개합니다.';
+const description = 'Product Engineer 강병준입니다.';
+
+const profileImage = {
+  url: '/profile-og.jpg',
+  width: 1200,
+  height: 1200,
+  alt: '강병준 프로필 사진',
+};
 
 export const metadata: Metadata = {
   title: '소개',
@@ -20,13 +26,13 @@ export const metadata: Metadata = {
     title: '강병준 소개',
     description,
     url: '/about',
-    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: SITE.name }],
+    images: [profileImage],
   },
   twitter: {
-    card: 'summary_large_image',
+    card: 'summary',
     title: '강병준 소개',
     description,
-    images: ['/opengraph-image'],
+    images: [profileImage.url],
   },
 };
 

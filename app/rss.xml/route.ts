@@ -1,12 +1,12 @@
 import RSS from 'rss';
 import { getPublishedPosts } from '@/domains/post/api/notion';
-import { SITE_URL } from '@/lib/site';
+import { SITE, SITE_URL } from '@/lib/site';
 import type { Post } from '@/domains/post/types';
 
 export async function GET() {
   const feed = new RSS({
     title: '강병준의 개발 블로그',
-    description: '강병준의 개발 블로그입니다.',
+    description: SITE.description,
     feed_url: `${SITE_URL}/rss.xml`,
     site_url: `${SITE_URL}`,
     language: 'ko',
