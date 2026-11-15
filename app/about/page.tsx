@@ -4,11 +4,17 @@ import { JsonLd } from '@/components/JsonLd';
 import { SITE } from '@/lib/site';
 import { createPersonJsonLd } from '@/lib/structured-data';
 
-const description =
-  'Product Engineer 강병준과 기술을 만나며 생긴 질문, 시도, 실패를 기록하는 이 블로그를 소개합니다.';
+const description = 'Product Engineer 강병준입니다.';
+
+const profileImage = {
+  url: '/profile-og.jpg',
+  width: 1200,
+  height: 1200,
+  alt: '강병준 프로필 사진',
+};
 
 export const metadata: Metadata = {
-  title: '소개',
+  title: '강병준',
   description,
   alternates: {
     canonical: '/about',
@@ -17,16 +23,16 @@ export const metadata: Metadata = {
     type: 'profile',
     locale: SITE.locale,
     siteName: SITE.name,
-    title: '강병준 소개',
+    title: '강병준',
     description,
     url: '/about',
-    images: [{ url: '/opengraph-image', width: 1200, height: 630, alt: SITE.name }],
+    images: [profileImage],
   },
   twitter: {
-    card: 'summary_large_image',
-    title: '강병준 소개',
+    card: 'summary',
+    title: '강병준',
     description,
-    images: ['/opengraph-image'],
+    images: [profileImage.url],
   },
 };
 
@@ -56,6 +62,12 @@ function ProfileBackground() {
   );
 }
 
+const EXPERIENCES = [
+  { period: '2026.07 -', company: '크리에이트립', role: 'Forward Deployed Engineer' },
+  { period: '2025.09 - 2026.06', company: '크리에이트립', role: 'Product Engineer' },
+  { period: '2024.06 - 2025.07', company: '주식회사 말달리자', role: 'Frontend Engineer' },
+];
+
 export default function About() {
   return (
     <article className="container" aria-labelledby="about-page-title">
@@ -68,30 +80,7 @@ export default function About() {
         <ProfileBackground />
 
         <section
-          className="relative z-10 col-start-1 row-start-1 sm:max-w-[75%]"
-          aria-labelledby="currently-working-on"
-        >
-          <h2
-            id="currently-working-on"
-            className="text-foreground text-base font-semibold tracking-tight italic"
-          >
-            Currently working on
-          </h2>
-          <p className="text-foreground dark:text-muted-foreground mt-3 text-base">
-            Product Engineer{' '}
-            <a
-              href="https://creatrip.com/en"
-              className="text-foreground font-medium underline decoration-1 underline-offset-4 transition-opacity hover:opacity-60"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              @Creatrip
-            </a>
-          </p>
-        </section>
-
-        <section
-          className="relative z-10 col-start-1 row-start-2"
+          className="relative z-10 col-start-1 row-start-1"
           aria-labelledby="about-this-blog"
         >
           <h2
@@ -114,29 +103,28 @@ export default function About() {
           </div>
         </section>
 
-        <section className="relative z-10 col-start-1 row-start-3" aria-labelledby="where-im-going">
+        <section
+          className="relative z-10 col-start-1 row-start-2 sm:max-w-[75%]"
+          aria-labelledby="experience"
+        >
           <h2
-            id="where-im-going"
+            id="experience"
             className="text-foreground text-base font-semibold tracking-tight italic"
           >
-            Where I&apos;m going
+            Experience
           </h2>
-          <div className="text-foreground dark:text-muted-foreground mt-3 space-y-4 text-base leading-7">
-            <p>
-              저는 제 전문성을 하나의 기술에 한정하고 싶지 않습니다. 지금은 AI를 다루고 있지만,
-              다음에는 Robotics나 아직 이름조차 붙지 않은 분야를 마주할 수도 있습니다.
-            </p>
-            <p>
-              기술이 바뀌어도 제가 좋아하는 일은 같습니다. 함께 일하는 사람들의 어려움을 듣고,
-              설명하기 힘들었던 불편을 풀어야 할 문제로 바꾸는 일입니다. 정답이 없을 때 함께 머리를
-              맞대고, 작은 시도를 반복하며 어제보다 나은 방식을 찾는 과정도 좋아합니다.
-            </p>
-            <p>
-              제가 바라는 효율은 사람을 줄이는 데 있지 않습니다. 반복적인 부담은 기술에 맡기고,
-              사람은 자신의 판단과 강점을 더 잘 발휘할 수 있게 하는 것. 저는 기술로 그런 환경을 만들
-              수 있는 사람이 되고 싶습니다.
-            </p>
-          </div>
+          <ol className="text-foreground dark:text-muted-foreground mt-3 space-y-3 text-base">
+            {EXPERIENCES.map(({ period, company, role }) => (
+              <li key={period} className="grid gap-x-6 sm:grid-cols-[10.5rem_1fr]">
+                <span className="text-muted-foreground text-sm italic tabular-nums sm:text-base">
+                  {period}
+                </span>
+                <span>
+                  <span className="text-foreground font-medium">{company}</span> {role}
+                </span>
+              </li>
+            ))}
+          </ol>
         </section>
       </div>
     </article>
